@@ -1,0 +1,16 @@
+.main {
+    padding: var(--space-4);
+    flex: 1;
+}
+
+.count {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-4);
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}

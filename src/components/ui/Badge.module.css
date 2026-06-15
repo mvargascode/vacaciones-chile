@@ -1,0 +1,29 @@
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.oro {
+    background: var(--color-oro-bg);
+    color: var(--color-oro-text);
+    border: 1px solid var(--color-oro);
+}
+
+.plata {
+    background: var(--color-plata-bg);
+    color: var(--color-plata-text);
+    border: 1px solid var(--color-plata);
+}
+
+.bronce {
+    background: var(--color-bronce-bg);
+    color: var(--color-bronce-text);
+    border: 1px solid var(--color-bronce);
+}

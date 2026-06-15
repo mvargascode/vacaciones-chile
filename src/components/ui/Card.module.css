@@ -1,0 +1,35 @@
+.card {
+    background: var(--color-bg-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-border);
+    transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+.clickable:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Borde de acento según tier */
+.oro {
+    border-left: 4px solid var(--color-oro);
+}
+
+.plata {
+    border-left: 4px solid var(--color-plata);
+}
+
+.bronce {
+    border-left: 4px solid var(--color-bronce);
+}
