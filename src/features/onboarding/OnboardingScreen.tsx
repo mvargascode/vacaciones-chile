@@ -5,6 +5,7 @@ import { RegionSelector } from './RegionSelector'
 import { DaysSelector } from './DaysSelector'
 import { YearSelector } from './YearSelector'
 import styles from './OnboardingScreen.module.css'
+import { FlagCL } from '../../assets/FlagCL'
 
 type Step = 'region' | 'days' | 'year'
 const STEPS: Step[] = ['region', 'days', 'year']
@@ -42,7 +43,9 @@ function handleConfirm() {
   return (
     <div className={`${styles.screen} animate-fade-in`}>
       <div className={styles.header}>
-        <span className={styles.logo}>🇨🇱</span>
+        <span className={styles.logo}>
+  <FlagCL size={64} />
+</span>
         <h1 className={styles.title}>Vacaciones Chile</h1>
         <p className={styles.subtitle}>Aprovecha los feriados al máximo</p>
       </div>

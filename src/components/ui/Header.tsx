@@ -1,3 +1,4 @@
+import { FlagCL } from '../../assets/FlagCL'
 import styles from './Header.module.css'
 
 interface HeaderProps {
@@ -17,7 +18,9 @@ export function Header({
         <div className={styles.titleRow}>
           <div className={styles.titleGroup}>
             <h1 className={styles.title}>
-              <span className={styles.flag}>🇨🇱</span>
+              <span className={styles.flag}>
+                <FlagCL size={28} />
+              </span>
               {title}
             </h1>
             {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
