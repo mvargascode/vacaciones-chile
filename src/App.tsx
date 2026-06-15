@@ -1,6 +1,5 @@
-import { getHolidaysForRegion } from './services/holidayService'
-import { buildYearCalendar } from './services/calendarService'
-import { generateRecommendations } from './services/recommendationService'
+import { useUserPreferences } from './hooks/useUserPreferences'
+import { useRecommendations } from './hooks/useRecommendations'
 
 const TIER_COLORS: Record<string, string> = {
   oro:    'var(--color-oro-bg)',
@@ -9,9 +8,10 @@ const TIER_COLORS: Record<string, string> = {
 }
 
 function App() {
-  const holidays        = getHolidaysForRegion(2025, 'RM')
-  const calendar        = buildYearCalendar(2025, holidays)
-  const recommendations = generateRecommendations(calendar, 10)
+  const { preferences } = useUserPreferences()
+  const { region, availableDays, year } = preferences
+
+  const recommendations = useRecommendations(year, region, availableDays)
 
   return (
     <div className="app-container">
@@ -19,7 +19,7 @@ function App() {
         Vacaciones Chile 🇨🇱
       </h1>
       <p style={{ padding: '0 1rem 1rem', color: 'var(--color-text-secondary)' }}>
-        {recommendations.length} oportunidades encontradas para 2025
+        {region} · {availableDays} días disponibles · {recommendations.length} oportunidades
       </p>
       <ul style={{ padding: '0 1rem', display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
         {recommendations.map(r => (

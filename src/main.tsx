@@ -3,10 +3,13 @@ import { createRoot } from 'react-dom/client'
 import './styles/reset.css'
 import './styles/tokens.css'
 import './styles/global.css'
+import { UserPreferencesProvider } from './context/UserPreferencesContext'
 import App from './App.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <UserPreferencesProvider>
+      <App />
+    </UserPreferencesProvider>
   </StrictMode>,
 )
