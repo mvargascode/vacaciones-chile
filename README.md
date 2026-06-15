@@ -20,6 +20,8 @@ Clasifica cada oportunidad en tres niveles:
 - Mobile First
 
 ## Arquitectura
+
+```
 src/
 ├── data/         # Feriados 2025-2026 y regiones de Chile
 ├── types/        # Modelos de dominio TypeScript
@@ -29,6 +31,7 @@ src/
 ├── components/   # Componentes reutilizables
 ├── features/     # Pantallas de la app
 └── styles/       # Design tokens y estilos globales
+```
 
 ## Desarrollo local
 
