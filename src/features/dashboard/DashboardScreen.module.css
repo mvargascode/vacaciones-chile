@@ -1,0 +1,64 @@
+.main {
+    flex: 1;
+    padding: var(--space-4);
+    padding-bottom: calc(var(--space-4) + var(--bottom-nav-height));
+}
+
+.count {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-4);
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+/* Panel de configuración rápida */
+.settingsPanel {
+    background: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.settingsText {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.settingsActions {
+    display: flex;
+    gap: var(--space-2);
+}
+
+/* Footer */
+.footer {
+    position: sticky;
+    bottom: 0;
+    background: var(--color-bg-primary);
+    border-top: 1px solid var(--color-border);
+    padding: var(--space-3) var(--space-4);
+    display: flex;
+    justify-content: center;
+}
+
+.settingsBtn {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-full);
+    background: none;
+    border: none;
+    transition: background var(--transition-fast);
+}
+
+.settingsBtn:hover {
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+}
