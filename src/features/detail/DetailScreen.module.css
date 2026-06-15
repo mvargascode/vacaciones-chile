@@ -1,0 +1,197 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg-primary);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.backBtn {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-primary);
+    cursor: pointer;
+    padding: var(--space-2) 0;
+    background: none;
+    border: none;
+    transition: opacity var(--transition-fast);
+}
+
+.backBtn:hover {
+    opacity: 0.7;
+}
+
+.main {
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+/* Hero */
+.hero {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    line-height: 1.3;
+}
+
+.dateRange {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    text-transform: capitalize;
+}
+
+/* Stats */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+}
+
+.statCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-4) var(--space-2);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    text-align: center;
+}
+
+.statNumber {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    line-height: 1;
+}
+
+.statNumber.efficiency {
+    color: var(--color-primary);
+}
+
+.statLabel {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    line-height: 1.3;
+    text-align: center;
+}
+
+/* Secciones */
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.sectionTitle {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+/* Lista de feriados */
+.holidayList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.holidayItem {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background: var(--color-feriado);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-feriado-border);
+}
+
+.holidayIcon {
+    font-size: var(--font-size-xl);
+    flex-shrink: 0;
+}
+
+.holidayInfo {
+    flex: 1;
+}
+
+.holidayName {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-feriado-text);
+}
+
+.holidayDate {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    text-transform: capitalize;
+    margin-top: 2px;
+}
+
+.irrenunciableBadge {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    background: #EEF2FF;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+}
+
+/* Desglose */
+.breakdown {
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+}
+
+.breakdownRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.breakdownRow:last-child {
+    border-bottom: none;
+}
+
+.breakdownLabel {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.breakdownValue {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+.breakdownTotal {
+    background: var(--color-bg-primary);
+}
+
+.breakdownTotal .breakdownLabel {
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+.breakdownTotal .breakdownValue {
+    color: var(--color-primary);
+    font-size: var(--font-size-lg);
+}

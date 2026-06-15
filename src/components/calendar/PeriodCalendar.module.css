@@ -1,0 +1,123 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: var(--space-1);
+}
+
+.dayName {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-muted);
+    text-align: center;
+    padding: var(--space-1) 0;
+}
+
+.empty {
+    /* celda vacía para alinear */
+}
+
+.day {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    position: relative;
+    gap: 2px;
+}
+
+.dayNumber {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+}
+
+/* Tipos de día */
+.laborable {
+    background: var(--color-vacacion);
+}
+
+.laborable .dayNumber {
+    color: var(--color-vacacion-text);
+}
+
+.feriado {
+    background: var(--color-feriado);
+}
+
+.feriado .dayNumber {
+    color: var(--color-feriado-text);
+    font-weight: var(--font-weight-bold);
+}
+
+.fin_de_semana {
+    background: var(--color-fin-semana);
+}
+
+.fin_de_semana .dayNumber {
+    color: var(--color-text-muted);
+}
+
+.holidayDot {
+    width: 4px;
+    height: 4px;
+    border-radius: var(--radius-full);
+    background: var(--color-feriado-text);
+}
+
+/* Leyenda */
+.legend {
+    display: flex;
+    gap: var(--space-4);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.legendItem {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+}
+
+.legendDot {
+    width: 12px;
+    height: 12px;
+    border-radius: var(--radius-sm);
+}
+
+.legendDot.feriado {
+    background: var(--color-feriado);
+    border: 1px solid var(--color-feriado-border);
+}
+
+.legendDot.vacacion {
+    background: var(--color-vacacion);
+    border: 1px solid var(--color-vacacion-border);
+}
+
+.legendDot.fin_de_semana {
+    background: var(--color-fin-semana);
+    border: 1px solid var(--color-border);
+}
+
+.monthBlock {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.monthLabel {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    text-transform: capitalize;
+}

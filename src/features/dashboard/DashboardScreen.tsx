@@ -4,11 +4,16 @@ import { useRecommendations } from '../../hooks/useRecommendations'
 import { Header, Tabs, EmptyState, Button } from '../../components/ui'
 import { RecommendationCard } from '../../components/recommendation'
 import type { RecommendationTier } from '../../types/recommendation.types'
+import type { VacationWindow } from '../../types/recommendation.types'
 import styles from './DashboardScreen.module.css'
+
+interface DashboardScreenProps {
+  onSelectRecommendation: (r: VacationWindow) => void
+}
 
 type FilterTab = 'todas' | RecommendationTier
 
-export function DashboardScreen() {
+export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps) {
   const { preferences, confirmConfiguration } = useUserPreferences()
   const { region, availableDays, year } = preferences
   const recommendations = useRecommendations(year, region, availableDays)
@@ -39,6 +44,8 @@ export function DashboardScreen() {
     plata:  { title: 'Sin oportunidades plata',  description: 'No hay oportunidades de eficiencia 2x para tu configuración.' },
     bronce: { title: 'Sin oportunidades bronce', description: 'Todas las oportunidades disponibles son de mayor eficiencia.' },
   }
+
+  
 
   return (
     <div className="app-container">
@@ -90,14 +97,14 @@ export function DashboardScreen() {
               {activeTab !== 'todas' ? ` ${activeTab}` : ''} para {year}
             </p>
             <ul className={styles.list}>
-              {filtered.map(r => (
-                <li key={r.id}>
-                  <RecommendationCard
-                    recommendation={r}
-                    onClick={() => console.log('Ver detalle:', r.id)}
-                  />
-                </li>
-              ))}
+               {filtered.map(r => (
+    <li key={r.id}>
+      <RecommendationCard
+        recommendation={r}
+        onClick={() => onSelectRecommendation(r)}
+      />
+    </li>
+  ))}
             </ul>
           </>
         )}
