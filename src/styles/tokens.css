@@ -1,0 +1,79 @@
+:root {
+    --color-primary: #003087;
+    --color-primary-light: #1a4fa8;
+    --color-primary-dark: #001f5c;
+
+    --color-oro: #F5A623;
+    --color-oro-bg: #FFF8EC;
+    --color-oro-text: #7A4F00;
+
+    --color-plata: #8A8A8A;
+    --color-plata-bg: #F5F5F5;
+    --color-plata-text: #444444;
+
+    --color-bronce: #C47B2B;
+    --color-bronce-bg: #FFF1E0;
+    --color-bronce-text: #6B3D00;
+
+    --color-feriado: #E8F4FD;
+    --color-feriado-border: #A8D4F5;
+    --color-feriado-text: #1a4fa8;
+
+    --color-vacacion: #FFF3CD;
+    --color-vacacion-border: #FFD86E;
+    --color-vacacion-text: #7A5200;
+
+    --color-fin-semana: #F8F8F8;
+    --color-laborable: #FFFFFF;
+
+    --color-text-primary: #1A1A1A;
+    --color-text-secondary: #666666;
+    --color-text-muted: #999999;
+
+    --color-bg-primary: #FFFFFF;
+    --color-bg-secondary: #F7F7F7;
+    --color-bg-tertiary: #EFEFEF;
+
+    --color-border: #E0E0E0;
+    --color-border-strong: #CCCCCC;
+
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 9999px;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.10);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+    --transition-fast: 150ms ease;
+    --transition-normal: 250ms ease;
+    --transition-slow: 400ms ease;
+
+    --max-width-app: 480px;
+    --header-height: 56px;
+    --bottom-nav-height: 64px;
+}

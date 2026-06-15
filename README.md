@@ -1,73 +1,44 @@
-# React + TypeScript + Vite
+# 🇨🇱 Vacaciones Chile
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web para optimizar tus días de vacaciones aprovechando feriados nacionales, regionales e irrenunciables de Chile.
 
-Currently, two official plugins are available:
+## ¿Qué hace?
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Analiza el calendario del año y detecta automáticamente las mejores oportunidades para tomar vacaciones, maximizando los días libres con la menor cantidad de días de vacaciones posibles.
 
-## React Compiler
+Clasifica cada oportunidad en tres niveles:
+- 🥇 **Oro** — eficiencia 3x o más (ej: 9 días libres con 3 de vacaciones)
+- 🥈 **Plata** — eficiencia 2x o más
+- 🥉 **Bronce** — igual vale la pena
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Stack tecnológico
 
-## Expanding the ESLint configuration
+- React 19
+- TypeScript
+- Vite
+- CSS custom (sin librerías UI)
+- Mobile First
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Arquitectura
+src/
+├── data/         # Feriados 2025-2026 y regiones de Chile
+├── types/        # Modelos de dominio TypeScript
+├── services/     # Lógica de negocio pura (sin React)
+├── hooks/        # Custom hooks
+├── context/      # Estado global
+├── components/   # Componentes reutilizables
+├── features/     # Pantallas de la app
+└── styles/       # Design tokens y estilos globales
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Desarrollo local
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Roadmap
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- [x] v1 — MVP: recomendaciones por región y días disponibles
+- [ ] v2 — Calendario visual, persistencia, compartir
+- [ ] v3 — PWA, API oficial de feriados, exportar a Google Calendar
