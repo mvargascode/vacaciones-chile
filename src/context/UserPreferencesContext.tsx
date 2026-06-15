@@ -2,7 +2,6 @@ import { createContext, useContext, useState, useEffect } from 'react'
 import type { ReactNode } from 'react'
 import type { UserPreferences } from '../types/user.types'
 
-// Valores por defecto — lo que ve un usuario nuevo
 const DEFAULT_PREFERENCES: UserPreferences = {
   region: 'RM',
   availableDays: 15,
@@ -11,40 +10,45 @@ const DEFAULT_PREFERENCES: UserPreferences = {
 
 const STORAGE_KEY = 'vacaciones-chile:preferences'
 
-// Cargamos desde localStorage si existe, si no usamos defaults
-function loadPreferences(): UserPreferences {
+function loadPreferences(): { preferences: UserPreferences; isConfigured: boolean } {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored) return { ...DEFAULT_PREFERENCES, ...JSON.parse(stored) }
+    if (stored) {
+      return {
+        preferences: { ...DEFAULT_PREFERENCES, ...JSON.parse(stored) },
+        isConfigured: true,
+      }
+    }
   } catch {
-    // Si hay error de parsing ignoramos y usamos defaults
+    // Si hay error de parsing usamos defaults
   }
-  return DEFAULT_PREFERENCES
+  return {
+    preferences: DEFAULT_PREFERENCES,
+    isConfigured: false,
+  }
 }
 
-// --- Tipos del Context ---
 interface UserPreferencesContextType {
   preferences: UserPreferences
   setRegion: (region: string) => void
   setAvailableDays: (days: number) => void
   setYear: (year: number) => void
-  isConfigured: boolean   // true si el usuario ya pasó por onboarding
+  isConfigured: boolean
+  confirmConfiguration: (prefs: UserPreferences) => void
 }
 
 const UserPreferencesContext = createContext<UserPreferencesContextType | null>(null)
 
-// --- Provider ---
 export function UserPreferencesProvider({ children }: { children: ReactNode }) {
-  const [preferences, setPreferences] = useState<UserPreferences>(loadPreferences)
-  const [isConfigured, setIsConfigured] = useState<boolean>(
-    () => localStorage.getItem(STORAGE_KEY) !== null
-  )
+  const loaded = loadPreferences()
+  const [preferences, setPreferences] = useState<UserPreferences>(loaded.preferences)
+  const [isConfigured, setIsConfigured] = useState<boolean>(loaded.isConfigured)
 
-  // Cada vez que cambian las preferencias las guardamos en localStorage
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(preferences))
-    setIsConfigured(true)
-  }, [preferences])
+    if (isConfigured) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(preferences))
+    }
+  }, [preferences, isConfigured])
 
   function setRegion(region: string) {
     setPreferences(prev => ({ ...prev, region }))
@@ -58,6 +62,11 @@ export function UserPreferencesProvider({ children }: { children: ReactNode }) {
     setPreferences(prev => ({ ...prev, year }))
   }
 
+  function confirmConfiguration(prefs: UserPreferences) {
+    setPreferences(prefs)
+    setIsConfigured(true)
+  }
+
   return (
     <UserPreferencesContext.Provider value={{
       preferences,
@@ -65,14 +74,13 @@ export function UserPreferencesProvider({ children }: { children: ReactNode }) {
       setAvailableDays,
       setYear,
       isConfigured,
+      confirmConfiguration,
     }}>
       {children}
     </UserPreferencesContext.Provider>
   )
 }
 
-// --- Hook de acceso ---
-// Lo exportamos desde acá para que los componentes no importen el Context directamente
 export function useUserPreferences(): UserPreferencesContextType {
   const ctx = useContext(UserPreferencesContext)
   if (!ctx) throw new Error('useUserPreferences debe usarse dentro de UserPreferencesProvider')
