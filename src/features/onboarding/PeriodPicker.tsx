@@ -59,7 +59,11 @@ export function PeriodPicker({
   const [selecting, setSelecting] = useState<string | null>(null)
   const [hoverDate, setHoverDate] = useState<string | null>(null)
 
-  const monthGroups = groupByMonth(calendarDays)
+  const today = new Date()
+const currentMonthStart = new Date(today.getFullYear(), today.getMonth(), 1)
+  .toISOString().split('T')[0]
+const futureDays = calendarDays.filter(d => d.date >= currentMonthStart)
+const monthGroups = groupByMonth(futureDays)
 
   function handleDayClick(date: string, dayType: string) {
     if (dayType === 'fin_de_semana' || dayType === 'feriado') return
