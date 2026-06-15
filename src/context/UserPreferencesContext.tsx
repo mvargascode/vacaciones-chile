@@ -6,7 +6,7 @@ const DEFAULT_PREFERENCES: UserPreferences = {
   region: 'RM',
   availableDays: 15,
   year: new Date().getFullYear(),
-  plannedPeriods: [],   // ← nuevo
+  plannedPeriods: [],
 }
 
 const STORAGE_KEY = 'vacaciones-chile:preferences'
@@ -33,12 +33,12 @@ interface UserPreferencesContextType {
   preferences: UserPreferences
   setRegion: (region: string) => void
   setAvailableDays: (days: number) => void
-  setYear: (year: number) => void
+
   isConfigured: boolean
   confirmConfiguration: (prefs: UserPreferences) => void
   resetConfiguration: () => void
-  addPlannedPeriod: (period: PlannedPeriod) => void      // ← nuevo
-  removePlannedPeriod: (id: string) => void              // ← nuevo
+  addPlannedPeriod: (period: PlannedPeriod) => void
+  removePlannedPeriod: (id: string) => void
 }
 
 const UserPreferencesContext = createContext<UserPreferencesContextType | null>(null)
@@ -96,7 +96,6 @@ function removePlannedPeriod(id: string) {
   preferences,
   setRegion,
   setAvailableDays,
-  setYear,
   isConfigured,
   confirmConfiguration,
   resetConfiguration,

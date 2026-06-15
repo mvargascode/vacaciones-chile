@@ -11,8 +11,8 @@ import { PeriodPicker } from './PeriodPicker'
 import type { PlannedPeriod } from '../../types/user.types'
 import styles from './OnboardingScreen.module.css'
 
-type Step = 'region' | 'days' | 'year' | 'periods'
-const STEPS: Step[] = ['region', 'days', 'year', 'periods']
+type Step = 'region' | 'days' | 'periods'
+const STEPS: Step[] = ['region', 'days', 'periods']
 
 export function OnboardingScreen() {
   const { preferences, confirmConfiguration } = useUserPreferences()
@@ -32,17 +32,15 @@ export function OnboardingScreen() {
   const analyses    = analyzeAllPeriods(localPeriods, calendarDays)
   const usedDays    = totalWorkdaysUsed(analyses)
 
-  function handleNext() {
-    if (currentStep === 'region') setCurrentStep('days')
-    else if (currentStep === 'days')   setCurrentStep('year')
-    else if (currentStep === 'year')   setCurrentStep('periods')
-  }
+function handleNext() {
+  if (currentStep === 'region') setCurrentStep('days')
+  else if (currentStep === 'days') setCurrentStep('periods')
+}
 
-  function handleBack() {
-    if (currentStep === 'days')    setCurrentStep('region')
-    else if (currentStep === 'year')    setCurrentStep('days')
-    else if (currentStep === 'periods') setCurrentStep('year')
-  }
+function handleBack() {
+  if (currentStep === 'days')    setCurrentStep('region')
+  else if (currentStep === 'periods') setCurrentStep('days')
+}
 
   function handleAddPeriod(period: PlannedPeriod) {
     setLocalPeriods(prev => [...prev, period])
@@ -64,7 +62,6 @@ export function OnboardingScreen() {
   const STEP_TITLES: Record<Step, string> = {
     region:  '¿En qué región trabajas?',
     days:    '¿Cuántos días tienes disponibles?',
-    year:    '¿Qué año planificar?',
     periods: '¿Cuándo planeas tomar vacaciones?',
   }
 
@@ -93,9 +90,6 @@ export function OnboardingScreen() {
         )}
         {currentStep === 'days' && (
           <DaysSelector value={localDays} onChange={setLocalDays} />
-        )}
-        {currentStep === 'year' && (
-          <YearSelector value={localYear} onChange={setLocalYear} />
         )}
         {currentStep === 'periods' && (
           <div className={styles.periodStep}>

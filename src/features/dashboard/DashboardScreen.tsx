@@ -49,7 +49,8 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
     <div className="app-container animate-fade-in">
       <Header
         title="Vacaciones Chile"
-        subtitle={`${region} · ${availableDays} días · ${year}`}
+        // Opción: mostrarlo más discreto
+        subtitle={`${region} · ${availableDays} días disponibles`}
         onSettingsClick={resetConfiguration}
       />
 
