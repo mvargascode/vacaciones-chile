@@ -1,11 +1,12 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import type { ReactNode } from 'react'
-import type { UserPreferences } from '../types/user.types'
+import type { UserPreferences, PlannedPeriod } from '../types/user.types'
 
 const DEFAULT_PREFERENCES: UserPreferences = {
   region: 'RM',
   availableDays: 15,
   year: new Date().getFullYear(),
+  plannedPeriods: [],   // ← nuevo
 }
 
 const STORAGE_KEY = 'vacaciones-chile:preferences'
@@ -35,7 +36,9 @@ interface UserPreferencesContextType {
   setYear: (year: number) => void
   isConfigured: boolean
   confirmConfiguration: (prefs: UserPreferences) => void
-  resetConfiguration: () => void   // ← nuevo
+  resetConfiguration: () => void
+  addPlannedPeriod: (period: PlannedPeriod) => void      // ← nuevo
+  removePlannedPeriod: (id: string) => void              // ← nuevo
 }
 
 const UserPreferencesContext = createContext<UserPreferencesContextType | null>(null)
@@ -74,6 +77,20 @@ export function UserPreferencesProvider({ children }: { children: ReactNode }) {
   setIsConfigured(false)
 }
 
+function addPlannedPeriod(period: PlannedPeriod) {
+  setPreferences(prev => ({
+    ...prev,
+    plannedPeriods: [...prev.plannedPeriods, period],
+  }))
+}
+
+function removePlannedPeriod(id: string) {
+  setPreferences(prev => ({
+    ...prev,
+    plannedPeriods: prev.plannedPeriods.filter(p => p.id !== id),
+  }))
+}
+
   return (
     <UserPreferencesContext.Provider value={{
   preferences,
@@ -83,6 +100,8 @@ export function UserPreferencesProvider({ children }: { children: ReactNode }) {
   isConfigured,
   confirmConfiguration,
   resetConfiguration,
+  addPlannedPeriod,
+  removePlannedPeriod,
 }}>
       {children}
     </UserPreferencesContext.Provider>

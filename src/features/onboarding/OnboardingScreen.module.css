@@ -113,3 +113,26 @@
         gap: var(--space-4);
     }
 }
+
+.periodStep {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.periodTitle {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+.periodSubtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.lastStepBtns {
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+}

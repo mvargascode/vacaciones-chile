@@ -1,0 +1,207 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+/* Contador */
+.counter {
+    display: flex;
+    align-items: center;
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3);
+    border: 1px solid var(--color-border);
+}
+
+.counterItem {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.counterNumber {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    line-height: 1;
+}
+
+.counterLabel {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    text-align: center;
+}
+
+.counterDivider {
+    width: 1px;
+    height: 36px;
+    background: var(--color-border);
+}
+
+.negative .counterNumber {
+    color: #DC2626;
+}
+
+/* Hint */
+.hint {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    text-align: center;
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--color-primary-light);
+}
+
+/* Períodos agregados */
+.periodList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.periodTag {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-primary);
+    color: #ffffff;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+}
+
+.removeBtn {
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    color: #ffffff;
+    width: 18px;
+    height: 18px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.removeBtn:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Meses */
+.months {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+    .months {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-6);
+    }
+}
+
+.month {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.monthName {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    text-transform: capitalize;
+}
+
+/* Grid del calendario */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.dayLabel {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    text-align: center;
+    padding: var(--space-1) 0;
+    font-weight: var(--font-weight-bold);
+}
+
+.day {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    position: relative;
+    cursor: default;
+    user-select: none;
+    gap: 2px;
+}
+
+.workday {
+    color: var(--color-text-primary);
+}
+
+.nonWork {
+    color: var(--color-text-muted);
+    background: var(--color-fin-semana);
+}
+
+.holiday {
+    background: var(--color-feriado) !important;
+    color: var(--color-feriado-text) !important;
+    font-weight: var(--font-weight-bold);
+}
+
+.selectable {
+    cursor: pointer;
+}
+
+.selectable:hover {
+    background: #EEF2FF;
+}
+
+/* Período seleccionado */
+.inPeriod {
+    background: var(--color-primary);
+    color: #ffffff;
+    border-radius: 0;
+}
+
+.rangeStart {
+    border-radius: var(--radius-md) 0 0 var(--radius-md) !important;
+}
+
+.rangeEnd {
+    border-radius: 0 var(--radius-md) var(--radius-md) 0 !important;
+}
+
+/* Selección en curso */
+.inSelect {
+    background: #93C5FD;
+    color: var(--color-primary-dark);
+    border-radius: 0;
+}
+
+.dot {
+    width: 3px;
+    height: 3px;
+    border-radius: var(--radius-full);
+    background: currentColor;
+    opacity: 0.6;
+}
