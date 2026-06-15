@@ -5,7 +5,7 @@ import type { UserPreferences } from '../types/user.types'
 const DEFAULT_PREFERENCES: UserPreferences = {
   region: 'RM',
   availableDays: 15,
-  year: 2025,
+  year: new Date().getFullYear(),
 }
 
 const STORAGE_KEY = 'vacaciones-chile:preferences'

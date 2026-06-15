@@ -10,21 +10,24 @@ function App() {
   const [selectedRecommendation, setSelectedRecommendation] =
     useState<VacationWindow | null>(null)
 
+  // Onboarding: sin app-container, ocupa toda la pantalla
   if (!isConfigured) return <OnboardingScreen />
 
   if (selectedRecommendation) {
     return (
-      <DetailScreen
-        recommendation={selectedRecommendation}
-        onBack={() => setSelectedRecommendation(null)}
-      />
+      <div className="app-container">
+        <DetailScreen
+          recommendation={selectedRecommendation}
+          onBack={() => setSelectedRecommendation(null)}
+        />
+      </div>
     )
   }
 
   return (
-    <DashboardScreen
-      onSelectRecommendation={setSelectedRecommendation}
-    />
+    <div className="app-container">
+      <DashboardScreen onSelectRecommendation={setSelectedRecommendation} />
+    </div>
   )
 }
 
