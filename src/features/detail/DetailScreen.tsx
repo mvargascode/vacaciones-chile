@@ -1,6 +1,6 @@
 import type { VacationWindow } from '../../types/recommendation.types'
 import { PeriodCalendar } from '../../components/calendar'
-import { Badge, Button } from '../../components/ui'
+import { Badge } from '../../components/ui'
 import styles from './DetailScreen.module.css'
 
 interface DetailScreenProps {
@@ -19,7 +19,7 @@ function formatFullDate(dateStr: string): string {
 
 export function DetailScreen({ recommendation: r, onBack }: DetailScreenProps) {
   return (
-    <div className="app-container">
+    <div className="app-container animate-fade-in">
       {/* Header con back */}
       <header className={styles.header}>
         <button className={styles.backBtn} onClick={onBack} aria-label="Volver">

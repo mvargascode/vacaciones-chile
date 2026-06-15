@@ -111,3 +111,9 @@
     border-radius: var(--radius-md);
     border-left: 3px solid var(--color-primary-light);
 }
+
+@media (max-width: 360px) {
+    .options {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

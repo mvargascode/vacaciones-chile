@@ -35,6 +35,7 @@ interface UserPreferencesContextType {
   setYear: (year: number) => void
   isConfigured: boolean
   confirmConfiguration: (prefs: UserPreferences) => void
+  resetConfiguration: () => void   // ← nuevo
 }
 
 const UserPreferencesContext = createContext<UserPreferencesContextType | null>(null)
@@ -67,15 +68,22 @@ export function UserPreferencesProvider({ children }: { children: ReactNode }) {
     setIsConfigured(true)
   }
 
+  function resetConfiguration() {
+  localStorage.removeItem(STORAGE_KEY)
+  setPreferences(DEFAULT_PREFERENCES)
+  setIsConfigured(false)
+}
+
   return (
     <UserPreferencesContext.Provider value={{
-      preferences,
-      setRegion,
-      setAvailableDays,
-      setYear,
-      isConfigured,
-      confirmConfiguration,
-    }}>
+  preferences,
+  setRegion,
+  setAvailableDays,
+  setYear,
+  isConfigured,
+  confirmConfiguration,
+  resetConfiguration,
+}}>
       {children}
     </UserPreferencesContext.Provider>
   )

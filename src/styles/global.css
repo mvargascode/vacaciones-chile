@@ -26,3 +26,43 @@
     white-space: nowrap;
     border: 0;
 }
+
+/* Animaciones globales */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInFast {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 250ms ease both;
+}
+
+.animate-fade-in-fast {
+    animation: fadeInFast 150ms ease both;
+}
+
+/* Respeta preferencias de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+
+    .animate-fade-in,
+    .animate-fade-in-fast {
+        animation: none;
+    }
+}

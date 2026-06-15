@@ -62,3 +62,18 @@
 .navRight {
     margin-left: auto;
 }
+
+/* Reduce el padding top en pantallas pequeñas */
+@media (max-height: 700px) {
+    .header {
+        padding-top: var(--space-4);
+    }
+
+    .logo {
+        font-size: 2rem;
+    }
+
+    .screen {
+        gap: var(--space-4);
+    }
+}

@@ -14,12 +14,6 @@ function formatShortDate(dateStr: string): string {
   return date.toLocaleDateString('es-CL', { day: 'numeric', month: 'short' })
 }
 
-// "2025-09-13" → "sáb 13 sep"
-function formatFullDate(dateStr: string): string {
-  const date = new Date(dateStr + 'T00:00:00')
-  return date.toLocaleDateString('es-CL', { weekday: 'short', day: 'numeric', month: 'short' })
-}
-
 export function RecommendationCard({ recommendation: r, onClick }: RecommendationCardProps) {
   return (
     <Card accent={r.tier} onClick={onClick}>

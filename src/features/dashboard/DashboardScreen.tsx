@@ -14,9 +14,28 @@ interface DashboardScreenProps {
 type FilterTab = 'todas' | RecommendationTier
 
 export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps) {
-  const { preferences, confirmConfiguration } = useUserPreferences()
+  const { preferences, resetConfiguration } = useUserPreferences()
   const { region, availableDays, year } = preferences
   const recommendations = useRecommendations(year, region, availableDays)
+
+// Guard: si availableDays es 0, no tiene sentido mostrar nada
+if (availableDays === 0) {
+  return (
+    <div className="app-container">
+      <Header title="Vacaciones Chile" />
+      <EmptyState
+        emoji="😅"
+        title="Sin días disponibles"
+        description="Configura cuántos días de vacaciones tienes para ver recomendaciones."
+      />
+      <div style={{ padding: 'var(--space-4)' }}>
+        <Button fullWidth onClick={resetConfiguration}>
+          Configurar días
+        </Button>
+      </div>
+    </div>
+  )
+}
   const [activeTab, setActiveTab] = useState<FilterTab>('todas')
   const [showSettings, setShowSettings] = useState(false)
 
@@ -48,10 +67,11 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
   
 
   return (
-    <div className="app-container">
+    <div className="app-container animate-fade-in">
       <Header
         title="Vacaciones Chile"
         subtitle={`${region} · ${availableDays} días · ${year}`}
+        onSettingsClick={() => setShowSettings(prev => !prev)}
       />
 
       {/* Panel de configuración rápida */}
@@ -62,18 +82,15 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
           </p>
           <div className={styles.settingsActions}>
             <Button
-              variant="primary"
-              size="sm"
-              onClick={() => {
-                confirmConfiguration({ ...preferences })
-                setShowSettings(false)
-                // Forzamos el onboarding borrando el flag
-                localStorage.removeItem('vacaciones-chile:preferences')
-                window.location.reload()
-              }}
-            >
-              Reconfigurar
-            </Button>
+  variant="primary"
+  size="sm"
+  onClick={() => {
+    resetConfiguration()
+    setShowSettings(false)
+  }}
+>
+  Reconfigurar
+</Button>
             <Button variant="ghost" size="sm" onClick={() => setShowSettings(false)}>
               Cancelar
             </Button>
@@ -84,41 +101,34 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
       <Tabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
 
       <main className={styles.main}>
-        {filtered.length === 0 ? (
-          <EmptyState
-            emoji="🗓️"
-            title={emptyMessages[activeTab].title}
-            description={emptyMessages[activeTab].description}
-          />
-        ) : (
-          <>
-            <p className={styles.count}>
-              {filtered.length} {filtered.length === 1 ? 'oportunidad' : 'oportunidades'}
-              {activeTab !== 'todas' ? ` ${activeTab}` : ''} para {year}
-            </p>
-            <ul className={styles.list}>
-               {filtered.map(r => (
-    <li key={r.id}>
-      <RecommendationCard
-        recommendation={r}
-        onClick={() => onSelectRecommendation(r)}
+  <div key={activeTab} className={styles.listWrapper}>
+    {filtered.length === 0 ? (
+      <EmptyState
+        emoji="🗓️"
+        title={emptyMessages[activeTab].title}
+        description={emptyMessages[activeTab].description}
       />
-    </li>
-  ))}
-            </ul>
-          </>
-        )}
-      </main>
+    ) : (
+      <>
+        <p className={styles.count}>
+          {filtered.length} {filtered.length === 1 ? 'oportunidad' : 'oportunidades'}
+          {activeTab !== 'todas' ? ` ${activeTab}` : ''} para {year}
+        </p>
+        <ul className={styles.list}>
+          {filtered.map(r => (
+            <li key={r.id}>
+              <RecommendationCard
+                recommendation={r}
+                onClick={() => onSelectRecommendation(r)}
+              />
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
+  </div>
+</main>
 
-      {/* Footer con botón de configuración */}
-      <footer className={styles.footer}>
-        <button
-          className={styles.settingsBtn}
-          onClick={() => setShowSettings(prev => !prev)}
-        >
-          ⚙️ Cambiar configuración
-        </button>
-      </footer>
     </div>
   )
 }

@@ -40,7 +40,7 @@ function handleConfirm() {
 }
 
   return (
-    <div className={styles.screen}>
+    <div className={`${styles.screen} animate-fade-in`}>
       <div className={styles.header}>
         <span className={styles.logo}>🇨🇱</span>
         <h1 className={styles.title}>Vacaciones Chile</h1>
