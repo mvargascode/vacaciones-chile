@@ -1,0 +1,252 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+/* Resumen */
+.summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border);
+}
+
+.summaryItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.summaryNum {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    line-height: 1;
+}
+
+.summaryNum.positive {
+    color: #16A34A;
+}
+
+.summaryNum.negative {
+    color: #DC2626;
+}
+
+.summaryNum.zero {
+    color: var(--color-text-muted);
+}
+
+.summaryLabel {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    text-align: center;
+}
+
+.summaryArrow {
+    font-size: var(--font-size-xl);
+    color: var(--color-text-muted);
+}
+
+/* Cards de período */
+.periodList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+@media (min-width: 900px) {
+    .periodList {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.periodCard {
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    box-shadow: var(--shadow-sm);
+}
+
+.periodHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.periodDates {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.periodRange {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+.periodDetail {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    text-transform: capitalize;
+}
+
+.removeBtn {
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    padding: var(--space-1);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.removeBtn:hover {
+    background: #FEE2E2;
+    color: #DC2626;
+}
+
+/* Stats */
+.periodStats {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.stat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.statNum {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    line-height: 1;
+}
+
+.statLabel {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    text-align: center;
+}
+
+.statDivider {
+    width: 1px;
+    height: 32px;
+    background: var(--color-border);
+}
+
+/* Feriados */
+.holidays {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.holidayChip {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-feriado);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-feriado-border);
+    font-size: var(--font-size-sm);
+    color: var(--color-feriado-text);
+    font-weight: var(--font-weight-medium);
+}
+
+.irrenunciable {
+    margin-left: auto;
+    font-size: var(--font-size-xs);
+    background: var(--color-primary);
+    color: #fff;
+    padding: 1px var(--space-2);
+    border-radius: var(--radius-full);
+}
+
+/* Sugerencias */
+.suggestions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.suggestion {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    background: #FFF8EC;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-oro);
+}
+
+.suggestionIcon {
+    font-size: var(--font-size-base);
+    flex-shrink: 0;
+}
+
+.suggestionBody {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.suggestionText {
+    font-size: var(--font-size-sm);
+    color: var(--color-oro-text);
+}
+
+.suggestionSaving {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+}
+
+/* Botón agregar */
+.addBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    border: 2px dashed var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background: none;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    width: 100%;
+}
+
+.addBtn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: #EEF2FF;
+}
+
+.addIcon {
+    font-size: var(--font-size-xl);
+    line-height: 1;
+}

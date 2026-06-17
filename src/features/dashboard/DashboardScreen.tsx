@@ -2,12 +2,14 @@ import { useState, useMemo } from 'react'
 import { useUserPreferences } from '../../hooks/useUserPreferences'
 import { useHolidaysApi } from '../../hooks/useHolidaysApi'
 import { useRecommendations } from '../../hooks/useRecommendations'
+import { usePlanner } from '../../hooks/usePlanner'
 import { buildYearCalendar } from '../../services/calendarService'
-import { Header, Tabs, EmptyState, Sidebar, SidebarSection } from '../../components/ui'
+import { Header, Tabs, EmptyState, Sidebar, SidebarSection, Drawer } from '../../components/ui'
 import { RecommendationCard } from '../../components/recommendation'
 import { SidebarFilter } from './SidebarFilter'
 import { SidebarInfo } from './SidebarInfo'
-import { PlannerPanel } from './PlannerPanel'
+import { PlannedView } from './PlannedView'
+import { PeriodPicker } from '../onboarding/PeriodPicker'
 import type { RecommendationTier, VacationWindow } from '../../types/recommendation.types'
 import styles from './DashboardScreen.module.css'
 
@@ -18,7 +20,12 @@ interface DashboardScreenProps {
 }
 
 export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps) {
-  const { preferences, resetConfiguration } = useUserPreferences()
+  const {
+    preferences,
+    resetConfiguration,
+    addPlannedPeriod,
+    removePlannedPeriod,
+  } = useUserPreferences()
   const { region, availableDays, year, plannedPeriods } = preferences
 
   const { holidays, loading, fromApi } = useHolidaysApi(year, region)
@@ -29,7 +36,14 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
     [year, holidays]
   )
 
-  const [activeTab, setActiveTab] = useState<FilterTab>('todas')
+  const { analyses, totalUsed } = usePlanner(
+    plannedPeriods,
+    calendarDays,
+    availableDays
+  )
+
+  const [activeTab, setActiveTab]       = useState<FilterTab>('todas')
+  const [drawerOpen, setDrawerOpen]     = useState(false)
 
   const hasPlannedPeriods = plannedPeriods.length > 0
 
@@ -52,10 +66,10 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
     : recommendations.filter(r => r.tier === activeTab)
 
   const emptyMessages: Record<FilterTab, { title: string; description: string }> = {
-    todas:  { title: 'Sin oportunidades',       description: 'No encontramos oportunidades para tu configuración actual.' },
-    oro:    { title: 'Sin oportunidades oro',    description: 'No hay feriados que permitan una eficiencia 3x o más este año.' },
-    plata:  { title: 'Sin oportunidades plata',  description: 'No hay oportunidades de eficiencia 2x para tu configuración.' },
-    bronce: { title: 'Sin oportunidades bronce', description: 'Todas las oportunidades disponibles son de mayor eficiencia.' },
+    todas:  { title: 'Sin oportunidades',       description: 'No encontramos oportunidades para tu configuración.' },
+    oro:    { title: 'Sin oportunidades oro',    description: 'No hay feriados que permitan eficiencia 3x o más.' },
+    plata:  { title: 'Sin oportunidades plata',  description: 'No hay oportunidades de eficiencia 2x.' },
+    bronce: { title: 'Sin oportunidades bronce', description: 'Todas las oportunidades son de mayor eficiencia.' },
   }
 
   return (
@@ -78,6 +92,7 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
       )}
 
       <div className={styles.layout}>
+        {/* Sidebar — solo desktop */}
         <Sidebar>
           <SidebarSection title="Filtrar por tier">
             <SidebarFilter
@@ -85,10 +100,6 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
               onChange={setActiveTab}
               counts={counts}
             />
-          </SidebarSection>
-
-          <SidebarSection title="Mi planificación">
-            <PlannerPanel calendarDays={calendarDays} />
           </SidebarSection>
 
           <SidebarSection title="Tu configuración">
@@ -103,37 +114,82 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
           </SidebarSection>
         </Sidebar>
 
+        {/* Contenido principal */}
         <div className={styles.main}>
-          <div className={styles.tabsWrapper}>
-            <Tabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
-          </div>
 
-          <div key={activeTab} className={styles.listWrapper}>
-            {hasPlannedPeriods && activeTab === 'todas' && (
-              <div className={styles.plannerBanner}>
-                <span>📅</span>
-                <p>
-                  Tienes <strong>
-                    {plannedPeriods.length} período{plannedPeriods.length > 1 ? 's' : ''} planificado{plannedPeriods.length > 1 ? 's' : ''}
-                  </strong> en el sidebar. Estas son las mejores oportunidades adicionales del año.
-                </p>
+          {/* MODO A — Sin períodos planificados */}
+          {!hasPlannedPeriods && (
+            <>
+              <div className={styles.tabsWrapper}>
+                <Tabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
               </div>
-            )}
 
-            {filtered.length === 0 ? (
-              <EmptyState
-                emoji="🗓️"
-                title={emptyMessages[activeTab].title}
-                description={emptyMessages[activeTab].description}
+              <div key={activeTab} className={styles.listWrapper}>
+                {/* CTA para planificar */}
+                <button
+                  className={styles.plannerCta}
+                  onClick={() => setDrawerOpen(true)}
+                >
+                  <span>📅</span>
+                  <span>¿Ya sabes cuándo quieres vacaciones? Planifica aquí →</span>
+                </button>
+
+                {filtered.length === 0 ? (
+                  <EmptyState
+                    emoji="🗓️"
+                    title={emptyMessages[activeTab].title}
+                    description={emptyMessages[activeTab].description}
+                  />
+                ) : (
+                  <>
+                    <p className={styles.count}>
+                      {filtered.length} {filtered.length === 1 ? 'oportunidad' : 'oportunidades'}
+                      {activeTab !== 'todas' ? ` ${activeTab}` : ''} para {year}
+                    </p>
+                    <ul className={styles.list}>
+                      {filtered.map(r => (
+                        <li key={r.id}>
+                          <RecommendationCard
+                            recommendation={r}
+                            onClick={() => onSelectRecommendation(r)}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* MODO B — Con períodos planificados */}
+          {hasPlannedPeriods && (
+            <div className={styles.listWrapper}>
+              <div className={styles.plannedHeader}>
+                <h2 className={styles.plannedTitle}>Mis vacaciones planificadas</h2>
+                <button
+                  className={styles.addPeriodBtn}
+                  onClick={() => setDrawerOpen(true)}
+                >
+                  + Agregar período
+                </button>
+              </div>
+
+              <PlannedView
+                analyses={analyses}
+                availableDays={availableDays}
+                totalUsed={totalUsed}
+                onRemovePeriod={removePlannedPeriod}
+                onOpenPlanner={() => setDrawerOpen(true)}
               />
-            ) : (
-              <>
-                <p className={styles.count}>
-                  {filtered.length} {filtered.length === 1 ? 'oportunidad' : 'oportunidades'}
-                  {activeTab !== 'todas' ? ` ${activeTab}` : ''} para {year}
-                </p>
-                <ul className={styles.list}>
-                  {filtered.map(r => (
+
+              {/* Oportunidades adicionales colapsadas */}
+              <details className={styles.extraOpportunities}>
+                <summary className={styles.extraSummary}>
+                  Ver otras oportunidades del año ({recommendations.length})
+                </summary>
+                <ul className={styles.list} style={{ marginTop: 'var(--space-4)' }}>
+                  {recommendations.map(r => (
                     <li key={r.id}>
                       <RecommendationCard
                         recommendation={r}
@@ -142,11 +198,27 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
                     </li>
                   ))}
                 </ul>
-              </>
-            )}
-          </div>
+              </details>
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Drawer del planificador */}
+      <Drawer
+        isOpen={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        title="📅 Planificar vacaciones"
+      >
+        <PeriodPicker
+          calendarDays={calendarDays}
+          periods={plannedPeriods}
+          onAddPeriod={addPlannedPeriod}
+          onRemovePeriod={removePlannedPeriod}
+          availableDays={availableDays}
+          usedDays={totalUsed}
+        />
+      </Drawer>
     </div>
   )
 }

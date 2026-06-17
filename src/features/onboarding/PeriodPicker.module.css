@@ -103,10 +103,11 @@
     gap: var(--space-6);
 }
 
+/* Eliminamos el grid de 2 columnas — en sidebar no cabe */
 @media (min-width: 768px) {
     .months {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        display: flex;
+        flex-direction: column;
         gap: var(--space-6);
     }
 }

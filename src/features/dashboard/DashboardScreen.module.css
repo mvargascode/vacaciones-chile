@@ -78,3 +78,79 @@
     font-size: var(--font-size-sm);
     color: var(--color-primary-dark);
 }
+
+.plannerCta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    background: #EEF2FF;
+    border: 1px solid var(--color-primary-light);
+    border-radius: var(--radius-md);
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    margin-bottom: var(--space-4);
+    width: 100%;
+    text-align: left;
+    transition: background var(--transition-fast);
+}
+
+.plannerCta:hover {
+    background: #E0E7FF;
+}
+
+.plannedHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-4);
+}
+
+.plannedTitle {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+.addPeriodBtn {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-primary);
+    background: none;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-3);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.addPeriodBtn:hover {
+    background: var(--color-primary);
+    color: #ffffff;
+}
+
+.extraOpportunities {
+    margin-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-4);
+}
+
+.extraSummary {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: var(--space-2) 0;
+    list-style: none;
+    transition: color var(--transition-fast);
+}
+
+.extraSummary:hover {
+    color: var(--color-text-primary);
+}
+
+.extraSummary::-webkit-details-marker {
+    display: none;
+}
