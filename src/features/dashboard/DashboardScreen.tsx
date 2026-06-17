@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { useUserPreferences } from '../../hooks/useUserPreferences'
-import { useRecommendations } from '../../hooks/useRecommendations'
 import { Header, Tabs, EmptyState, Sidebar, SidebarSection } from '../../components/ui'
 import { RecommendationCard } from '../../components/recommendation'
 import { SidebarFilter } from './SidebarFilter'
 import { SidebarInfo } from './SidebarInfo'
+import { useHolidaysApi } from '../../hooks/useHolidaysApi'
+import { useRecommendations } from '../../hooks/useRecommendations'
 import type { RecommendationTier, VacationWindow } from '../../types/recommendation.types'
 import styles from './DashboardScreen.module.css'
 
@@ -17,7 +18,8 @@ interface DashboardScreenProps {
 export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps) {
   const { preferences, resetConfiguration } = useUserPreferences()
   const { region, availableDays, year } = preferences
-  const recommendations = useRecommendations(year, region, availableDays)
+  const { holidays, loading, fromApi } = useHolidaysApi(year, region)
+  const recommendations = useRecommendations(year, holidays, availableDays)
   const [activeTab, setActiveTab] = useState<FilterTab>('todas')
 
   const counts = {
@@ -66,12 +68,14 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
           </SidebarSection>
           <SidebarSection title="Tu configuración">
             <SidebarInfo
-              region={region}
-              availableDays={availableDays}
-              year={year}
-              totalRecommendations={recommendations.length}
-              onReset={resetConfiguration}
-            />
+  region={region}
+  availableDays={availableDays}
+  year={year}
+  totalRecommendations={recommendations.length}
+  onReset={resetConfiguration}
+  fromApi={fromApi}   // ← nuevo
+/>
+
           </SidebarSection>
         </Sidebar>
 
@@ -81,6 +85,17 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
           <div className={styles.tabsWrapper}>
             <Tabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
           </div>
+
+          {loading && (
+  <div style={{
+    padding: 'var(--space-2) var(--space-4)',
+    fontSize: 'var(--font-size-xs)',
+    color: 'var(--color-text-muted)',
+    borderBottom: '1px solid var(--color-border)',
+  }}>
+    Cargando feriados...
+  </div>
+)}
 
           <div key={activeTab} className={styles.listWrapper}>
             {filtered.length === 0 ? (

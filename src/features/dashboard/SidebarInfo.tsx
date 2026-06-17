@@ -8,6 +8,7 @@ interface SidebarInfoProps {
   year: number
   totalRecommendations: number
   onReset: () => void
+  fromApi: boolean   // ← agrega esto
 }
 
 export function SidebarInfo({
@@ -16,6 +17,7 @@ export function SidebarInfo({
   year,
   totalRecommendations,
   onReset,
+  fromApi,   // ← agrega esto
 }: SidebarInfoProps) {
   const regionName = REGIONS.find(r => r.code === region)?.name ?? region
 
@@ -43,6 +45,15 @@ export function SidebarInfo({
       <Button variant="secondary" size="sm" fullWidth onClick={onReset}>
         ⚙️ Reconfigurar
       </Button>
+
+      <p style={{
+  fontSize: 'var(--font-size-xs)',
+  color: 'var(--color-text-muted)',
+  textAlign: 'center',
+  marginTop: 'var(--space-2)',
+}}>
+  Datos: {fromApi ? '🟢 API oficial' : '🟡 Datos locales'}
+</p>
     </div>
   )
 }
