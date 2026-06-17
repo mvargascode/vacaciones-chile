@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { CalendarDay } from '../../types/calendar.types'
 import type { PlannedPeriod } from '../../types/user.types'
 import styles from './PeriodPicker.module.css'
+import { isWorkday } from '../../services/calendarService'
 
 interface PeriodPickerProps {
   calendarDays: CalendarDay[]
@@ -16,7 +17,7 @@ const MONTH_NAMES = [
   'Enero','Febrero','Marzo','Abril','Mayo','Junio',
   'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'
 ]
-const DAY_NAMES = ['D','L','M','M','J','V','S']
+const DAY_NAMES = ['L','M','M','J','V','S','D']
 
 function groupByMonth(days: CalendarDay[]): CalendarDay[][] {
   const groups: CalendarDay[][] = []
@@ -65,23 +66,48 @@ const currentMonthStart = new Date(today.getFullYear(), today.getMonth(), 1)
 const futureDays = calendarDays.filter(d => d.date >= currentMonthStart)
 const monthGroups = groupByMonth(futureDays)
 
-  function handleDayClick(date: string, dayType: string) {
-    if (dayType === 'fin_de_semana' || dayType === 'feriado') return
+function handleDayClick(date: string, dayType: string) {
+  if (dayType === 'fin_de_semana' || dayType === 'feriado') return
 
-    if (!selecting) {
-      // Primera fecha: inicio del período
-      setSelecting(date)
+  if (!selecting) {
+    // Primera fecha: calculamos el fin automático con los días restantes
+    const daysRemaining = availableDays - usedDays
+    if (daysRemaining > 0) {
+      const autoEnd = calculateAutoEnd(date, daysRemaining)
+      const id = `${date}_${autoEnd}_${Date.now()}`
+      onAddPeriod({ id, startDate: date, endDate: autoEnd })
     } else {
-      // Segunda fecha: fin del período
-      const start = selecting < date ? selecting : date
-      const end   = selecting < date ? date : selecting
-
-      const id = `${start}_${end}_${Date.now()}`
-      onAddPeriod({ id, startDate: start, endDate: end })
-      setSelecting(null)
-      setHoverDate(null)
+      // Sin días disponibles: igual permitimos selección manual
+      setSelecting(date)
     }
+  } else {
+    // Si estaba en selección manual, completamos con la segunda fecha
+    const start = selecting < date ? selecting : date
+    const end   = selecting < date ? date : selecting
+    const id = `${start}_${end}_${Date.now()}`
+    onAddPeriod({ id, startDate: start, endDate: end })
+    setSelecting(null)
+    setHoverDate(null)
   }
+}
+
+function calculateAutoEnd(startDate: string, daysNeeded: number): string {
+  const startIdx = calendarDays.findIndex(d => d.date === startDate)
+  if (startIdx === -1 || daysNeeded <= 0) return startDate
+
+  let workdayCount = 0
+  let endIdx = startIdx
+
+  for (let i = startIdx; i < calendarDays.length; i++) {
+    if (isWorkday(calendarDays[i])) {
+      workdayCount++
+    }
+    endIdx = i
+    if (workdayCount >= daysNeeded) break
+  }
+
+  return calendarDays[endIdx].date
+}
 
   function isInSelection(date: string): boolean {
     if (!selecting || !hoverDate) return date === selecting
@@ -146,7 +172,7 @@ const monthGroups = groupByMonth(futureDays)
       <div className={styles.months}>
         {monthGroups.map((monthDays, idx) => {
           const firstDate = new Date(monthDays[0].date + 'T00:00:00')
-          const offset    = firstDate.getDay()
+          const offset = (firstDate.getDay() + 6) % 7
           const monthName = MONTH_NAMES[firstDate.getMonth()]
 
           return (
