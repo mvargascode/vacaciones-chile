@@ -205,3 +205,15 @@
     background: currentColor;
     opacity: 0.6;
 }
+
+.today {
+    font-weight: var(--font-weight-bold);
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+    border-radius: var(--radius-sm);
+}
+
+.today .dayNumber,
+.today {
+    color: var(--color-primary);
+}

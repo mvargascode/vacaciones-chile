@@ -13,6 +13,8 @@ interface PeriodPickerProps {
   usedDays: number
 }
 
+const todayStr = new Date().toISOString().split('T')[0]
+
 const MONTH_NAMES = [
   'Enero','Febrero','Marzo','Abril','Mayo','Junio',
   'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'
@@ -197,15 +199,16 @@ function calculateAutoEnd(startDate: string, daysNeeded: number): string {
                     <div
                       key={day.date}
                       className={[
-                        styles.day,
-                        isNonWork   ? styles.nonWork   : styles.workday,
-                        inPeriod    ? styles.inPeriod  : '',
-                        inSelection ? styles.inSelect  : '',
-                        isStart     ? styles.rangeStart : '',
-                        isEnd       ? styles.rangeEnd   : '',
-                        day.holiday ? styles.holiday    : '',
-                        selecting && !isNonWork ? styles.selectable : '',
-                      ].filter(Boolean).join(' ')}
+  styles.day,
+  isNonWork   ? styles.nonWork   : styles.workday,
+  inPeriod    ? styles.inPeriod  : '',
+  inSelection ? styles.inSelect  : '',
+  isStart     ? styles.rangeStart : '',
+  isEnd       ? styles.rangeEnd   : '',
+  day.holiday ? styles.holiday    : '',
+  day.date === todayStr ? styles.today : '',  // ← nuevo
+  selecting && !isNonWork ? styles.selectable : '',
+].filter(Boolean).join(' ')}
                       onClick={() => handleDayClick(day.date, day.dayType)}
                       onMouseEnter={() => selecting && setHoverDate(day.date)}
                       onMouseLeave={() => selecting && setHoverDate(null)}

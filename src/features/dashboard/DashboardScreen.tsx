@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useUserPreferences } from '../../hooks/useUserPreferences'
+import { useHolidaysApi } from '../../hooks/useHolidaysApi'
+import { useRecommendations } from '../../hooks/useRecommendations'
+import { buildYearCalendar } from '../../services/calendarService'
 import { Header, Tabs, EmptyState, Sidebar, SidebarSection } from '../../components/ui'
 import { RecommendationCard } from '../../components/recommendation'
 import { SidebarFilter } from './SidebarFilter'
 import { SidebarInfo } from './SidebarInfo'
-import { useHolidaysApi } from '../../hooks/useHolidaysApi'
-import { useRecommendations } from '../../hooks/useRecommendations'
+import { PlannerPanel } from './PlannerPanel'
 import type { RecommendationTier, VacationWindow } from '../../types/recommendation.types'
 import styles from './DashboardScreen.module.css'
 
@@ -17,10 +19,19 @@ interface DashboardScreenProps {
 
 export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps) {
   const { preferences, resetConfiguration } = useUserPreferences()
-  const { region, availableDays, year } = preferences
+  const { region, availableDays, year, plannedPeriods } = preferences
+
   const { holidays, loading, fromApi } = useHolidaysApi(year, region)
   const recommendations = useRecommendations(year, holidays, availableDays)
+
+  const calendarDays = useMemo(
+    () => buildYearCalendar(year, holidays),
+    [year, holidays]
+  )
+
   const [activeTab, setActiveTab] = useState<FilterTab>('todas')
+
+  const hasPlannedPeriods = plannedPeriods.length > 0
 
   const counts = {
     todas:  recommendations.length,
@@ -30,9 +41,9 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
   }
 
   const tabs = [
-    { value: 'todas'  as FilterTab, label: 'Todas',    count: counts.todas },
-    { value: 'oro'    as FilterTab, label: '🥇 Oro',   count: counts.oro },
-    { value: 'plata'  as FilterTab, label: '🥈 Plata', count: counts.plata },
+    { value: 'todas'  as FilterTab, label: 'Todas',     count: counts.todas },
+    { value: 'oro'    as FilterTab, label: '🥇 Oro',    count: counts.oro },
+    { value: 'plata'  as FilterTab, label: '🥈 Plata',  count: counts.plata },
     { value: 'bronce' as FilterTab, label: '🥉 Bronce', count: counts.bronce },
   ]
 
@@ -51,13 +62,22 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
     <div className="app-container animate-fade-in">
       <Header
         title="Vacaciones Chile"
-        // Opción: mostrarlo más discreto
         subtitle={`${region} · ${availableDays} días disponibles`}
         onSettingsClick={resetConfiguration}
       />
 
+      {loading && (
+        <div style={{
+          padding: 'var(--space-2) var(--space-4)',
+          fontSize: 'var(--font-size-xs)',
+          color: 'var(--color-text-muted)',
+          borderBottom: '1px solid var(--color-border)',
+        }}>
+          Cargando feriados...
+        </div>
+      )}
+
       <div className={styles.layout}>
-        {/* Sidebar — solo visible en desktop */}
         <Sidebar>
           <SidebarSection title="Filtrar por tier">
             <SidebarFilter
@@ -66,38 +86,40 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
               counts={counts}
             />
           </SidebarSection>
+
+          <SidebarSection title="Mi planificación">
+            <PlannerPanel calendarDays={calendarDays} />
+          </SidebarSection>
+
           <SidebarSection title="Tu configuración">
             <SidebarInfo
-  region={region}
-  availableDays={availableDays}
-  year={year}
-  totalRecommendations={recommendations.length}
-  onReset={resetConfiguration}
-  fromApi={fromApi}   // ← nuevo
-/>
-
+              region={region}
+              availableDays={availableDays}
+              year={year}
+              totalRecommendations={recommendations.length}
+              onReset={resetConfiguration}
+              fromApi={fromApi}
+            />
           </SidebarSection>
         </Sidebar>
 
-        {/* Contenido principal */}
         <div className={styles.main}>
-          {/* Tabs — solo visible en mobile */}
           <div className={styles.tabsWrapper}>
             <Tabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
           </div>
 
-          {loading && (
-  <div style={{
-    padding: 'var(--space-2) var(--space-4)',
-    fontSize: 'var(--font-size-xs)',
-    color: 'var(--color-text-muted)',
-    borderBottom: '1px solid var(--color-border)',
-  }}>
-    Cargando feriados...
-  </div>
-)}
-
           <div key={activeTab} className={styles.listWrapper}>
+            {hasPlannedPeriods && activeTab === 'todas' && (
+              <div className={styles.plannerBanner}>
+                <span>📅</span>
+                <p>
+                  Tienes <strong>
+                    {plannedPeriods.length} período{plannedPeriods.length > 1 ? 's' : ''} planificado{plannedPeriods.length > 1 ? 's' : ''}
+                  </strong> en el sidebar. Estas son las mejores oportunidades adicionales del año.
+                </p>
+              </div>
+            )}
+
             {filtered.length === 0 ? (
               <EmptyState
                 emoji="🗓️"
