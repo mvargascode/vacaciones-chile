@@ -42,8 +42,8 @@ export const HOLIDAYS_2026: Holiday[] = [
     irrenunciable: false,
   },
   {
-    id: "2026-06-19",
-    date: "2026-06-19",
+    id: "2026-06-21",
+    date: "2026-06-21",
     name: "Día Nacional de los Pueblos Indígenas",
     type: "nacional",
     category: "civico",
