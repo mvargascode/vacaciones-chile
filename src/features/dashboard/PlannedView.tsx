@@ -1,12 +1,12 @@
 import type { PeriodAnalysis } from '../../services/plannerService'
-import type { PlannedPeriod } from '../../types/user.types'
-import { Badge } from '../../components/ui'
+
 import styles from './PlannedView.module.css'
 
 interface PlannedViewProps {
   analyses: PeriodAnalysis[]
   availableDays: number
   totalUsed: number
+  sector: 'privado' | 'publico'   // ← nuevo
   onRemovePeriod: (id: string) => void
   onOpenPlanner: () => void
 }
@@ -27,6 +27,7 @@ export function PlannedView({
   analyses,
   availableDays,
   totalUsed,
+  sector,        // ← agrega esto
   onRemovePeriod,
   onOpenPlanner,
 }: PlannedViewProps) {
@@ -77,22 +78,41 @@ export function PlannedView({
               </button>
             </div>
 
-            {/* Stats del período — ahora con info legal correcta */}
+{/* Stats del período */}
 <div className={styles.periodStats}>
   <div className={styles.stat}>
-    <span className={styles.statNum}>{analysis.totalDays}</span>
-    <span className={styles.statLabel}>días corridos</span>
-  </div>
-  <div className={styles.statDivider} />
-  <div className={styles.stat}>
     <span className={styles.statNum}>{analysis.workdaysUsed}</span>
-    <span className={styles.statLabel}>días hábiles</span>
+    <span className={styles.statLabel}>días de vacaciones usados</span>
   </div>
   <div className={styles.statDivider} />
   <div className={styles.stat}>
-    <span className={styles.statNum}>{analysis.holidaysInside.length}</span>
-    <span className={styles.statLabel}>feriados incluidos</span>
+    <span className={`${styles.statNum} ${styles.statRest}`}>
+      {analysis.totalDays}
+    </span>
+    <span className={styles.statLabel}>días que descansas</span>
   </div>
+</div>
+
+{/* Desglose visual */}
+<div className={styles.breakdown}>
+  <span className={styles.breakdownItem}>
+    📅 {analysis.workdaysUsed} días hábiles
+  </span>
+  {analysis.holidaysInside.length > 0 && (
+    <span className={styles.breakdownItem}>
+      🎉 +{analysis.holidaysInside.length} feriado{analysis.holidaysInside.length > 1 ? 's' : ''} gratis
+    </span>
+  )}
+  {analysis.sundaysInside > 0 && (
+    <span className={styles.breakdownItem}>
+      😴 +{analysis.sundaysInside} domingo{analysis.sundaysInside > 1 ? 's' : ''} gratis
+    </span>
+  )}
+  {analysis.saturdaysInside > 0 && sector === 'publico' && (
+    <span className={styles.breakdownItem}>
+      😴 +{analysis.saturdaysInside} sábado{analysis.saturdaysInside > 1 ? 's' : ''} gratis
+    </span>
+  )}
 </div>
 
 {/* Nota legal */}

@@ -39,7 +39,8 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
   const { analyses, totalUsed } = usePlanner(
     plannedPeriods,
     calendarDays,
-    availableDays
+    availableDays,
+    preferences.sector
   )
 
   const [activeTab, setActiveTab]       = useState<FilterTab>('todas')
@@ -104,13 +105,14 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
 
           <SidebarSection title="Tu configuración">
             <SidebarInfo
-              region={region}
-              availableDays={availableDays}
-              year={year}
-              totalRecommendations={recommendations.length}
-              onReset={resetConfiguration}
-              fromApi={fromApi}
-            />
+  region={region}
+  availableDays={availableDays}
+  year={year}
+  sector={preferences.sector}   // ← nuevo
+  totalRecommendations={recommendations.length}
+  onReset={resetConfiguration}
+  fromApi={fromApi}
+/>
           </SidebarSection>
         </Sidebar>
 
@@ -176,12 +178,13 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
               </div>
 
               <PlannedView
-                analyses={analyses}
-                availableDays={availableDays}
-                totalUsed={totalUsed}
-                onRemovePeriod={removePlannedPeriod}
-                onOpenPlanner={() => setDrawerOpen(true)}
-              />
+  analyses={analyses}
+  availableDays={availableDays}
+  totalUsed={totalUsed}
+  sector={preferences.sector}   // ← nuevo
+  onRemovePeriod={removePlannedPeriod}
+  onOpenPlanner={() => setDrawerOpen(true)}
+/>
 
               {/* Oportunidades adicionales colapsadas */}
               <details className={styles.extraOpportunities}>
@@ -211,13 +214,14 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
         title="📅 Planificar vacaciones"
       >
         <PeriodPicker
-          calendarDays={calendarDays}
-          periods={plannedPeriods}
-          onAddPeriod={addPlannedPeriod}
-          onRemovePeriod={removePlannedPeriod}
-          availableDays={availableDays}
-          usedDays={totalUsed}
-        />
+  calendarDays={calendarDays}
+  periods={plannedPeriods}
+  onAddPeriod={addPlannedPeriod}
+  onRemovePeriod={removePlannedPeriod}
+  availableDays={availableDays}
+  usedDays={totalUsed}
+  sector={preferences.sector}   // ← nuevo
+/>
       </Drawer>
     </div>
   )

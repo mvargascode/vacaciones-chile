@@ -1,0 +1,133 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.label {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+.sublabel {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-top: calc(var(--space-1) * -1);
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--color-border);
+    background: var(--color-bg-primary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-align: left;
+    width: 100%;
+}
+
+.option:hover {
+    border-color: var(--color-primary-light);
+    background: var(--color-bg-secondary);
+}
+
+.option.selected {
+    border-color: var(--color-primary);
+    background: #EEF2FF;
+}
+
+.icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.optionInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.optionTitle {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+.optionDesc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.optionRule {
+    font-size: var(--font-size-xs);
+    color: var(--color-primary);
+    font-weight: var(--font-weight-medium);
+    margin-top: var(--space-1);
+}
+
+.check {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-lg);
+    flex-shrink: 0;
+}
+
+/* Ejemplo ilustrativo */
+.example {
+    padding: var(--space-4);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.exampleTitle {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+.exampleGrid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.exampleCase {
+    display: flex;
+    gap: var(--space-3);
+    align-items: baseline;
+}
+
+.exampleLabel {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-muted);
+    width: 56px;
+    flex-shrink: 0;
+}
+
+.exampleValue {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.exampleNote {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-border);
+}

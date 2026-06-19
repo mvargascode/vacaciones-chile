@@ -1,12 +1,13 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import type { ReactNode } from 'react'
-import type { UserPreferences, PlannedPeriod } from '../types/user.types'
+import type { UserPreferences, PlannedPeriod, Sector } from '../types/user.types'
 
 const DEFAULT_PREFERENCES: UserPreferences = {
-  region: 'RM',
-  availableDays: 15,
-  year: new Date().getFullYear(),
+  region:         'RM',
+  availableDays:  15,
+  year:           new Date().getFullYear(),
   plannedPeriods: [],
+  sector:         'privado',   // ← default más común
 }
 
 const STORAGE_KEY = 'vacaciones-chile:preferences'
@@ -33,12 +34,12 @@ interface UserPreferencesContextType {
   preferences: UserPreferences
   setRegion: (region: string) => void
   setAvailableDays: (days: number) => void
-
   isConfigured: boolean
   confirmConfiguration: (prefs: UserPreferences) => void
   resetConfiguration: () => void
   addPlannedPeriod: (period: PlannedPeriod) => void
   removePlannedPeriod: (id: string) => void
+  setSector: (sector: Sector) => void   // ← nuevo
 }
 
 const UserPreferencesContext = createContext<UserPreferencesContextType | null>(null)
@@ -60,10 +61,6 @@ export function UserPreferencesProvider({ children }: { children: ReactNode }) {
 
   function setAvailableDays(availableDays: number) {
     setPreferences(prev => ({ ...prev, availableDays }))
-  }
-
-  function setYear(year: number) {
-    setPreferences(prev => ({ ...prev, year }))
   }
 
   function confirmConfiguration(prefs: UserPreferences) {
@@ -91,8 +88,12 @@ function removePlannedPeriod(id: string) {
   }))
 }
 
+function setSector(sector: Sector) {
+  setPreferences(prev => ({ ...prev, sector }))
+}
+
   return (
-    <UserPreferencesContext.Provider value={{
+<UserPreferencesContext.Provider value={{
   preferences,
   setRegion,
   setAvailableDays,
@@ -101,6 +102,7 @@ function removePlannedPeriod(id: string) {
   resetConfiguration,
   addPlannedPeriod,
   removePlannedPeriod,
+  setSector,
 }}>
       {children}
     </UserPreferencesContext.Provider>

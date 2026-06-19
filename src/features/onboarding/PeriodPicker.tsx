@@ -11,6 +11,7 @@ interface PeriodPickerProps {
   onRemovePeriod: (id: string) => void
   availableDays: number
   usedDays: number
+  sector: 'privado' | 'publico'   // ← nuevo
 }
 
 const todayStr = new Date().toISOString().split('T')[0]
@@ -58,6 +59,7 @@ export function PeriodPicker({
   onRemovePeriod,
   availableDays,
   usedDays,
+  sector,   // ← nuevo
 }: PeriodPickerProps) {
   const [selecting, setSelecting] = useState<string | null>(null)
   const [hoverDate, setHoverDate] = useState<string | null>(null)
@@ -140,6 +142,20 @@ function calculateAutoEnd(startDate: string, daysNeeded: number): string {
           <span className={styles.counterLabel}>días restantes</span>
         </div>
       </div>
+      <div className={styles.legend}>
+  <div className={styles.legendItem}>
+    <div className={`${styles.legendDot} ${styles.legendHabil}`} />
+    <span>Descuenta vacaciones</span>
+  </div>
+  <div className={styles.legendItem}>
+    <div className={`${styles.legendDot} ${styles.legendFree}`} />
+    <span>Descanso gratis</span>
+  </div>
+  <div className={styles.legendItem}>
+    <div className={`${styles.legendDot} ${styles.legendHoliday}`} />
+    <span>Feriado</span>
+  </div>
+</div>
 
       {selecting && (
         <p className={styles.hint}>
@@ -189,37 +205,40 @@ function calculateAutoEnd(startDate: string, daysNeeded: number): string {
                   <div key={`e-${i}`} />
                 ))}
                 {monthDays.map(day => {
-                  const inPeriod    = isInPeriod(day.date, periods)
-                  const inSelection = isInSelection(day.date)
-                  const isStart     = isPeriodStart(day.date, periods) || day.date === selecting
-                  const isEnd       = isPeriodEnd(day.date, periods)
-                  const isNonWork   = day.dayType === 'fin_de_semana' || day.dayType === 'feriado'
-                  const dayNum      = new Date(day.date + 'T00:00:00').getDate()
+  const inPeriod    = isInPeriod(day.date, periods)
+  const inSelection = isInSelection(day.date)
+  const isStart     = isPeriodStart(day.date, periods) || day.date === selecting
+  const isEnd       = isPeriodEnd(day.date, periods)
+  const isNonWork   = day.dayType === 'fin_de_semana' || day.dayType === 'feriado'
+  const isHabil     = isVacationHabil(day, sector)   // ← nuevo
+  const dayNum      = new Date(day.date + 'T00:00:00').getDate()
+  const isToday     = day.date === todayStr
 
-                  return (
-                    <div
-                      key={day.date}
-                      className={[
-  styles.day,
-  isNonWork   ? styles.nonWork   : styles.workday,
-  inPeriod    ? styles.inPeriod  : '',
-  inSelection ? styles.inSelect  : '',
-  isStart     ? styles.rangeStart : '',
-  isEnd       ? styles.rangeEnd   : '',
-  day.holiday ? styles.holiday    : '',
-  day.date === todayStr ? styles.today : '',  // ← nuevo
-  selecting && !isNonWork ? styles.selectable : '',
-].filter(Boolean).join(' ')}
-                      onClick={() => handleDayClick(day.date, day.dayType)}
-                      onMouseEnter={() => selecting && setHoverDate(day.date)}
-                      onMouseLeave={() => selecting && setHoverDate(null)}
-                      title={day.holiday?.name}
-                    >
-                      {dayNum}
-                      {day.holiday && <span className={styles.dot} />}
-                    </div>
-                  )
-                })}
+  return (
+    <div
+      key={day.date}
+      className={[
+        styles.day,
+        isNonWork   ? styles.nonWork   : styles.workday,
+        inPeriod && isHabil  ? styles.inPeriod     : '',  // ← descuenta: azul oscuro
+        inPeriod && !isHabil ? styles.inPeriodFree : '',  // ← no descuenta: azul claro
+        inSelection ? styles.inSelect  : '',
+        isStart     ? styles.rangeStart : '',
+        isEnd       ? styles.rangeEnd   : '',
+        day.holiday ? styles.holiday    : '',
+        isToday     ? styles.today      : '',
+        selecting && !isNonWork ? styles.selectable : '',
+      ].filter(Boolean).join(' ')}
+      onClick={() => handleDayClick(day.date, day.dayType)}
+      onMouseEnter={() => selecting && setHoverDate(day.date)}
+      onMouseLeave={() => selecting && setHoverDate(null)}
+      title={day.holiday?.name ?? (inPeriod && !isHabil ? 'No descuenta de tus vacaciones' : undefined)}
+    >
+      {dayNum}
+      {day.holiday && <span className={styles.dot} />}
+    </div>
+  )
+})}
               </div>
             </div>
           )

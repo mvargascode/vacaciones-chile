@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import type { Holiday } from "../types/holiday.types";
 import { fetchHolidaysFromApi } from "../services/holidayApiService";
-import { getHolidaysForRegion } from "../services/holidayService";
 
 // Cache en memoria para no repetir llamadas durante la sesión
 const cache = new Map<string, Holiday[]>();

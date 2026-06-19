@@ -218,3 +218,26 @@
 .today {
     color: var(--color-primary);
 }
+
+/* Día dentro del período que NO descuenta (domingo, sábado en público, feriado) */
+.inPeriodFree {
+    background: #BFDBFE;
+    /* azul muy claro */
+    color: var(--color-primary-dark);
+    border-radius: 0;
+    opacity: 0.6;
+}
+
+.legendHabil {
+    background: var(--color-primary);
+}
+
+.legendFree {
+    background: #BFDBFE;
+    border: 1px solid #93C5FD;
+}
+
+.legendHoliday {
+    background: var(--color-feriado);
+    border: 1px solid var(--color-feriado-border);
+}
