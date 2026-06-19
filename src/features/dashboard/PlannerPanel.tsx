@@ -5,13 +5,14 @@ import { PeriodPicker } from '../onboarding/PeriodPicker'
 import type { CalendarDay } from '../../types/calendar.types'
 import styles from './PlannerPanel.module.css'
 
+
 interface PlannerPanelProps {
   calendarDays: CalendarDay[]
 }
 
 export function PlannerPanel({ calendarDays }: PlannerPanelProps) {
   const { preferences, addPlannedPeriod, removePlannedPeriod } = useUserPreferences()
-  const { plannedPeriods, availableDays } = preferences
+  const { plannedPeriods, availableDays, sector } = preferences
   const [expanded, setExpanded] = useState(plannedPeriods.length > 0)
 
   const { analyses, totalUsed, remaining } = usePlanner(
@@ -97,13 +98,14 @@ export function PlannerPanel({ calendarDays }: PlannerPanelProps) {
                 : 'Agregar otro período'}
             </p>
             <PeriodPicker
-              calendarDays={calendarDays}
-              periods={plannedPeriods}
-              onAddPeriod={addPlannedPeriod}
-              onRemovePeriod={removePlannedPeriod}
-              availableDays={availableDays}
-              usedDays={totalUsed}
-            />
+  calendarDays={calendarDays}
+  periods={plannedPeriods}
+  onAddPeriod={addPlannedPeriod}
+  onRemovePeriod={removePlannedPeriod}
+  availableDays={availableDays}
+  usedDays={totalUsed}
+  sector={sector}   // ← agrega esto
+/>
           </div>
         </div>
       )}
