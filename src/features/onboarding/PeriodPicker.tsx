@@ -103,8 +103,7 @@ function calculateAutoEnd(startDate: string, daysNeeded: number): string {
   let endIdx = startIdx
 
   for (let i = startIdx; i < calendarDays.length; i++) {
-    // Usamos isVacationHabil — cuenta lun-sáb sin feriados
-    if (isVacationHabil(calendarDays[i])) {
+    if (isVacationHabil(calendarDays[i], sector)) {  // ← pasa sector
       habilCount++
     }
     endIdx = i
