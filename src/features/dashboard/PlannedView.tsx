@@ -77,23 +77,31 @@ export function PlannedView({
               </button>
             </div>
 
-            {/* Stats del período */}
-            <div className={styles.periodStats}>
-              <div className={styles.stat}>
-                <span className={styles.statNum}>{analysis.totalDays}</span>
-                <span className={styles.statLabel}>días corridos</span>
-              </div>
-              <div className={styles.statDivider} />
-              <div className={styles.stat}>
-                <span className={styles.statNum}>{analysis.workdaysUsed}</span>
-                <span className={styles.statLabel}>días hábiles</span>
-              </div>
-              <div className={styles.statDivider} />
-              <div className={styles.stat}>
-                <span className={styles.statNum}>{analysis.weekendsInside}</span>
-                <span className={styles.statLabel}>fines de semana</span>
-              </div>
-            </div>
+            {/* Stats del período — ahora con info legal correcta */}
+<div className={styles.periodStats}>
+  <div className={styles.stat}>
+    <span className={styles.statNum}>{analysis.totalDays}</span>
+    <span className={styles.statLabel}>días corridos</span>
+  </div>
+  <div className={styles.statDivider} />
+  <div className={styles.stat}>
+    <span className={styles.statNum}>{analysis.workdaysUsed}</span>
+    <span className={styles.statLabel}>días hábiles</span>
+  </div>
+  <div className={styles.statDivider} />
+  <div className={styles.stat}>
+    <span className={styles.statNum}>{analysis.holidaysInside.length}</span>
+    <span className={styles.statLabel}>feriados incluidos</span>
+  </div>
+</div>
+
+{/* Nota legal */}
+<p className={styles.legalNote}>
+  📋 Se descuentan {analysis.workdaysUsed} días hábiles de tus vacaciones
+  {analysis.holidaysInside.length > 0 && (
+    <> — los {analysis.holidaysInside.length} feriado{analysis.holidaysInside.length > 1 ? 's' : ''} incluido{analysis.holidaysInside.length > 1 ? 's' : ''} no se descuentan por ley</>
+  )}
+</p>
 
             {/* Feriados incluidos */}
             {analysis.holidaysInside.length > 0 && (

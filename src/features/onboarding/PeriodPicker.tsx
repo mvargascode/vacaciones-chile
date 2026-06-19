@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { CalendarDay } from '../../types/calendar.types'
 import type { PlannedPeriod } from '../../types/user.types'
 import styles from './PeriodPicker.module.css'
-import { isWorkday } from '../../services/calendarService'
+import { isVacationHabil } from '../../services/calendarService'
 
 interface PeriodPickerProps {
   calendarDays: CalendarDay[]
@@ -97,15 +97,16 @@ function calculateAutoEnd(startDate: string, daysNeeded: number): string {
   const startIdx = calendarDays.findIndex(d => d.date === startDate)
   if (startIdx === -1 || daysNeeded <= 0) return startDate
 
-  let workdayCount = 0
+  let habilCount = 0
   let endIdx = startIdx
 
   for (let i = startIdx; i < calendarDays.length; i++) {
-    if (isWorkday(calendarDays[i])) {
-      workdayCount++
+    // Usamos isVacationHabil — cuenta lun-sáb sin feriados
+    if (isVacationHabil(calendarDays[i])) {
+      habilCount++
     }
     endIdx = i
-    if (workdayCount >= daysNeeded) break
+    if (habilCount >= daysNeeded) break
   }
 
   return calendarDays[endIdx].date

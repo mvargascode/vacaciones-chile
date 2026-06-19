@@ -269,3 +269,12 @@
     color: var(--color-text-muted);
     text-transform: capitalize;
 }
+
+.legalNote {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
+    line-height: 1.5;
+}
