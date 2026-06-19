@@ -250,3 +250,22 @@
     font-size: var(--font-size-xl);
     line-height: 1;
 }
+
+.holidayInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex: 1;
+}
+
+.holidayName {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-feriado-text);
+}
+
+.holidayDate {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    text-transform: capitalize;
+}

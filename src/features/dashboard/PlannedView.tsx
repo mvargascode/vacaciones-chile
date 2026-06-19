@@ -100,12 +100,15 @@ export function PlannedView({
               <div className={styles.holidays}>
                 {analysis.holidaysInside.map(h => (
                   <div key={h.id} className={styles.holidayChip}>
-                    <span>🗓️</span>
-                    <span>{h.name}</span>
-                    {h.irrenunciable && (
-                      <span className={styles.irrenunciable}>Irrenunciable</span>
-                    )}
-                  </div>
+  <span>🗓️</span>
+  <div className={styles.holidayInfo}>
+    <span className={styles.holidayName}>{h.name}</span>
+    <span className={styles.holidayDate}>{formatFull(h.date)}</span>
+  </div>
+  {h.irrenunciable && (
+    <span className={styles.irrenunciable}>Irrenunciable</span>
+  )}
+</div>
                 ))}
               </div>
             )}
