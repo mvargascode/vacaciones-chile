@@ -136,3 +136,26 @@ export function analyzeAllPeriods(
 export function totalWorkdaysUsed(analyses: PeriodAnalysis[]): number {
   return analyses.reduce((sum, a) => sum + a.workdaysUsed, 0)
 }
+
+// Recalcula el fin del período manteniendo los mismos días hábiles
+// cuando se mueve el inicio hacia atrás
+export function recalculateEndDate(
+  newStartDate: string,
+  workdaysTarget: number,
+  calendarDays: CalendarDay[],
+  sector: Sector
+): string {
+  const startIdx = calendarDays.findIndex(d => d.date === newStartDate)
+  if (startIdx === -1) return newStartDate
+
+  let count  = 0
+  let endIdx = startIdx
+
+  for (let i = startIdx; i < calendarDays.length; i++) {
+    if (isVacationHabil(calendarDays[i], sector)) count++
+    endIdx = i
+    if (count >= workdaysTarget) break
+  }
+
+  return calendarDays[endIdx].date
+}

@@ -4,6 +4,7 @@ import { useHolidaysApi } from '../../hooks/useHolidaysApi'
 import { useRecommendations } from '../../hooks/useRecommendations'
 import { usePlanner } from '../../hooks/usePlanner'
 import { buildYearCalendar } from '../../services/calendarService'
+import { recalculateEndDate } from '../../services/plannerService'
 import { Header, Tabs, EmptyState, Sidebar, SidebarSection, Drawer } from '../../components/ui'
 import { RecommendationCard } from '../../components/recommendation'
 import { SidebarFilter } from './SidebarFilter'
@@ -20,7 +21,14 @@ interface DashboardScreenProps {
 }
 
 export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps) {
-  const { preferences, resetConfiguration, addPlannedPeriod, removePlannedPeriod, updatePlannedPeriod } = useUserPreferences()
+  const {
+    preferences,
+    resetConfiguration,
+    addPlannedPeriod,
+    removePlannedPeriod,
+    updatePlannedPeriod,
+  } = useUserPreferences()
+
   const { region, availableDays, year, plannedPeriods } = preferences
 
   const { holidays, loading, fromApi } = useHolidaysApi(year, region)
@@ -38,8 +46,8 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
     preferences.sector
   )
 
-  const [activeTab, setActiveTab]       = useState<FilterTab>('todas')
-  const [drawerOpen, setDrawerOpen]     = useState(false)
+  const [activeTab,   setActiveTab]   = useState<FilterTab>('todas')
+  const [drawerOpen,  setDrawerOpen]  = useState(false)
 
   const hasPlannedPeriods = plannedPeriods.length > 0
 
@@ -66,6 +74,22 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
     oro:    { title: 'Sin oportunidades oro',    description: 'No hay feriados que permitan eficiencia 3x o más.' },
     plata:  { title: 'Sin oportunidades plata',  description: 'No hay oportunidades de eficiencia 2x.' },
     bronce: { title: 'Sin oportunidades bronce', description: 'Todas las oportunidades son de mayor eficiencia.' },
+  }
+
+  function handleApplySuggestion(periodId: string, newStart: string, newEnd: string) {
+    const analysis = analyses.find(a => a.period.id === periodId)
+    if (!analysis) return
+
+    const workdaysTarget = analysis.workdaysUsed
+    const period = preferences.plannedPeriods.find(p => p.id === periodId)
+    if (!period) return
+
+    let finalEnd = newEnd
+    if (newStart !== period.startDate) {
+      finalEnd = recalculateEndDate(newStart, workdaysTarget, calendarDays, preferences.sector)
+    }
+
+    updatePlannedPeriod(periodId, newStart, finalEnd)
   }
 
   return (
@@ -100,14 +124,14 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
 
           <SidebarSection title="Tu configuración">
             <SidebarInfo
-  region={region}
-  availableDays={availableDays}
-  year={year}
-  sector={preferences.sector}   // ← nuevo
-  totalRecommendations={recommendations.length}
-  onReset={resetConfiguration}
-  fromApi={fromApi}
-/>
+              region={region}
+              availableDays={availableDays}
+              year={year}
+              sector={preferences.sector}
+              totalRecommendations={recommendations.length}
+              onReset={resetConfiguration}
+              fromApi={fromApi}
+            />
           </SidebarSection>
         </Sidebar>
 
@@ -122,7 +146,6 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
               </div>
 
               <div key={activeTab} className={styles.listWrapper}>
-                {/* CTA para planificar */}
                 <button
                   className={styles.plannerCta}
                   onClick={() => setDrawerOpen(true)}
@@ -178,11 +201,10 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
                 totalUsed={totalUsed}
                 sector={preferences.sector}
                 onRemovePeriod={removePlannedPeriod}
-                onApplySuggestion={updatePlannedPeriod}   // ← nuevo
+                onApplySuggestion={handleApplySuggestion}
                 onOpenPlanner={() => setDrawerOpen(true)}
               />
 
-              {/* Oportunidades adicionales colapsadas */}
               <details className={styles.extraOpportunities}>
                 <summary className={styles.extraSummary}>
                   Ver otras oportunidades del año ({recommendations.length})
@@ -210,14 +232,14 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
         title="📅 Planificar vacaciones"
       >
         <PeriodPicker
-  calendarDays={calendarDays}
-  periods={plannedPeriods}
-  onAddPeriod={addPlannedPeriod}
-  onRemovePeriod={removePlannedPeriod}
-  availableDays={availableDays}
-  usedDays={totalUsed}
-  sector={preferences.sector}   // ← nuevo
-/>
+          calendarDays={calendarDays}
+          periods={plannedPeriods}
+          onAddPeriod={addPlannedPeriod}
+          onRemovePeriod={removePlannedPeriod}
+          availableDays={availableDays}
+          usedDays={totalUsed}
+          sector={preferences.sector}
+        />
       </Drawer>
     </div>
   )
