@@ -298,3 +298,47 @@
     color: var(--color-text-secondary);
     border: 1px solid var(--color-border);
 }
+
+.wowMessage {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    background: linear-gradient(135deg, #EEF2FF, #F0FDF4);
+    border-radius: var(--radius-md);
+    border: 1px solid #C7D2FE;
+}
+
+.wowIcon {
+    font-size: var(--font-size-xl);
+    flex-shrink: 0;
+}
+
+.wowText {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    line-height: 1.4;
+}
+
+.statFree {
+    color: #16A34A;
+}
+
+.applyBtn {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-oro-text);
+    background: var(--color-oro-bg);
+    border: 1px solid var(--color-oro);
+    border-radius: var(--radius-md);
+    padding: var(--space-1) var(--space-3);
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: all var(--transition-fast);
+}
+
+.applyBtn:hover {
+    background: var(--color-oro);
+    color: #ffffff;
+}

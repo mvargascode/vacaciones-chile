@@ -34,12 +34,14 @@ interface UserPreferencesContextType {
   preferences: UserPreferences
   setRegion: (region: string) => void
   setAvailableDays: (days: number) => void
+  setYear: (year: number) => void
+  setSector: (sector: Sector) => void
   isConfigured: boolean
   confirmConfiguration: (prefs: UserPreferences) => void
   resetConfiguration: () => void
   addPlannedPeriod: (period: PlannedPeriod) => void
   removePlannedPeriod: (id: string) => void
-  setSector: (sector: Sector) => void   // ← nuevo
+  updatePlannedPeriod: (id: string, startDate: string, endDate: string) => void  // ← nuevo
 }
 
 const UserPreferencesContext = createContext<UserPreferencesContextType | null>(null)
@@ -92,17 +94,32 @@ function setSector(sector: Sector) {
   setPreferences(prev => ({ ...prev, sector }))
 }
 
+function setYear(year: number) {
+  setPreferences(prev => ({ ...prev, year }))
+}
+
+function updatePlannedPeriod(id: string, startDate: string, endDate: string) {
+  setPreferences(prev => ({
+    ...prev,
+    plannedPeriods: prev.plannedPeriods.map(p =>
+      p.id === id ? { ...p, startDate, endDate } : p
+    ),
+  }))
+}
+
   return (
 <UserPreferencesContext.Provider value={{
   preferences,
   setRegion,
   setAvailableDays,
+  setYear,
+  setSector,
   isConfigured,
   confirmConfiguration,
   resetConfiguration,
   addPlannedPeriod,
   removePlannedPeriod,
-  setSector,
+  updatePlannedPeriod,   // ← nuevo
 }}>
       {children}
     </UserPreferencesContext.Provider>

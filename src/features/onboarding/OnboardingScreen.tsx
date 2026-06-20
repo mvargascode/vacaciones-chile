@@ -3,13 +3,14 @@ import { useUserPreferences } from '../../hooks/useUserPreferences'
 import { Button } from '../../components/ui'
 import { FlagCL } from '../../assets/FlagCL'
 import { RegionSelector } from './RegionSelector'
-import { DaysSelector } from './DaysSelector'
 import { SectorSelector } from './SectorSelector'
+import { DaysSelector } from './DaysSelector'
+import { YearSelector } from './YearSelector'
 import type { Sector } from '../../types/user.types'
 import styles from './OnboardingScreen.module.css'
 
-type Step = 'region' | 'sector' | 'days'
-const STEPS: Step[] = ['region', 'sector', 'days']
+type Step = 'region' | 'sector' | 'days' | 'year'
+const STEPS: Step[] = ['region', 'sector', 'days', 'year']
 
 export function OnboardingScreen() {
   const { preferences, confirmConfiguration } = useUserPreferences()
@@ -17,19 +18,22 @@ export function OnboardingScreen() {
   const [localRegion, setLocalRegion] = useState(preferences.region)
   const [localSector, setLocalSector] = useState<Sector>(preferences.sector)
   const [localDays,   setLocalDays]   = useState(preferences.availableDays)
+  const [localYear,   setLocalYear]   = useState(preferences.year)
   const [currentStep, setCurrentStep] = useState<Step>('region')
 
   const stepIndex  = STEPS.indexOf(currentStep)
-  const isLastStep = currentStep === 'days'
+  const isLastStep = currentStep === 'year'
 
   function handleNext() {
     if (currentStep === 'region') setCurrentStep('sector')
     else if (currentStep === 'sector') setCurrentStep('days')
+    else if (currentStep === 'days') setCurrentStep('year')
   }
 
   function handleBack() {
     if (currentStep === 'sector') setCurrentStep('region')
     else if (currentStep === 'days') setCurrentStep('sector')
+    else if (currentStep === 'year') setCurrentStep('days')
   }
 
   function handleConfirm() {
@@ -37,7 +41,7 @@ export function OnboardingScreen() {
       region:         localRegion,
       sector:         localSector,
       availableDays:  localDays,
-      year:           new Date().getFullYear(),
+      year:           localYear,
       plannedPeriods: preferences.plannedPeriods,
     })
   }
@@ -69,7 +73,14 @@ export function OnboardingScreen() {
           <SectorSelector value={localSector} onChange={setLocalSector} />
         )}
         {currentStep === 'days' && (
-          <DaysSelector value={localDays} onChange={setLocalDays} />
+  <DaysSelector
+    value={localDays}
+    onChange={setLocalDays}
+    sector={localSector}   // ← nuevo
+  />
+)}
+        {currentStep === 'year' && (
+          <YearSelector value={localYear} onChange={setLocalYear} />
         )}
       </div>
 

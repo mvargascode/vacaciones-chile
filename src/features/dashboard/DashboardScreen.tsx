@@ -20,12 +20,7 @@ interface DashboardScreenProps {
 }
 
 export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps) {
-  const {
-    preferences,
-    resetConfiguration,
-    addPlannedPeriod,
-    removePlannedPeriod,
-  } = useUserPreferences()
+  const { preferences, resetConfiguration, addPlannedPeriod, removePlannedPeriod, updatePlannedPeriod } = useUserPreferences()
   const { region, availableDays, year, plannedPeriods } = preferences
 
   const { holidays, loading, fromApi } = useHolidaysApi(year, region)
@@ -178,13 +173,14 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
               </div>
 
               <PlannedView
-  analyses={analyses}
-  availableDays={availableDays}
-  totalUsed={totalUsed}
-  sector={preferences.sector}   // ← nuevo
-  onRemovePeriod={removePlannedPeriod}
-  onOpenPlanner={() => setDrawerOpen(true)}
-/>
+                analyses={analyses}
+                availableDays={availableDays}
+                totalUsed={totalUsed}
+                sector={preferences.sector}
+                onRemovePeriod={removePlannedPeriod}
+                onApplySuggestion={updatePlannedPeriod}   // ← nuevo
+                onOpenPlanner={() => setDrawerOpen(true)}
+              />
 
               {/* Oportunidades adicionales colapsadas */}
               <details className={styles.extraOpportunities}>

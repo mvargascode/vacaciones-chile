@@ -117,3 +117,52 @@
         grid-template-columns: repeat(3, 1fr);
     }
 }
+
+.calculator {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+}
+
+.calculatorTitle {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+.calculatorDesc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.yearsInput {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.yearsValue {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    min-width: 80px;
+    text-align: center;
+}
+
+.calculatorResult {
+    padding: var(--space-3);
+    background: var(--color-bg-primary);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.calculatorResult strong {
+    color: var(--color-primary);
+    font-size: var(--font-size-base);
+}
