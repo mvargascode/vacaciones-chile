@@ -1,10 +1,8 @@
 import type { Holiday } from "../types/holiday.types";
-import { HOLIDAYS_2025 } from '../data/holidays/2025'
 import { HOLIDAYS_2026 } from '../data/holidays/2026'
 import { HOLIDAYS_2027 } from '../data/holidays/2027'
 
 const HOLIDAYS_BY_YEAR: Record<number, Holiday[]> = {
-  2025: HOLIDAYS_2025,
   2026: HOLIDAYS_2026,
   2027: HOLIDAYS_2027,
 }

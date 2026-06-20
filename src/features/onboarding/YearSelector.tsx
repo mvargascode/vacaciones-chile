@@ -5,7 +5,7 @@ interface YearSelectorProps {
   onChange: (year: number) => void
 }
 
-const AVAILABLE_YEARS = [2025, 2026, 2027]
+const AVAILABLE_YEARS = [2026, 2027]
 
 export function YearSelector({ value, onChange }: YearSelectorProps) {
   const currentYear = new Date().getFullYear()
