@@ -89,7 +89,7 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
       finalEnd = recalculateEndDate(newStart, workdaysTarget, calendarDays, preferences.sector)
     }
 
-    updatePlannedPeriod(periodId, newStart, finalEnd)
+    updatePlannedPeriod(periodId, newStart, newEnd)
   }
 
   return (

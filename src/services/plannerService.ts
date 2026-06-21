@@ -92,13 +92,13 @@ function generateSuggestions(
 
       if (workdaysSaved > 0) {
         suggestions.push({
-  type:          'extend_start',
-  description:   `Empieza ${daysAdjusted} días antes para incluir ${day.holiday.name}`,
-  holidayName:   day.holiday.name,
-  suggestedDate: day.date,
+  type:           'extend_start',
+  description:    `Empieza ${daysAdjusted} días antes para incluir ${day.holiday.name}`,
+  holidayName:    day.holiday.name,
+  suggestedDate:  day.date,
   daysAdjusted,
-  workdaysSaved,
-  workdaysNeeded: 0,   // extend_start no necesita días extra, los ahorra
+  workdaysSaved:  0,
+  workdaysNeeded: workdaysSaved,  // días hábiles extra que necesita
 })
 
       }

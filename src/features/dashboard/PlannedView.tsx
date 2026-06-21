@@ -155,7 +155,7 @@ export function PlannedView({
             {analysis.suggestions.length > 0 && (
               <div className={styles.suggestions}>
                 {analysis.suggestions.map((s, i) => {
-  const canApply = s.type === 'extend_start'
+  const canApply = remaining >= s.workdaysNeeded
     ? true  // extend_start siempre se puede (mueve el inicio)
     : (remaining >= s.workdaysNeeded)  // extend_end necesita días disponibles
 
@@ -168,7 +168,7 @@ export function PlannedView({
           <p className={styles.suggestionSaving}>
             {s.type === 'extend_start'
               ? `Ahorras ${s.workdaysSaved} día${s.workdaysSaved !== 1 ? 's' : ''} hábil${s.workdaysSaved !== 1 ? 'es' : ''}`
-              : `Necesitas ${s.workdaysNeeded} día${s.workdaysNeeded !== 1 ? 's' : ''} hábil${s.workdaysNeeded !== 1 ? 'es' : ''} extra`
+              : `Necesitas {s.workdaysNeeded} día{s.workdaysNeeded !== 1 ? 's' : ''} hábil{s.workdaysNeeded !== 1 ? 'es' : ''} extra de vacaciones`
             }
           </p>
         ) : (
