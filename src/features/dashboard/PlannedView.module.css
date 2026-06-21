@@ -342,3 +342,13 @@
     background: var(--color-oro);
     color: #ffffff;
 }
+
+.suggestionWarning {
+    background: #FFF7ED;
+    border-color: #F97316;
+}
+
+.suggestionWarningText {
+    font-size: var(--font-size-xs);
+    color: #C2410C;
+}
