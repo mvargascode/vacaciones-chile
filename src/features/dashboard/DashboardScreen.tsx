@@ -4,7 +4,6 @@ import { useHolidaysApi } from '../../hooks/useHolidaysApi'
 import { useRecommendations } from '../../hooks/useRecommendations'
 import { usePlanner } from '../../hooks/usePlanner'
 import { buildYearCalendar } from '../../services/calendarService'
-import { recalculateEndDate } from '../../services/plannerService'
 import { Header, Tabs, EmptyState, Sidebar, SidebarSection, Drawer } from '../../components/ui'
 import { RecommendationCard } from '../../components/recommendation'
 import { SidebarFilter } from './SidebarFilter'
@@ -77,20 +76,8 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
   }
 
   function handleApplySuggestion(periodId: string, newStart: string, newEnd: string) {
-    const analysis = analyses.find(a => a.period.id === periodId)
-    if (!analysis) return
-
-    const workdaysTarget = analysis.workdaysUsed
-    const period = preferences.plannedPeriods.find(p => p.id === periodId)
-    if (!period) return
-
-    let finalEnd = newEnd
-    if (newStart !== period.startDate) {
-      finalEnd = recalculateEndDate(newStart, workdaysTarget, calendarDays, preferences.sector)
-    }
-
-    updatePlannedPeriod(periodId, newStart, newEnd)
-  }
+  updatePlannedPeriod(periodId, newStart, newEnd)
+}
 
   return (
     <div className="app-container animate-fade-in">
