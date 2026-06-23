@@ -1,12 +1,65 @@
+import { useState } from 'react'
 import styles from './DaysToUseSelector.module.css'
 
 interface DaysToUseSelectorProps {
   value: number
   totalAvailable: number
   onChange: (days: number) => void
+  onValidityChange?: (valid: boolean) => void
 }
 
-export function DaysToUseSelector({ value, totalAvailable, onChange }: DaysToUseSelectorProps) {
+export function DaysToUseSelector({
+  value,
+  totalAvailable,
+  onChange,
+  onValidityChange,
+}: DaysToUseSelectorProps) {
+  const [inputStr, setInputStr] = useState(String(value))
+
+  function parseInput(str: string): number | null {
+    const n = parseInt(str, 10)
+    return isNaN(n) ? null : n
+  }
+
+  function isValid(str: string): boolean {
+    const n = parseInput(str)
+    return n !== null && n >= 1 && n <= totalAvailable
+  }
+
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const raw = e.target.value
+    setInputStr(raw)
+    const valid = isValid(raw)
+    onValidityChange?.(valid)
+    if (valid) onChange(parseInt(raw, 10))
+  }
+
+  function handleInputBlur() {
+    const n = parseInput(inputStr)
+    if (n === null || n < 1) {
+      setInputStr(String(value))
+      onValidityChange?.(true)
+    } else if (n > totalAvailable) {
+      onChange(totalAvailable)
+      setInputStr(String(totalAvailable))
+      onValidityChange?.(true)
+    }
+  }
+
+  function handleQuickSelect(days: number) {
+    onChange(days)
+    setInputStr(String(days))
+    onValidityChange?.(true)
+  }
+
+  function handleStepper(days: number) {
+    onChange(days)
+    setInputStr(String(days))
+    onValidityChange?.(true)
+  }
+
+  const showWarning = !isValid(inputStr)
+
   return (
     <div className={styles.container}>
       <label className={styles.label}>
@@ -33,8 +86,8 @@ export function DaysToUseSelector({ value, totalAvailable, onChange }: DaysToUse
             <button
               key={opt.value}
               type="button"
-              className={`${styles.option} ${value === opt.value ? styles.selected : ''}`}
-              onClick={() => onChange(opt.value)}
+              className={`${styles.option} ${value === opt.value && !showWarning ? styles.selected : ''}`}
+              onClick={() => handleQuickSelect(opt.value)}
             >
               <span className={styles.optionLabel}>{opt.label}</span>
               <span className={styles.optionValue}>{opt.value} días</span>
@@ -49,33 +102,27 @@ export function DaysToUseSelector({ value, totalAvailable, onChange }: DaysToUse
         <div className={styles.inputRow}>
           <button
             className={styles.stepper}
-            onClick={() => onChange(Math.max(1, value - 1))}
+            onClick={() => handleStepper(Math.max(1, value - 1))}
             type="button"
           >−</button>
           <input
             type="number"
-            className={styles.input}
-            value={value}
+            className={`${styles.input} ${showWarning ? styles.inputError : ''}`}
+            value={inputStr}
             min={1}
             max={totalAvailable}
-            onChange={e => {
-              const raw = e.target.value
-              if (raw === '') return
-              const val = parseInt(raw)
-              if (!isNaN(val) && val >= 1 && val <= totalAvailable) onChange(val)
-            }}
-            onBlur={e => {
-              const val = parseInt(e.target.value)
-              if (isNaN(val) || val < 1) onChange(1)
-              if (val > totalAvailable) onChange(totalAvailable)
-            }}
+            onChange={handleInputChange}
+            onBlur={handleInputBlur}
           />
           <button
             className={styles.stepper}
-            onClick={() => onChange(Math.min(totalAvailable, value + 1))}
+            onClick={() => handleStepper(Math.min(totalAvailable, value + 1))}
             type="button"
           >+</button>
         </div>
+        {showWarning && (
+          <p className={styles.warning}>Ingresa al menos 1 día</p>
+        )}
       </div>
 
       {/* Barra de progreso visual */}

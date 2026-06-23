@@ -16,12 +16,13 @@ const STEPS: Step[] = ['region', 'sector', 'totalDays', 'daysToUse', 'year']
 export function OnboardingScreen() {
   const { preferences, confirmConfiguration } = useUserPreferences()
 
-  const [localRegion,     setLocalRegion]     = useState(preferences.region)
-  const [localSector,     setLocalSector]     = useState<Sector>(preferences.sector)
-  const [localTotalDays,  setLocalTotalDays]  = useState(preferences.totalAvailableDays)
-  const [localDaysToUse,  setLocalDaysToUse]  = useState(preferences.daysToUse)
-  const [localYear,       setLocalYear]       = useState(preferences.year)
-  const [currentStep,     setCurrentStep]     = useState<Step>('region')
+  const [localRegion,       setLocalRegion]       = useState(preferences.region)
+  const [localSector,       setLocalSector]       = useState<Sector>(preferences.sector)
+  const [localTotalDays,    setLocalTotalDays]    = useState(preferences.totalAvailableDays)
+  const [localDaysToUse,    setLocalDaysToUse]    = useState(preferences.daysToUse)
+  const [daysToUseValid,    setDaysToUseValid]    = useState(true)
+  const [localYear,         setLocalYear]         = useState(preferences.year)
+  const [currentStep,       setCurrentStep]       = useState<Step>('region')
 
   const stepIndex  = STEPS.indexOf(currentStep)
   const isLastStep = currentStep === 'year'
@@ -95,6 +96,7 @@ export function OnboardingScreen() {
             value={localDaysToUse}
             totalAvailable={localTotalDays}
             onChange={setLocalDaysToUse}
+            onValidityChange={setDaysToUseValid}
           />
         )}
         {currentStep === 'year' && (
@@ -112,7 +114,11 @@ export function OnboardingScreen() {
               Ver mis vacaciones →
             </Button>
           ) : (
-            <Button variant="primary" onClick={handleNext}>
+            <Button
+              variant="primary"
+              onClick={handleNext}
+              disabled={currentStep === 'daysToUse' && !daysToUseValid}
+            >
               Siguiente →
             </Button>
           )}

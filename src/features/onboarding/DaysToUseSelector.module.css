@@ -114,6 +114,21 @@
     border-color: var(--color-primary);
 }
 
+.inputError {
+    border-color: #EF4444;
+    color: #EF4444;
+}
+
+.inputError:focus {
+    border-color: #EF4444;
+}
+
+.warning {
+    font-size: var(--font-size-xs);
+    color: #EF4444;
+    margin-top: calc(var(--space-1) * -1);
+}
+
 .input::-webkit-outer-spin-button,
 .input::-webkit-inner-spin-button {
     -webkit-appearance: none;
