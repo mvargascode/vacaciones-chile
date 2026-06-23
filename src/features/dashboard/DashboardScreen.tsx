@@ -10,7 +10,7 @@ import { SidebarFilter } from './SidebarFilter'
 import { SidebarInfo } from './SidebarInfo'
 import { PlannedView } from './PlannedView'
 import { PeriodPicker } from '../onboarding/PeriodPicker'
-import type { RecommendationTier } from '../../types/recommendation.types'
+import type { RecommendationTier, VacationWindow } from '../../types/recommendation.types'
 import styles from './DashboardScreen.module.css'
 
 type FilterTab = 'todas' | RecommendationTier
@@ -30,7 +30,6 @@ export function DashboardScreen() {
 
   const allRecommendations = useRecommendations(year, holidays, totalAvailableDays)
 
-  // Solo mostrar oportunidades del mes actual en adelante
   const recommendations = useMemo(() => {
     const today = new Date()
     const monthStart = new Date(today.getFullYear(), today.getMonth(), 1)
@@ -90,11 +89,31 @@ export function DashboardScreen() {
     updatePlannedPeriod(periodId, newStart, newEnd)
   }
 
+  function renderCardList(list: VacationWindow[]) {
+    return list.flatMap((r, i) => {
+      const card = (
+        <li key={r.id}>
+          <RecommendationCard recommendation={r} />
+        </li>
+      )
+      if (i === 1) {
+        return [
+          <li key="ad-leaderboard">
+            <div className="ad-slot ad-slot--leaderboard">Publicidad · 728×90</div>
+          </li>,
+          card,
+        ]
+      }
+      return [card]
+    })
+  }
+
   return (
     <div className="app-container animate-fade-in">
       <Header
         title="Vacaciones Chile"
-        subtitle={`${region} · ${daysToUse} de ${totalAvailableDays} días`}
+        subtitle={`${region} · ${daysToUse} de ${totalAvailableDays} días disponibles`}
+        year={year}
         onSettingsClick={resetConfiguration}
       />
 
@@ -110,7 +129,6 @@ export function DashboardScreen() {
       )}
 
       <div className={styles.layout}>
-        {/* Sidebar — solo desktop */}
         <Sidebar>
           <SidebarSection title="Filtrar por tier">
             <SidebarFilter
@@ -134,30 +152,29 @@ export function DashboardScreen() {
           </SidebarSection>
         </Sidebar>
 
-        {/* Contenido principal */}
         <div className={styles.main}>
 
-          {/* MODO A — Sin períodos planificados */}
           {!hasPlannedPeriods && (
             <>
               <div className={styles.tabsWrapper}>
                 <Tabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
               </div>
 
-              {/* Toggle ver todas / ver con mis días */}
               <div className={styles.toggleWrapper}>
-                <button
-                  className={`${styles.toggleBtn} ${!filterByDays ? styles.toggleActive : ''}`}
-                  onClick={() => setFilterByDays(false)}
-                >
-                  Ver todas
-                </button>
-                <button
-                  className={`${styles.toggleBtn} ${filterByDays ? styles.toggleActive : ''}`}
-                  onClick={() => setFilterByDays(true)}
-                >
-                  Con mis {daysToUse} días
-                </button>
+                <div className={styles.togglePill}>
+                  <button
+                    className={`${styles.toggleBtn} ${!filterByDays ? styles.toggleActive : ''}`}
+                    onClick={() => setFilterByDays(false)}
+                  >
+                    Ver todas
+                  </button>
+                  <button
+                    className={`${styles.toggleBtn} ${filterByDays ? styles.toggleActive : ''}`}
+                    onClick={() => setFilterByDays(true)}
+                  >
+                    Con mis {daysToUse} días
+                  </button>
+                </div>
               </div>
 
               <div key={activeTab} className={styles.listWrapper}>
@@ -182,19 +199,17 @@ export function DashboardScreen() {
                       {activeTab !== 'todas' ? ` ${activeTab}` : ''} para {year}
                     </p>
                     <ul className={styles.list}>
-                      {filtered.map(r => (
-                        <li key={r.id}>
-                          <RecommendationCard recommendation={r} />
-                        </li>
-                      ))}
+                      {renderCardList(filtered)}
                     </ul>
+                    <div className="ad-slot ad-slot--mobile-banner" style={{ marginTop: 'var(--space-4)' }}>
+                      Banner móvil · 320×50
+                    </div>
                   </>
                 )}
               </div>
             </>
           )}
 
-          {/* MODO B — Con períodos planificados */}
           {hasPlannedPeriods && (
             <div className={styles.listWrapper}>
               <div className={styles.plannedHeader}>
@@ -222,11 +237,7 @@ export function DashboardScreen() {
                   Ver otras oportunidades del año ({recommendations.length})
                 </summary>
                 <ul className={styles.list} style={{ marginTop: 'var(--space-4)' }}>
-                  {recommendations.map(r => (
-                    <li key={r.id}>
-                      <RecommendationCard recommendation={r} />
-                    </li>
-                  ))}
+                  {renderCardList(recommendations)}
                 </ul>
               </details>
             </div>
@@ -234,7 +245,6 @@ export function DashboardScreen() {
         </div>
       </div>
 
-      {/* Drawer del planificador */}
       <Drawer
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}

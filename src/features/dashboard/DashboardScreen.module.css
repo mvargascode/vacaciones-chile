@@ -157,9 +157,16 @@
 
 .toggleWrapper {
     display: flex;
-    gap: 0;
     padding: var(--space-3) var(--space-4);
     border-bottom: 1px solid var(--color-border);
+}
+
+.togglePill {
+    display: flex;
+    background: var(--color-bg-secondary);
+    border-radius: 25px;
+    padding: 4px;
+    gap: 2px;
 }
 
 .toggleBtn {
@@ -168,23 +175,15 @@
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
     color: var(--color-text-secondary);
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
+    background: transparent;
+    border: none;
+    border-radius: 20px;
     cursor: pointer;
     transition: all var(--transition-fast);
-}
-
-.toggleBtn:first-child {
-    border-radius: var(--radius-md) 0 0 var(--radius-md);
-    border-right: none;
-}
-
-.toggleBtn:last-child {
-    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    white-space: nowrap;
 }
 
 .toggleActive {
-    background: var(--color-primary);
+    background: var(--color-text-primary);
     color: #ffffff;
-    border-color: var(--color-primary);
 }
