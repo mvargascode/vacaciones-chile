@@ -26,6 +26,36 @@
     }
 }
 
+/* AdSense placeholder slots */
+.ad-slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-secondary);
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius-md);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.ad-slot--leaderboard {
+    height: 90px;
+    width: 100%;
+}
+
+.ad-slot--square {
+    width: 160px;
+    height: 160px;
+    align-self: center;
+}
+
+.ad-slot--mobile-banner {
+    height: 70px;
+    width: 100%;
+}
+
 .visually-hidden {
     position: absolute;
     width: 1px;
