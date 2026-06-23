@@ -39,3 +39,18 @@
     color: var(--color-text-primary);
     text-align: right;
 }
+
+.adSlot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 160px;
+    height: 160px;
+    background: var(--color-bg-tertiary);
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius-md);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    text-align: center;
+    align-self: center;
+}

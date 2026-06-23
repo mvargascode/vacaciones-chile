@@ -98,8 +98,10 @@ export function DashboardScreen() {
       )
       if (i === 1) {
         return [
-          <li key="ad-leaderboard">
-            <div className="ad-slot ad-slot--leaderboard">Publicidad · 728×90</div>
+          <li key="ad-leaderboard" className={styles.adListItem}>
+            <div className={`${styles.adSlotBase} ${styles.adLeaderboard}`}>
+              Publicidad · 728×90
+            </div>
           </li>,
           card,
         ]
@@ -201,8 +203,8 @@ export function DashboardScreen() {
                     <ul className={styles.list}>
                       {renderCardList(filtered)}
                     </ul>
-                    <div className="ad-slot ad-slot--mobile-banner" style={{ marginTop: 'var(--space-4)' }}>
-                      Banner móvil · 320×50
+                    <div className={`${styles.adSlotBase} ${styles.adMobileBanner}`}>
+                      Banner · 320×50
                     </div>
                   </>
                 )}

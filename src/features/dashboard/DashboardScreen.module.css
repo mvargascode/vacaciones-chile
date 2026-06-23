@@ -66,6 +66,34 @@
     }
 }
 
+/* Ad slots */
+.adSlotBase {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-tertiary);
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius-md);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    text-align: center;
+    width: 100%;
+}
+
+/* <li> que debe ocupar todo el ancho en el grid de 2 columnas */
+.adListItem {
+    grid-column: 1 / -1;
+}
+
+.adLeaderboard {
+    height: 90px;
+}
+
+.adMobileBanner {
+    height: 70px;
+    margin-top: var(--space-4);
+}
+
 .plannerBanner {
     display: flex;
     gap: var(--space-3);
