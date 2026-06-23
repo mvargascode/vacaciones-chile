@@ -51,19 +51,22 @@
     margin-bottom: var(--space-4);
 }
 
-/* En desktop las cards van en grid de 2 columnas si hay espacio */
 .list {
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
 }
 
-@media (min-width: 1100px) {
-    .list {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--space-4);
-    }
+/* Fila card + slot inline */
+.cardRow {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+}
+
+.cardMain {
+    flex: 1;
+    min-width: 0;
 }
 
 /* Ad slots */
@@ -80,17 +83,27 @@
     width: 100%;
 }
 
-/* <li> que debe ocupar todo el ancho en el grid de 2 columnas */
-.adListItem {
-    grid-column: 1 / -1;
-}
-
 .adLeaderboard {
     height: 90px;
 }
 
 .adAfterList {
     margin-top: var(--space-4);
+}
+
+/* Slot 300×250 junto a cada card — sólo visible en pantallas anchas */
+.adInline {
+    display: none;
+    width: 300px;
+    min-width: 300px;
+    height: 250px;
+    flex-shrink: 0;
+}
+
+@media (min-width: 1100px) {
+    .adInline {
+        display: flex;
+    }
 }
 
 .plannerBanner {

@@ -92,13 +92,18 @@ export function DashboardScreen() {
   function renderCardList(list: VacationWindow[]) {
     return list.flatMap((r, i) => {
       const card = (
-        <li key={r.id}>
-          <RecommendationCard recommendation={r} />
+        <li key={r.id} className={styles.cardRow}>
+          <div className={styles.cardMain}>
+            <RecommendationCard recommendation={r} />
+          </div>
+          <div className={`${styles.adSlotBase} ${styles.adInline}`}>
+            Publicidad · 300×250
+          </div>
         </li>
       )
       if (i === 1) {
         return [
-          <li key="ad-between" className={styles.adListItem}>
+          <li key="ad-between">
             <div className={`${styles.adSlotBase} ${styles.adLeaderboard}`}>
               Publicidad · 728×90
             </div>
