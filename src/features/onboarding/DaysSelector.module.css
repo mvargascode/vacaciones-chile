@@ -166,3 +166,29 @@
     color: var(--color-primary);
     font-size: var(--font-size-base);
 }
+
+.yearsInputField {
+    width: 64px;
+    height: 40px;
+    text-align: center;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    background: var(--color-bg-primary);
+}
+
+.yearsInputField:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+.yearsInputField::-webkit-outer-spin-button,
+.yearsInputField::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.yearsInputField[type=number] {
+    -moz-appearance: textfield;
+}

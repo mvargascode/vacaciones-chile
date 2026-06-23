@@ -89,40 +89,54 @@ export function DaysSelector({ value, onChange, sector }: DaysSelectorProps) {
       ¿Cuántos años llevas en tu trabajo actual?
     </p>
     <div className={styles.yearsInput}>
-      <button
-        className={styles.stepper}
-        onClick={() => {
-          const years = Math.max(1, workYears - 1)
-          setWorkYears(years)
-          onChange(sector === 'privado'
-            ? calculateLegalDays(years)
-            : calculateLegalDaysPublico(years)
-          )
-        }}
-        type="button"
-        aria-label="Reducir años"
-      >
-        −
-      </button>
-      <span className={styles.yearsValue}>
-        {workYears} año{workYears !== 1 ? 's' : ''}
-      </span>
-      <button
-        className={styles.stepper}
-        onClick={() => {
-          const years = Math.min(40, workYears + 1)
-          setWorkYears(years)
-          onChange(sector === 'privado'
-            ? calculateLegalDays(years)
-            : calculateLegalDaysPublico(years)
-          )
-        }}
-        type="button"
-        aria-label="Aumentar años"
-      >
-        +
-      </button>
-    </div>
+  <button
+    className={styles.stepper}
+    onClick={() => {
+      const years = Math.max(1, workYears - 1)
+      setWorkYears(years)
+      onChange(sector === 'privado'
+        ? calculateLegalDays(years)
+        : calculateLegalDaysPublico(years)
+      )
+    }}
+    type="button"
+    aria-label="Reducir años"
+  >
+    −
+  </button>
+  <input
+    type="number"
+    className={styles.yearsInputField}
+    value={workYears}
+    min={1}
+    max={40}
+    onChange={e => {
+      const val = parseInt(e.target.value)
+      if (!isNaN(val) && val >= 1 && val <= 40) {
+        setWorkYears(val)
+        onChange(sector === 'privado'
+          ? calculateLegalDays(val)
+          : calculateLegalDaysPublico(val)
+        )
+      }
+    }}
+  />
+  <button
+    className={styles.stepper}
+    onClick={() => {
+      const years = Math.min(40, workYears + 1)
+      setWorkYears(years)
+      onChange(sector === 'privado'
+        ? calculateLegalDays(years)
+        : calculateLegalDaysPublico(years)
+      )
+    }}
+    type="button"
+    aria-label="Aumentar años"
+  >
+    +
+  </button>
+</div>
 
     <div className={styles.calculatorResult}>
       {sector === 'privado' ? (
