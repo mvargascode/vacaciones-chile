@@ -52,8 +52,9 @@ function MiniCalendar({ days }: { days: CalendarDay[] }) {
   const weekStart = new Date(firstDay)
   weekStart.setDate(weekStart.getDate() - firstDay.getDay())
 
-  const weekEnd = new Date(lastDay)
-  weekEnd.setDate(weekEnd.getDate() + (6 - lastDay.getDay()))
+  // Mostrar solo la semana que contiene el inicio (7 días max)
+  const weekEnd = new Date(weekStart)
+  weekEnd.setDate(weekEnd.getDate() + 6)
 
   const cells: MiniCalCell[] = []
   const cursor = new Date(weekStart)
