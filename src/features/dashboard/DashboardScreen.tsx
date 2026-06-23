@@ -155,7 +155,6 @@ export function DashboardScreen() {
         </Sidebar>
 
         <div className={styles.main}>
-
           {!hasPlannedPeriods && (
             <>
               <div className={styles.tabsWrapper}>
@@ -244,6 +243,10 @@ export function DashboardScreen() {
               </details>
             </div>
           )}
+        </div>
+
+        <div className={styles.rightCol}>
+          <div className={styles.adSkyscraper}>Publicidad · 160×600</div>
         </div>
       </div>
 
