@@ -10,7 +10,6 @@ function formatShortDate(dateStr: string): string {
   })
 }
 
-// Genera texto para compartir una oportunidad del dashboard
 export function buildShareTextOpportunity(r: VacationWindow): string {
   const tierEmoji = r.tier === 'oro' ? '🥇' : r.tier === 'plata' ? '🥈' : '🥉'
   const holidays  = r.holidays.map(h => `• ${h.name}`).join('\n')
@@ -30,7 +29,6 @@ Planifica las tuyas en 👇
 ${APP_URL}`
 }
 
-// Genera texto para compartir un período planificado
 export function buildShareTextPlanned(analysis: PeriodAnalysis): string {
   const holidays    = analysis.holidaysInside.map(h => `• ${h.name}`).join('\n')
   const hasHolidays = analysis.holidaysInside.length > 0
@@ -48,13 +46,11 @@ Planifica las tuyas en 👇
 ${APP_URL}`
 }
 
-// Copia el texto al portapapeles
 export async function copyToClipboard(text: string): Promise<boolean> {
   try {
     await navigator.clipboard.writeText(text)
     return true
   } catch {
-    // Fallback para navegadores sin clipboard API
     const el = document.createElement('textarea')
     el.value = text
     el.style.position = 'fixed'
@@ -67,8 +63,36 @@ export async function copyToClipboard(text: string): Promise<boolean> {
   }
 }
 
-// Abre WhatsApp directamente con el texto
+function detectPlatform(): 'windows' | 'mac' | 'mobile' | 'web' {
+  const ua = navigator.userAgent.toLowerCase()
+  if (/android|iphone|ipad/.test(ua)) return 'mobile'
+  if (/win/.test(ua)) return 'windows'
+  if (/mac/.test(ua)) return 'mac'
+  return 'web'
+}
+
 export function shareToWhatsApp(text: string): void {
-  const encoded = encodeURIComponent(text)
-  window.open(`https://wa.me/?text=${encoded}`, '_blank')
+  const encoded  = encodeURIComponent(text)
+  const platform = detectPlatform()
+
+  if (platform === 'mobile') {
+    // Móvil: abre la app directamente
+    window.open(`https://wa.me/?text=${encoded}`, '_blank')
+  } else if (platform === 'windows' || platform === 'mac') {
+    // Desktop con app instalada: intenta abrir la app nativa
+    // Si no está instalada cae a WhatsApp Web
+    const appLink = document.createElement('a')
+    appLink.href  = `whatsapp://send?text=${encoded}`
+    appLink.click()
+
+    // Fallback a WhatsApp Web después de 1.5s si no abrió la app
+    setTimeout(() => {
+      if (!document.hidden) {
+        window.open(`https://web.whatsapp.com/send?text=${encoded}`, '_blank')
+      }
+    }, 1500)
+  } else {
+    // Web genérico
+    window.open(`https://web.whatsapp.com/send?text=${encoded}`, '_blank')
+  }
 }
