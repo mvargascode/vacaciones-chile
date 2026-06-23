@@ -75,7 +75,7 @@
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-1);
 }
 
 .confettiIcon {
@@ -89,59 +89,6 @@
     line-height: 1.3;
 }
 
-/* Mini calendario */
-.miniCal {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 3px;
-    margin-bottom: var(--space-3);
-    padding: var(--space-3);
-    background: var(--color-bg-primary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-}
-
-.mcHdr {
-    font-size: 10px;
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-muted);
-    text-align: center;
-    padding-bottom: 2px;
-}
-
-.mcCell {
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius-sm);
-    font-size: 11px;
-    font-weight: var(--font-weight-medium);
-    line-height: 1;
-}
-
-.mcVacacion {
-    background: var(--color-vacacion);
-    color: var(--color-vacacion-text);
-}
-
-.mcFeriado {
-    background: var(--color-feriado);
-    color: var(--color-feriado-text);
-    font-weight: var(--font-weight-bold);
-}
-
-.mcFinSemana {
-    background: var(--color-bg-tertiary);
-    color: var(--color-text-muted);
-}
-
-.mcCtx {
-    background: transparent;
-    color: var(--color-text-muted);
-    opacity: 0.5;
-}
-
 /* Acordeón expandido */
 .accordion {
     border-top: 1px solid var(--color-border);
@@ -149,102 +96,58 @@
     margin-bottom: var(--space-3);
     display: flex;
     flex-direction: column;
-    gap: var(--space-5);
+    gap: var(--space-4);
 }
 
-.accordionSection {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-}
-
-.accordionTitle {
+/* Resumen en texto natural */
+.summaryText {
     font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--color-primary);
 }
 
-.holidayList {
+/* Checklist de acción */
+.checklist {
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
 }
 
-.holidayItem {
+.checkItem {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--space-3);
-    padding: var(--space-3);
-    background: var(--color-feriado);
-    border-radius: var(--radius-md);
-    border: 1px solid var(--color-feriado-border);
-}
-
-.holidayItemName {
+    gap: var(--space-2);
     font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-feriado-text);
-}
-
-.holidayDate {
-    font-size: var(--font-size-xs);
     color: var(--color-text-secondary);
-    text-transform: capitalize;
-    margin-top: 2px;
 }
 
-.irrenunciableBadge {
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-primary);
-    background: #EEF2FF;
-    padding: var(--space-1) var(--space-2);
-    border-radius: var(--radius-full);
+.checkIcon {
+    color: var(--color-text-muted);
     flex-shrink: 0;
 }
 
-.breakdown {
-    background: var(--color-bg-secondary);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--color-border);
-    overflow: hidden;
-}
-
-.breakdownRow {
+.gcalBtn {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-top: var(--space-1);
     padding: var(--space-3) var(--space-4);
-    border-bottom: 1px solid var(--color-border);
-}
-
-.breakdownRow:last-child {
-    border-bottom: none;
-}
-
-.breakdownLabel {
+    background: var(--color-primary);
+    color: #ffffff;
     font-size: var(--font-size-sm);
-    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-medium);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: opacity var(--transition-fast);
 }
 
-.breakdownValue {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
-}
-
-.breakdownTotal {
-    background: var(--color-bg-primary);
-}
-
-.breakdownTotal .breakdownLabel {
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
-}
-
-.breakdownTotal .breakdownValue {
-    color: var(--color-primary);
+.gcalBtn:hover {
+    opacity: 0.85;
 }
 
 /* Footer */

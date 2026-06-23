@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import { IconConfetti, IconChevronDown, IconChevronUp } from '@tabler/icons-react'
+import { IconConfetti, IconChevronDown, IconChevronUp, IconSquare, IconCalendarPlus } from '@tabler/icons-react'
 import type { VacationWindow } from '../../types/recommendation.types'
-import type { CalendarDay } from '../../types/calendar.types'
 import { Card } from '../ui/Card'
 import { Badge } from '../ui/Badge'
 import { PeriodCalendar } from '../calendar/PeriodCalendar'
@@ -14,83 +13,39 @@ interface RecommendationCardProps {
 }
 
 function formatShortDate(dateStr: string): string {
-  const date = new Date(dateStr + 'T00:00:00')
-  return date.toLocaleDateString('es-CL', { day: 'numeric', month: 'short' })
+  return new Date(dateStr + 'T00:00:00').toLocaleDateString('es-CL', { day: 'numeric', month: 'short' })
 }
 
 function formatFullDate(dateStr: string): string {
-  const date = new Date(dateStr + 'T00:00:00')
-  return date.toLocaleDateString('es-CL', { weekday: 'long', day: 'numeric', month: 'long' })
+  return new Date(dateStr + 'T00:00:00').toLocaleDateString('es-CL', { weekday: 'long', day: 'numeric', month: 'long' })
 }
 
-function toDateStr(d: Date): string {
-  const y = d.getFullYear()
-  const m = String(d.getMonth() + 1).padStart(2, '0')
-  const day = String(d.getDate()).padStart(2, '0')
-  return `${y}-${m}-${day}`
+function buildSummaryText(r: VacationWindow): string {
+  const start = formatShortDate(r.startDate)
+  const end = formatShortDate(r.endDate)
+  const dates = r.holidays.map(h => formatFullDate(h.date))
+  const article = r.holidays.length > 1 ? 'Los' : 'El'
+  const verb = r.holidays.length > 1 ? 'son feriados gratis' : 'es feriado gratis'
+  const datesStr = dates.length === 1
+    ? dates[0]
+    : dates.slice(0, -1).join(', ') + ' y ' + dates[dates.length - 1]
+  return `Si pides vacaciones del ${start} al ${end}, descansas ${r.totalDaysOff} días seguidos gastando solo ${r.vacationDaysRequired} días de vacaciones. ${article} ${datesStr} ${verb} 🎉`
 }
 
-const DAY_NAMES_SHORT = ['D', 'L', 'M', 'X', 'J', 'V', 'S']
-
-type CellType = 'vacacion' | 'feriado' | 'fin_de_semana' | 'ctx'
-
-interface MiniCalCell {
-  date: string
-  num: number
-  type: CellType
+function buildGCalUrl(r: VacationWindow): string {
+  const startFmt = r.startDate.replace(/-/g, '')
+  const d = new Date(r.endDate + 'T00:00:00')
+  d.setDate(d.getDate() + 1)
+  const endFmt = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`
+  const title = encodeURIComponent(`Vacaciones (${r.holidays.map(h => h.name).join(' + ')})`)
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startFmt}/${endFmt}`
 }
 
-function MiniCalendar({ days }: { days: CalendarDay[] }) {
-  if (days.length === 0) return null
-
-  const dayMap = new Map(days.map(d => [d.date, d]))
-
-  const firstDay = new Date(days[0].date + 'T00:00:00')
-
-  // Align to Sunday–Saturday weeks
-  const weekStart = new Date(firstDay)
-  weekStart.setDate(weekStart.getDate() - firstDay.getDay())
-
-  // Mostrar solo la semana que contiene el inicio (7 días max)
-  const weekEnd = new Date(weekStart)
-  weekEnd.setDate(weekEnd.getDate() + 6)
-
-  const cells: MiniCalCell[] = []
-  const cursor = new Date(weekStart)
-  while (cursor <= weekEnd) {
-    const dateStr = toDateStr(cursor)
-    const periodDay = dayMap.get(dateStr)
-    let type: CellType
-    if (periodDay) {
-      const dt = periodDay.dayType
-      type = dt === 'feriado' ? 'feriado' : dt === 'fin_de_semana' ? 'fin_de_semana' : 'vacacion'
-    } else {
-      type = 'ctx'
-    }
-    cells.push({ date: dateStr, num: cursor.getDate(), type })
-    cursor.setDate(cursor.getDate() + 1)
-  }
-
-  const typeClass: Record<CellType, string> = {
-    vacacion:     styles.mcVacacion,
-    feriado:      styles.mcFeriado,
-    fin_de_semana: styles.mcFinSemana,
-    ctx:          styles.mcCtx,
-  }
-
-  return (
-    <div className={styles.miniCal}>
-      {DAY_NAMES_SHORT.map(d => (
-        <span key={d} className={styles.mcHdr}>{d}</span>
-      ))}
-      {cells.map(cell => (
-        <span key={cell.date} className={`${styles.mcCell} ${typeClass[cell.type]}`}>
-          {cell.num}
-        </span>
-      ))}
-    </div>
-  )
-}
+const CHECKLIST = [
+  'Avisar a tu jefe o equipo',
+  'Bloquear el período en tu calendario',
+  'Coordinar con familia o compañeros de viaje',
+]
 
 export function RecommendationCard({ recommendation: r }: RecommendationCardProps) {
   const [expanded, setExpanded] = useState(false)
@@ -134,55 +89,32 @@ export function RecommendationCard({ recommendation: r }: RecommendationCardProp
         <span className={styles.holidayName}>{r.holidays.map(h => h.name).join(' + ')}</span>
       </div>
 
-      {/* Mini calendario */}
-      <MiniCalendar days={r.days} />
-
-      {/* Acordeón expandido */}
+      {/* Detalle expandido */}
       {expanded && (
         <div className={styles.accordion}>
+          {/* Resumen en texto natural */}
+          <p className={styles.summaryText}>{buildSummaryText(r)}</p>
+
+          {/* Calendario */}
           <PeriodCalendar days={r.days} />
 
-          <div className={styles.accordionSection}>
-            <h3 className={styles.accordionTitle}>
-              {r.holidays.length === 1 ? 'Feriado incluido' : 'Feriados incluidos'}
-            </h3>
-            <ul className={styles.holidayList}>
-              {r.holidays.map(h => (
-                <li key={h.id} className={styles.holidayItem}>
-                  <div>
-                    <p className={styles.holidayItemName}>{h.name}</p>
-                    <p className={styles.holidayDate}>{formatFullDate(h.date)}</p>
-                  </div>
-                  {h.irrenunciable && (
-                    <span className={styles.irrenunciableBadge}>Irrenunciable</span>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className={styles.accordionSection}>
-            <h3 className={styles.accordionTitle}>Desglose</h3>
-            <div className={styles.breakdown}>
-              <div className={styles.breakdownRow}>
-                <span className={styles.breakdownLabel}>Días corridos del período</span>
-                <span className={styles.breakdownValue}>{r.totalDaysOff}</span>
+          {/* Checklist de acción */}
+          <div className={styles.checklist}>
+            {CHECKLIST.map(item => (
+              <div key={item} className={styles.checkItem}>
+                <IconSquare size={16} stroke={1.5} className={styles.checkIcon} />
+                <span>{item}</span>
               </div>
-              <div className={styles.breakdownRow}>
-                <span className={styles.breakdownLabel}>Feriados que caen dentro</span>
-                <span className={styles.breakdownValue}>−{r.holidays.length}</span>
-              </div>
-              <div className={styles.breakdownRow}>
-                <span className={styles.breakdownLabel}>Fines de semana dentro</span>
-                <span className={styles.breakdownValue}>
-                  −{r.days.filter(d => d.dayType === 'fin_de_semana').length}
-                </span>
-              </div>
-              <div className={`${styles.breakdownRow} ${styles.breakdownTotal}`}>
-                <span className={styles.breakdownLabel}>Días de vacaciones a pedir</span>
-                <span className={styles.breakdownValue}>{r.vacationDaysRequired}</span>
-              </div>
-            </div>
+            ))}
+            <a
+              href={buildGCalUrl(r)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.gcalBtn}
+            >
+              <IconCalendarPlus size={16} stroke={1.5} />
+              Exportar a Google Calendar
+            </a>
           </div>
         </div>
       )}
@@ -191,8 +123,8 @@ export function RecommendationCard({ recommendation: r }: RecommendationCardProp
       <div className={styles.footer}>
         <button className={styles.detailBtn} onClick={() => setExpanded(e => !e)}>
           {expanded
-            ? <><IconChevronUp size={15} stroke={2} /> Ocultar desglose</>
-            : <><IconChevronDown size={15} stroke={2} /> Ver desglose completo</>
+            ? <><IconChevronUp size={15} stroke={2} /> Ocultar detalle</>
+            : <><IconChevronDown size={15} stroke={2} /> Ver detalle</>
           }
         </button>
         <ShareButton getText={() => buildShareTextOpportunity(r)} compact={true} />
