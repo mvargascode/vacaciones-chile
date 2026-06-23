@@ -26,16 +26,16 @@ export function buildShareTextOpportunity(r: VacationWindow): string {
 Feriados incluidos:
 ${holidays}
 
-Planifica tus vacaciones en 👇
+Planifica las tuyas en 👇
 ${APP_URL}`
 }
 
 // Genera texto para compartir un período planificado
 export function buildShareTextPlanned(analysis: PeriodAnalysis): string {
-  const holidays = analysis.holidaysInside.map(h => `• ${h.name}`).join('\n')
+  const holidays    = analysis.holidaysInside.map(h => `• ${h.name}`).join('\n')
   const hasHolidays = analysis.holidaysInside.length > 0
 
-  return `🇨🇱 *Mis vacaciones planificadas* 🇨🇱
+  return `🏖️ *Mis vacaciones planificadas* 🏖️
 
 📅 ${formatShortDate(analysis.period.startDate)} → ${formatShortDate(analysis.period.endDate)}
 
