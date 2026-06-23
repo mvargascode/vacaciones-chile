@@ -1,3 +1,4 @@
+/* Header: badge + eficiencia */
 .header {
     display: flex;
     align-items: center;
@@ -11,20 +12,22 @@
     color: var(--color-text-secondary);
 }
 
-.dates {
+/* Fecha */
+.dateRow {
     margin-bottom: var(--space-3);
 }
 
 .dateRange {
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-bold);
+    font-size: 1.375rem; /* 22px */
+    font-weight: 500;
     color: var(--color-text-primary);
+    line-height: 1.2;
 }
 
-.summary {
+/* Stats */
+.stats {
     display: flex;
     align-items: center;
-    gap: var(--space-3);
     padding: var(--space-3) 0;
     border-top: 1px solid var(--color-border);
     border-bottom: 1px solid var(--color-border);
@@ -36,57 +39,109 @@
     flex-direction: column;
     align-items: center;
     flex: 1;
+    gap: var(--space-1);
 }
 
-.statNumber {
+.statNum {
     font-size: var(--font-size-2xl);
     font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
     line-height: 1;
+    color: var(--color-text-primary);
+}
+
+.statBlue {
+    color: var(--color-primary);
+}
+
+.statGreen {
+    color: var(--color-success);
 }
 
 .statLabel {
     font-size: var(--font-size-xs);
     color: var(--color-text-muted);
-    margin-top: var(--space-1);
     text-align: center;
 }
 
-.divider {
+.statDivider {
     width: 1px;
-    height: 40px;
+    height: 36px;
     background: var(--color-border);
+    flex-shrink: 0;
 }
 
-.mainHoliday {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-secondary);
+/* Nombre del feriado con ícono */
+.holidayPreview {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
     margin-bottom: var(--space-3);
 }
 
-/* Footer con toggle + share */
-.footer {
+.confettiIcon {
+    color: var(--color-oro);
+    flex-shrink: 0;
+}
+
+.holidayName {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.3;
+}
+
+/* Mini calendario */
+.miniCal {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+    margin-bottom: var(--space-3);
+    padding: var(--space-3);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
+}
+
+.mcHdr {
+    font-size: 10px;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-muted);
+    text-align: center;
+    padding-bottom: 2px;
+}
+
+.mcCell {
+    aspect-ratio: 1;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-}
-
-.toggleBtn {
-    font-size: var(--font-size-sm);
-    color: var(--color-primary);
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
     font-weight: var(--font-weight-medium);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    transition: opacity var(--transition-fast);
+    line-height: 1;
 }
 
-.toggleBtn:hover {
-    opacity: 0.7;
+.mcVacacion {
+    background: var(--color-vacacion);
+    color: var(--color-vacacion-text);
 }
 
-/* Acordeón inline */
+.mcFeriado {
+    background: var(--color-feriado);
+    color: var(--color-feriado-text);
+    font-weight: var(--font-weight-bold);
+}
+
+.mcFinSemana {
+    background: var(--color-fin-semana);
+    color: var(--color-text-muted);
+}
+
+.mcCtx {
+    background: transparent;
+    color: var(--color-text-muted);
+    opacity: 0.5;
+}
+
+/* Acordeón expandido */
 .accordion {
     border-top: 1px solid var(--color-border);
     padding-top: var(--space-4);
@@ -108,7 +163,6 @@
     color: var(--color-text-primary);
 }
 
-/* Lista de feriados */
 .holidayList {
     display: flex;
     flex-direction: column;
@@ -126,7 +180,7 @@
     border: 1px solid var(--color-feriado-border);
 }
 
-.holidayName {
+.holidayItemName {
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-bold);
     color: var(--color-feriado-text);
@@ -149,7 +203,6 @@
     flex-shrink: 0;
 }
 
-/* Desglose */
 .breakdown {
     background: var(--color-bg-secondary);
     border-radius: var(--radius-lg);
@@ -191,4 +244,32 @@
 
 .breakdownTotal .breakdownValue {
     color: var(--color-primary);
+}
+
+/* Footer */
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-3);
+}
+
+.detailBtn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-primary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.detailBtn:hover {
+    opacity: 0.7;
 }
