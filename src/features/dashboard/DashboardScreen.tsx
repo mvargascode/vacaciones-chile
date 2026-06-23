@@ -10,16 +10,12 @@ import { SidebarFilter } from './SidebarFilter'
 import { SidebarInfo } from './SidebarInfo'
 import { PlannedView } from './PlannedView'
 import { PeriodPicker } from '../onboarding/PeriodPicker'
-import type { RecommendationTier, VacationWindow } from '../../types/recommendation.types'
+import type { RecommendationTier } from '../../types/recommendation.types'
 import styles from './DashboardScreen.module.css'
 
 type FilterTab = 'todas' | RecommendationTier
 
-interface DashboardScreenProps {
-  onSelectRecommendation: (r: VacationWindow) => void
-}
-
-export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps) {
+export function DashboardScreen() {
   const {
     preferences,
     resetConfiguration,
@@ -32,8 +28,16 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
 
   const { holidays, loading, fromApi } = useHolidaysApi(year, region)
 
-  // Calculamos recomendaciones con el total disponible para mostrar todas las oportunidades
-  const recommendations = useRecommendations(year, holidays, totalAvailableDays)
+  const allRecommendations = useRecommendations(year, holidays, totalAvailableDays)
+
+  // Solo mostrar oportunidades del mes actual en adelante
+  const recommendations = useMemo(() => {
+    const today = new Date()
+    const monthStart = new Date(today.getFullYear(), today.getMonth(), 1)
+      .toISOString()
+      .slice(0, 10)
+    return allRecommendations.filter(r => r.startDate >= monthStart)
+  }, [allRecommendations])
 
   const calendarDays = useMemo(
     () => buildYearCalendar(year, holidays),
@@ -53,7 +57,6 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
 
   const hasPlannedPeriods = plannedPeriods.length > 0
 
-  // Filtramos según el toggle
   const filteredByDays = filterByDays
     ? recommendations.filter(r => r.vacationDaysRequired <= daysToUse)
     : recommendations
@@ -181,10 +184,7 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
                     <ul className={styles.list}>
                       {filtered.map(r => (
                         <li key={r.id}>
-                          <RecommendationCard
-                            recommendation={r}
-                            onClick={() => onSelectRecommendation(r)}
-                          />
+                          <RecommendationCard recommendation={r} />
                         </li>
                       ))}
                     </ul>
@@ -224,10 +224,7 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
                 <ul className={styles.list} style={{ marginTop: 'var(--space-4)' }}>
                   {recommendations.map(r => (
                     <li key={r.id}>
-                      <RecommendationCard
-                        recommendation={r}
-                        onClick={() => onSelectRecommendation(r)}
-                      />
+                      <RecommendationCard recommendation={r} />
                     </li>
                   ))}
                 </ul>

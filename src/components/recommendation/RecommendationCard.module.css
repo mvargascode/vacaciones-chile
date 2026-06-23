@@ -61,17 +61,134 @@
 .mainHoliday {
     font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
+    margin-bottom: var(--space-3);
 }
 
+/* Footer con toggle + share */
 .footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: var(--space-2);
 }
 
-.cta {
+.toggleBtn {
     font-size: var(--font-size-sm);
     color: var(--color-primary);
     font-weight: var(--font-weight-medium);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.toggleBtn:hover {
+    opacity: 0.7;
+}
+
+/* Acordeón inline */
+.accordion {
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-4);
+    margin-bottom: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+.accordionSection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.accordionTitle {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+/* Lista de feriados */
+.holidayList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.holidayItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background: var(--color-feriado);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-feriado-border);
+}
+
+.holidayName {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-feriado-text);
+}
+
+.holidayDate {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    text-transform: capitalize;
+    margin-top: 2px;
+}
+
+.irrenunciableBadge {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    background: #EEF2FF;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+}
+
+/* Desglose */
+.breakdown {
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+}
+
+.breakdownRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.breakdownRow:last-child {
+    border-bottom: none;
+}
+
+.breakdownLabel {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.breakdownValue {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+.breakdownTotal {
+    background: var(--color-bg-primary);
+}
+
+.breakdownTotal .breakdownLabel {
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+.breakdownTotal .breakdownValue {
+    color: var(--color-primary);
 }
