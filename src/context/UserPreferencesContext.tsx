@@ -3,11 +3,12 @@ import type { ReactNode } from 'react'
 import type { UserPreferences, PlannedPeriod, Sector } from '../types/user.types'
 
 const DEFAULT_PREFERENCES: UserPreferences = {
-  region:         'RM',
-  availableDays:  15,
-  year:           new Date().getFullYear(),
-  plannedPeriods: [],
-  sector:         'privado',   // ← default más común
+  region:             'RM',
+  totalAvailableDays: 15,
+  daysToUse:          15,
+  year:               new Date().getFullYear(),
+  plannedPeriods:     [],
+  sector:             'privado',
 }
 
 const STORAGE_KEY = 'vacaciones-chile:preferences'
@@ -21,19 +22,15 @@ function loadPreferences(): { preferences: UserPreferences; isConfigured: boolea
         isConfigured: true,
       }
     }
-  } catch {
-    // Si hay error de parsing usamos defaults
-  }
-  return {
-    preferences: DEFAULT_PREFERENCES,
-    isConfigured: false,
-  }
+  } catch {}
+  return { preferences: DEFAULT_PREFERENCES, isConfigured: false }
 }
 
 interface UserPreferencesContextType {
   preferences: UserPreferences
   setRegion: (region: string) => void
-  setAvailableDays: (days: number) => void
+  setTotalAvailableDays: (days: number) => void
+  setDaysToUse: (days: number) => void
   setYear: (year: number) => void
   setSector: (sector: Sector) => void
   isConfigured: boolean
@@ -41,7 +38,7 @@ interface UserPreferencesContextType {
   resetConfiguration: () => void
   addPlannedPeriod: (period: PlannedPeriod) => void
   removePlannedPeriod: (id: string) => void
-  updatePlannedPeriod: (id: string, startDate: string, endDate: string) => void  // ← nuevo
+  updatePlannedPeriod: (id: string, startDate: string, endDate: string) => void
 }
 
 const UserPreferencesContext = createContext<UserPreferencesContextType | null>(null)
@@ -61,8 +58,20 @@ export function UserPreferencesProvider({ children }: { children: ReactNode }) {
     setPreferences(prev => ({ ...prev, region }))
   }
 
-  function setAvailableDays(availableDays: number) {
-    setPreferences(prev => ({ ...prev, availableDays }))
+  function setTotalAvailableDays(totalAvailableDays: number) {
+    setPreferences(prev => ({ ...prev, totalAvailableDays }))
+  }
+
+  function setDaysToUse(daysToUse: number) {
+    setPreferences(prev => ({ ...prev, daysToUse }))
+  }
+
+  function setYear(year: number) {
+    setPreferences(prev => ({ ...prev, year }))
+  }
+
+  function setSector(sector: Sector) {
+    setPreferences(prev => ({ ...prev, sector }))
   }
 
   function confirmConfiguration(prefs: UserPreferences) {
@@ -71,56 +80,49 @@ export function UserPreferencesProvider({ children }: { children: ReactNode }) {
   }
 
   function resetConfiguration() {
-  localStorage.removeItem(STORAGE_KEY)
-  setPreferences(DEFAULT_PREFERENCES)
-  setIsConfigured(false)
-}
+    localStorage.removeItem(STORAGE_KEY)
+    setPreferences(DEFAULT_PREFERENCES)
+    setIsConfigured(false)
+  }
 
-function addPlannedPeriod(period: PlannedPeriod) {
-  setPreferences(prev => ({
-    ...prev,
-    plannedPeriods: [...prev.plannedPeriods, period],
-  }))
-}
+  function addPlannedPeriod(period: PlannedPeriod) {
+    setPreferences(prev => ({
+      ...prev,
+      plannedPeriods: [...prev.plannedPeriods, period],
+    }))
+  }
 
-function removePlannedPeriod(id: string) {
-  setPreferences(prev => ({
-    ...prev,
-    plannedPeriods: prev.plannedPeriods.filter(p => p.id !== id),
-  }))
-}
+  function removePlannedPeriod(id: string) {
+    setPreferences(prev => ({
+      ...prev,
+      plannedPeriods: prev.plannedPeriods.filter(p => p.id !== id),
+    }))
+  }
 
-function setSector(sector: Sector) {
-  setPreferences(prev => ({ ...prev, sector }))
-}
-
-function setYear(year: number) {
-  setPreferences(prev => ({ ...prev, year }))
-}
-
-function updatePlannedPeriod(id: string, startDate: string, endDate: string) {
-  setPreferences(prev => ({
-    ...prev,
-    plannedPeriods: prev.plannedPeriods.map(p =>
-      p.id === id ? { ...p, startDate, endDate } : p
-    ),
-  }))
-}
+  function updatePlannedPeriod(id: string, startDate: string, endDate: string) {
+    setPreferences(prev => ({
+      ...prev,
+      plannedPeriods: prev.plannedPeriods.map(p =>
+        p.id === id ? { ...p, startDate, endDate } : p
+      ),
+    }))
+  }
 
   return (
-<UserPreferencesContext.Provider value={{
-  preferences,
-  setRegion,
-  setAvailableDays,
-  setYear,
-  setSector,
-  isConfigured,
-  confirmConfiguration,
-  resetConfiguration,
-  addPlannedPeriod,
-  removePlannedPeriod,
-  updatePlannedPeriod,   // ← nuevo
-}}>
+    <UserPreferencesContext.Provider value={{
+      preferences,
+      setRegion,
+      setTotalAvailableDays,
+      setDaysToUse,
+      setYear,
+      setSector,
+      isConfigured,
+      confirmConfiguration,
+      resetConfiguration,
+      addPlannedPeriod,
+      removePlannedPeriod,
+      updatePlannedPeriod,
+    }}>
       {children}
     </UserPreferencesContext.Provider>
   )

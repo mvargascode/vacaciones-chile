@@ -5,7 +5,8 @@ import styles from './SidebarInfo.module.css'
 
 interface SidebarInfoProps {
   region: string
-  availableDays: number
+  totalAvailableDays: number   // ← reemplaza availableDays
+  daysToUse: number            // ← nuevo
   year: number
   sector: Sector
   totalRecommendations: number
@@ -15,7 +16,8 @@ interface SidebarInfoProps {
 
 export function SidebarInfo({
   region,
-  availableDays,
+  totalAvailableDays,   // ← reemplaza availableDays
+  daysToUse,            // ← nuevo
   year,
   sector,
   totalRecommendations,
@@ -38,9 +40,13 @@ export function SidebarInfo({
           </span>
         </div>
         <div className={styles.configRow}>
-          <span className={styles.configLabel}>Días disponibles</span>
-          <span className={styles.configValue}>{availableDays} días</span>
-        </div>
+  <span className={styles.configLabel}>Días disponibles</span>
+  <span className={styles.configValue}>{totalAvailableDays} días</span>
+</div>
+<div className={styles.configRow}>
+  <span className={styles.configLabel}>Días a usar</span>
+  <span className={styles.configValue}>{daysToUse} días</span>
+</div>
         <div className={styles.configRow}>
           <span className={styles.configLabel}>Año</span>
           <span className={styles.configValue}>{year}</span>

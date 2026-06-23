@@ -5,44 +5,55 @@ import { FlagCL } from '../../assets/FlagCL'
 import { RegionSelector } from './RegionSelector'
 import { SectorSelector } from './SectorSelector'
 import { DaysSelector } from './DaysSelector'
+import { DaysToUseSelector } from './DaysToUseSelector'
 import { YearSelector } from './YearSelector'
 import type { Sector } from '../../types/user.types'
 import styles from './OnboardingScreen.module.css'
 
-type Step = 'region' | 'sector' | 'days' | 'year'
-const STEPS: Step[] = ['region', 'sector', 'days', 'year']
+type Step = 'region' | 'sector' | 'totalDays' | 'daysToUse' | 'year'
+const STEPS: Step[] = ['region', 'sector', 'totalDays', 'daysToUse', 'year']
 
 export function OnboardingScreen() {
   const { preferences, confirmConfiguration } = useUserPreferences()
 
-  const [localRegion, setLocalRegion] = useState(preferences.region)
-  const [localSector, setLocalSector] = useState<Sector>(preferences.sector)
-  const [localDays,   setLocalDays]   = useState(preferences.availableDays)
-  const [localYear,   setLocalYear]   = useState(preferences.year)
-  const [currentStep, setCurrentStep] = useState<Step>('region')
+  const [localRegion,     setLocalRegion]     = useState(preferences.region)
+  const [localSector,     setLocalSector]     = useState<Sector>(preferences.sector)
+  const [localTotalDays,  setLocalTotalDays]  = useState(preferences.totalAvailableDays)
+  const [localDaysToUse,  setLocalDaysToUse]  = useState(preferences.daysToUse)
+  const [localYear,       setLocalYear]       = useState(preferences.year)
+  const [currentStep,     setCurrentStep]     = useState<Step>('region')
 
   const stepIndex  = STEPS.indexOf(currentStep)
   const isLastStep = currentStep === 'year'
 
+  // Cuando cambia el total, ajusta daysToUse si excede
+  function handleTotalDaysChange(days: number) {
+    setLocalTotalDays(days)
+    if (localDaysToUse > days) setLocalDaysToUse(days)
+  }
+
   function handleNext() {
-    if (currentStep === 'region') setCurrentStep('sector')
-    else if (currentStep === 'sector') setCurrentStep('days')
-    else if (currentStep === 'days') setCurrentStep('year')
+    if (currentStep === 'region')    setCurrentStep('sector')
+    else if (currentStep === 'sector')    setCurrentStep('totalDays')
+    else if (currentStep === 'totalDays') setCurrentStep('daysToUse')
+    else if (currentStep === 'daysToUse') setCurrentStep('year')
   }
 
   function handleBack() {
-    if (currentStep === 'sector') setCurrentStep('region')
-    else if (currentStep === 'days') setCurrentStep('sector')
-    else if (currentStep === 'year') setCurrentStep('days')
+    if (currentStep === 'sector')    setCurrentStep('region')
+    else if (currentStep === 'totalDays') setCurrentStep('sector')
+    else if (currentStep === 'daysToUse') setCurrentStep('totalDays')
+    else if (currentStep === 'year')      setCurrentStep('daysToUse')
   }
 
   function handleConfirm() {
     confirmConfiguration({
-      region:         localRegion,
-      sector:         localSector,
-      availableDays:  localDays,
-      year:           localYear,
-      plannedPeriods: preferences.plannedPeriods,
+      region:             localRegion,
+      sector:             localSector,
+      totalAvailableDays: localTotalDays,
+      daysToUse:          localDaysToUse,
+      year:               localYear,
+      plannedPeriods:     preferences.plannedPeriods,
     })
   }
 
@@ -72,13 +83,20 @@ export function OnboardingScreen() {
         {currentStep === 'sector' && (
           <SectorSelector value={localSector} onChange={setLocalSector} />
         )}
-        {currentStep === 'days' && (
-  <DaysSelector
-    value={localDays}
-    onChange={setLocalDays}
-    sector={localSector}   // ← nuevo
-  />
-)}
+        {currentStep === 'totalDays' && (
+          <DaysSelector
+            value={localTotalDays}
+            onChange={handleTotalDaysChange}
+            sector={localSector}
+          />
+        )}
+        {currentStep === 'daysToUse' && (
+          <DaysToUseSelector
+            value={localDaysToUse}
+            totalAvailable={localTotalDays}
+            onChange={setLocalDaysToUse}
+          />
+        )}
         {currentStep === 'year' && (
           <YearSelector value={localYear} onChange={setLocalYear} />
         )}

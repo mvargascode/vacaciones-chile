@@ -28,10 +28,12 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
     updatePlannedPeriod,
   } = useUserPreferences()
 
-  const { region, availableDays, year, plannedPeriods } = preferences
+  const { region, totalAvailableDays, daysToUse, year, plannedPeriods } = preferences
 
   const { holidays, loading, fromApi } = useHolidaysApi(year, region)
-  const recommendations = useRecommendations(year, holidays, availableDays)
+
+  // Calculamos recomendaciones con el total disponible para mostrar todas las oportunidades
+  const recommendations = useRecommendations(year, holidays, totalAvailableDays)
 
   const calendarDays = useMemo(
     () => buildYearCalendar(year, holidays),
@@ -41,20 +43,26 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
   const { analyses, totalUsed } = usePlanner(
     plannedPeriods,
     calendarDays,
-    availableDays,
+    daysToUse,
     preferences.sector
   )
 
-  const [activeTab,   setActiveTab]   = useState<FilterTab>('todas')
-  const [drawerOpen,  setDrawerOpen]  = useState(false)
+  const [activeTab,    setActiveTab]   = useState<FilterTab>('todas')
+  const [drawerOpen,   setDrawerOpen]  = useState(false)
+  const [filterByDays, setFilterByDays] = useState(false)
 
   const hasPlannedPeriods = plannedPeriods.length > 0
 
+  // Filtramos según el toggle
+  const filteredByDays = filterByDays
+    ? recommendations.filter(r => r.vacationDaysRequired <= daysToUse)
+    : recommendations
+
   const counts = {
-    todas:  recommendations.length,
-    oro:    recommendations.filter(r => r.tier === 'oro').length,
-    plata:  recommendations.filter(r => r.tier === 'plata').length,
-    bronce: recommendations.filter(r => r.tier === 'bronce').length,
+    todas:  filteredByDays.length,
+    oro:    filteredByDays.filter(r => r.tier === 'oro').length,
+    plata:  filteredByDays.filter(r => r.tier === 'plata').length,
+    bronce: filteredByDays.filter(r => r.tier === 'bronce').length,
   }
 
   const tabs = [
@@ -65,8 +73,8 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
   ]
 
   const filtered = activeTab === 'todas'
-    ? recommendations
-    : recommendations.filter(r => r.tier === activeTab)
+    ? filteredByDays
+    : filteredByDays.filter(r => r.tier === activeTab)
 
   const emptyMessages: Record<FilterTab, { title: string; description: string }> = {
     todas:  { title: 'Sin oportunidades',       description: 'No encontramos oportunidades para tu configuración.' },
@@ -76,14 +84,14 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
   }
 
   function handleApplySuggestion(periodId: string, newStart: string, newEnd: string) {
-  updatePlannedPeriod(periodId, newStart, newEnd)
-}
+    updatePlannedPeriod(periodId, newStart, newEnd)
+  }
 
   return (
     <div className="app-container animate-fade-in">
       <Header
         title="Vacaciones Chile"
-        subtitle={`${region} · ${availableDays} días disponibles`}
+        subtitle={`${region} · ${daysToUse} de ${totalAvailableDays} días`}
         onSettingsClick={resetConfiguration}
       />
 
@@ -112,7 +120,8 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
           <SidebarSection title="Tu configuración">
             <SidebarInfo
               region={region}
-              availableDays={availableDays}
+              totalAvailableDays={totalAvailableDays}
+              daysToUse={daysToUse}
               year={year}
               sector={preferences.sector}
               totalRecommendations={recommendations.length}
@@ -130,6 +139,22 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
             <>
               <div className={styles.tabsWrapper}>
                 <Tabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
+              </div>
+
+              {/* Toggle ver todas / ver con mis días */}
+              <div className={styles.toggleWrapper}>
+                <button
+                  className={`${styles.toggleBtn} ${!filterByDays ? styles.toggleActive : ''}`}
+                  onClick={() => setFilterByDays(false)}
+                >
+                  Ver todas
+                </button>
+                <button
+                  className={`${styles.toggleBtn} ${filterByDays ? styles.toggleActive : ''}`}
+                  onClick={() => setFilterByDays(true)}
+                >
+                  Con mis {daysToUse} días
+                </button>
               </div>
 
               <div key={activeTab} className={styles.listWrapper}>
@@ -184,7 +209,7 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
 
               <PlannedView
                 analyses={analyses}
-                availableDays={availableDays}
+                availableDays={daysToUse}
                 totalUsed={totalUsed}
                 sector={preferences.sector}
                 onRemovePeriod={removePlannedPeriod}
@@ -223,7 +248,7 @@ export function DashboardScreen({ onSelectRecommendation }: DashboardScreenProps
           periods={plannedPeriods}
           onAddPeriod={addPlannedPeriod}
           onRemovePeriod={removePlannedPeriod}
-          availableDays={availableDays}
+          availableDays={daysToUse}
           usedDays={totalUsed}
           sector={preferences.sector}
         />

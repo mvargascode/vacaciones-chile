@@ -9,8 +9,9 @@ export interface PlannedPeriod {
 
 export interface UserPreferences {
   region: string
-  availableDays: number
+  totalAvailableDays: number   // ← días totales acumulados (antes availableDays)
+  daysToUse: number            // ← días que quiere usar ahora (nuevo)
   year: number
   plannedPeriods: PlannedPeriod[]
-  sector: Sector   // ← nuevo
+  sector: Sector
 }
