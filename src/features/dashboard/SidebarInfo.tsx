@@ -57,6 +57,8 @@ export function SidebarInfo({
         </div>
       </div>
 
+      <div className="ad-slot ad-slot--square">Publicidad · 160×160</div>
+
       <Button variant="secondary" size="sm" fullWidth onClick={onReset}>
         ⚙️ Reconfigurar
       </Button>
