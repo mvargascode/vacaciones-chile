@@ -1,3 +1,5 @@
+import { ShareButton } from '../../components/ui'
+import { buildShareTextPlanned } from '../../services/shareService'
 import type { PeriodAnalysis } from '../../services/plannerService'
 import styles from './PlannedView.module.css'
 
@@ -72,13 +74,19 @@ export function PlannedView({
                   {formatFull(analysis.period.startDate)}
                 </span>
               </div>
-              <button
-                className={styles.removeBtn}
-                onClick={() => onRemovePeriod(analysis.period.id)}
-                aria-label="Eliminar período"
-              >
-                ✕
-              </button>
+              <div className={styles.periodActions}>
+                <ShareButton
+                  getText={() => buildShareTextPlanned(analysis)}
+                  compact={true}
+                />
+                <button
+                  className={styles.removeBtn}
+                  onClick={() => onRemovePeriod(analysis.period.id)}
+                  aria-label="Eliminar período"
+                >
+                  ✕
+                </button>
+              </div>
             </div>
 
             {/* Mensaje wow */}
@@ -155,47 +163,47 @@ export function PlannedView({
             {analysis.suggestions.length > 0 && (
               <div className={styles.suggestions}>
                 {analysis.suggestions.map((s, i) => {
-  const canApply = remaining >= s.workdaysNeeded
-    ? true  // extend_start siempre se puede (mueve el inicio)
-    : (remaining >= s.workdaysNeeded)  // extend_end necesita días disponibles
+                  const canApply = remaining >= s.workdaysNeeded
 
-  return (
-    <div key={i} className={`${styles.suggestion} ${!canApply ? styles.suggestionWarning : ''}`}>
-      <span className={styles.suggestionIcon}>{canApply ? '💡' : '⚠️'}</span>
-      <div className={styles.suggestionBody}>
-        <p className={styles.suggestionText}>{s.description}</p>
-        {canApply ? (
-          <p className={styles.suggestionSaving}>
-            {s.type === 'extend_start'
-              ? `Ahorras ${s.workdaysSaved} día${s.workdaysSaved !== 1 ? 's' : ''} hábil${s.workdaysSaved !== 1 ? 'es' : ''}`
-              : `Necesitas {s.workdaysNeeded} día{s.workdaysNeeded !== 1 ? 's' : ''} hábil{s.workdaysNeeded !== 1 ? 'es' : ''} extra de vacaciones`
-            }
-          </p>
-        ) : (
-          <p className={styles.suggestionWarningText}>
-            Necesitas {s.workdaysNeeded} día{s.workdaysNeeded !== 1 ? 's' : ''} más de vacaciones para incluir este feriado
-          </p>
-        )}
-      </div>
-      {canApply && (
-        <button
-          className={styles.applyBtn}
-          onClick={() => {
-            const newStart = s.type === 'extend_start'
-              ? s.suggestedDate
-              : analysis.period.startDate
-            const newEnd = s.type === 'extend_end'
-              ? s.suggestedDate
-              : analysis.period.endDate
-            onApplySuggestion(analysis.period.id, newStart, newEnd)
-          }}
-        >
-          Aplicar
-        </button>
-      )}
-    </div>
-  )
-})}
+                  return (
+                    <div
+                      key={i}
+                      className={`${styles.suggestion} ${!canApply ? styles.suggestionWarning : ''}`}
+                    >
+                      <span className={styles.suggestionIcon}>
+                        {canApply ? '💡' : '⚠️'}
+                      </span>
+                      <div className={styles.suggestionBody}>
+                        <p className={styles.suggestionText}>{s.description}</p>
+                        {canApply ? (
+                          <p className={styles.suggestionSaving}>
+                            Necesitas {s.workdaysNeeded} día{s.workdaysNeeded !== 1 ? 's' : ''} hábil{s.workdaysNeeded !== 1 ? 'es' : ''} extra de vacaciones
+                          </p>
+                        ) : (
+                          <p className={styles.suggestionWarningText}>
+                            Necesitas {s.workdaysNeeded} día{s.workdaysNeeded !== 1 ? 's' : ''} más de vacaciones para incluir este feriado
+                          </p>
+                        )}
+                      </div>
+                      {canApply && (
+                        <button
+                          className={styles.applyBtn}
+                          onClick={() => {
+                            const newStart = s.type === 'extend_start'
+                              ? s.suggestedDate
+                              : analysis.period.startDate
+                            const newEnd = s.type === 'extend_end'
+                              ? s.suggestedDate
+                              : analysis.period.endDate
+                            onApplySuggestion(analysis.period.id, newStart, newEnd)
+                          }}
+                        >
+                          Aplicar
+                        </button>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
             )}
 

@@ -63,10 +63,15 @@
     color: var(--color-text-secondary);
 }
 
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--space-2);
+}
+
 .cta {
     font-size: var(--font-size-sm);
     color: var(--color-primary);
     font-weight: var(--font-weight-medium);
-    margin-top: var(--space-2);
-    text-align: right;
 }

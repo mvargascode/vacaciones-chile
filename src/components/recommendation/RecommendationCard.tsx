@@ -2,6 +2,8 @@ import type { VacationWindow } from '../../types/recommendation.types'
 import { Card } from '../ui/Card'
 import { Badge } from '../ui/Badge'
 import styles from './RecommendationCard.module.css'
+import { ShareButton } from '../ui'
+import { buildShareTextOpportunity } from '../../services/shareService'
 
 interface RecommendationCardProps {
   recommendation: VacationWindow
@@ -54,6 +56,16 @@ export function RecommendationCard({ recommendation: r, onClick }: Recommendatio
       {onClick && (
         <p className={styles.cta}>Ver detalle →</p>
       )}
+
+      <div className={styles.footer}>
+  {onClick && (
+    <p className={styles.cta}>Ver detalle →</p>
+  )}
+  <ShareButton
+    getText={() => buildShareTextOpportunity(r)}
+    compact={true}
+  />
+</div>
     </Card>
   )
 }
