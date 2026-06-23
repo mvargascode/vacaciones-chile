@@ -98,7 +98,7 @@ export function DashboardScreen() {
       )
       if (i === 1) {
         return [
-          <li key="ad-leaderboard" className={styles.adListItem}>
+          <li key="ad-between" className={styles.adListItem}>
             <div className={`${styles.adSlotBase} ${styles.adLeaderboard}`}>
               Publicidad · 728×90
             </div>
@@ -108,6 +108,14 @@ export function DashboardScreen() {
       }
       return [card]
     })
+  }
+
+  function renderAdAfterList() {
+    return (
+      <div className={`${styles.adSlotBase} ${styles.adLeaderboard} ${styles.adAfterList}`}>
+        Publicidad · 728×90
+      </div>
+    )
   }
 
   return (
@@ -202,9 +210,7 @@ export function DashboardScreen() {
                     <ul className={styles.list}>
                       {renderCardList(filtered)}
                     </ul>
-                    <div className={`${styles.adSlotBase} ${styles.adMobileBanner}`}>
-                      Banner · 320×50
-                    </div>
+                    {renderAdAfterList()}
                   </>
                 )}
               </div>
@@ -243,10 +249,6 @@ export function DashboardScreen() {
               </details>
             </div>
           )}
-        </div>
-
-        <div className={styles.rightCol}>
-          <div className={styles.adSkyscraper}>Publicidad · 160×600</div>
         </div>
       </div>
 

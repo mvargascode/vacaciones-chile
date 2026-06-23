@@ -1,7 +1,6 @@
 .layout {
     display: flex;
     flex: 1;
-    align-items: flex-start;
 }
 
 .main {
@@ -9,39 +8,6 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-}
-
-.rightCol {
-    display: none;
-}
-
-@media (min-width: 1100px) {
-    .rightCol {
-        display: flex;
-        flex-direction: column;
-        width: 160px;
-        min-width: 160px;
-        padding: var(--space-6) var(--space-3);
-        flex-shrink: 0;
-        position: sticky;
-        top: var(--header-height);
-        align-self: flex-start;
-    }
-}
-
-.adSkyscraper {
-    width: 160px;
-    height: 600px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-bg-tertiary);
-    border: 1px dashed var(--color-border-strong);
-    border-radius: var(--radius-md);
-    color: var(--color-text-muted);
-    font-size: var(--font-size-xs);
-    text-align: center;
-    writing-mode: initial;
 }
 
 /* Tabs visibles solo en mobile */
@@ -123,8 +89,7 @@
     height: 90px;
 }
 
-.adMobileBanner {
-    height: 70px;
+.adAfterList {
     margin-top: var(--space-4);
 }
 
