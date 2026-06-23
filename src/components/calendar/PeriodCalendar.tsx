@@ -84,6 +84,13 @@ export function PeriodCalendar({ days }: PeriodCalendarProps) {
                   )}
                 </div>
               ))}
+
+              {/* Celdas vacías para completar la última semana */}
+              {Array.from({
+                length: (7 - ((startOffset + monthDays.length) % 7)) % 7,
+              }).map((_, i) => (
+                <div key={`trailing-${i}`} className={styles.empty} />
+              ))}
             </div>
           </div>
         )

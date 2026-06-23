@@ -19,7 +19,10 @@
 }
 
 .empty {
-    /* celda vacía para alinear */
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-sm);
+    aspect-ratio: 1;
+    opacity: 0.4;
 }
 
 .day {
@@ -58,7 +61,7 @@
 }
 
 .fin_de_semana {
-    background: var(--color-fin-semana);
+    background: var(--color-bg-tertiary);
 }
 
 .fin_de_semana .dayNumber {
