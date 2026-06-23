@@ -7,94 +7,88 @@ interface PeriodCalendarProps {
 
 const DAY_NAMES = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
 
+function toDateStr(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
 function getMonthLabel(dateStr: string): string {
-  const date = new Date(dateStr + 'T00:00:00')
-  return date.toLocaleDateString('es-CL', { month: 'long', year: 'numeric' })
+  return new Date(dateStr + 'T00:00:00').toLocaleDateString('es-CL', { month: 'long', year: 'numeric' })
 }
 
-function getDayNumber(dateStr: string): number {
-  return new Date(dateStr + 'T00:00:00').getDate()
+interface Cell {
+  dateStr: string
+  num: number
+  day: CalendarDay | null
 }
 
-function getMonth(dateStr: string): number {
-  return new Date(dateStr + 'T00:00:00').getMonth()
-}
+function buildWeekRows(days: CalendarDay[]): Cell[][] {
+  if (!days.length) return []
+  const dayMap = new Map(days.map(d => [d.date, d]))
 
-// Agrupa los días por mes para renderizar un mini-calendario por mes
-function groupByMonth(days: CalendarDay[]): CalendarDay[][] {
-  const groups: CalendarDay[][] = []
-  let current: CalendarDay[] = []
-  let currentMonth = -1
+  const first = new Date(days[0].date + 'T00:00:00')
+  const last = new Date(days[days.length - 1].date + 'T00:00:00')
 
-  for (const day of days) {
-    const month = getMonth(day.date)
-    if (month !== currentMonth) {
-      if (current.length > 0) groups.push(current)
-      current = [day]
-      currentMonth = month
-    } else {
-      current.push(day)
+  // Domingo anterior (o igual) al primer día
+  const weekStart = new Date(first)
+  weekStart.setDate(weekStart.getDate() - first.getDay())
+
+  // Sábado siguiente (o igual) al último día
+  const weekEnd = new Date(last)
+  weekEnd.setDate(weekEnd.getDate() + (6 - last.getDay()))
+
+  const rows: Cell[][] = []
+  const cursor = new Date(weekStart)
+
+  while (cursor <= weekEnd) {
+    const row: Cell[] = []
+    for (let i = 0; i < 7; i++) {
+      const dateStr = toDateStr(cursor)
+      row.push({ dateStr, num: cursor.getDate(), day: dayMap.get(dateStr) ?? null })
+      cursor.setDate(cursor.getDate() + 1)
     }
+    rows.push(row)
   }
-  if (current.length > 0) groups.push(current)
-  return groups
+
+  return rows
 }
 
 export function PeriodCalendar({ days }: PeriodCalendarProps) {
-  if (days.length === 0) return null
+  if (!days.length) return null
 
-  const monthGroups = groupByMonth(days)
+  const rows = buildWeekRows(days)
+
+  const startLabel = getMonthLabel(days[0].date)
+  const endLabel = getMonthLabel(days[days.length - 1].date)
+  const monthTitle = startLabel === endLabel ? startLabel : `${startLabel} – ${endLabel}`
 
   return (
     <div className={styles.container}>
-      {monthGroups.map((monthDays, groupIndex) => {
-        const firstDay = new Date(monthDays[0].date + 'T00:00:00')
-        const startOffset = firstDay.getDay()
+      <p className={styles.monthLabel}>{monthTitle}</p>
 
-        return (
-          <div key={groupIndex} className={styles.monthBlock}>
-            {/* Nombre del mes */}
-            <p className={styles.monthLabel}>
-              {getMonthLabel(monthDays[0].date)}
-            </p>
+      <div className={styles.grid}>
+        {DAY_NAMES.map(name => (
+          <div key={name} className={styles.dayName}>{name}</div>
+        ))}
 
-            <div className={styles.grid}>
-              {/* Encabezado días de semana */}
-              {DAY_NAMES.map(name => (
-                <div key={name} className={styles.dayName}>{name}</div>
-              ))}
-
-              {/* Celdas vacías para alinear */}
-              {Array.from({ length: startOffset }).map((_, i) => (
-                <div key={`empty-${i}`} className={styles.empty} />
-              ))}
-
-              {/* Días del mes */}
-              {monthDays.map(day => (
-                <div
-                  key={day.date}
-                  className={`${styles.day} ${styles[day.dayType]}`}
-                  title={day.holiday?.name}
-                >
-                  <span className={styles.dayNumber}>
-                    {getDayNumber(day.date)}
-                  </span>
-                  {day.holiday && (
-                    <span className={styles.holidayDot} />
-                  )}
-                </div>
-              ))}
-
-              {/* Celdas vacías para completar la última semana */}
-              {Array.from({
-                length: (7 - ((startOffset + monthDays.length) % 7)) % 7,
-              }).map((_, i) => (
-                <div key={`trailing-${i}`} className={styles.empty} />
-              ))}
-            </div>
-          </div>
-        )
-      })}
+        {rows.flatMap(row =>
+          row.map(cell =>
+            cell.day ? (
+              <div
+                key={cell.dateStr}
+                className={`${styles.day} ${styles[cell.day.dayType]}`}
+                title={cell.day.holiday?.name}
+              >
+                <span className={styles.dayNumber}>{cell.num}</span>
+                {cell.day.holiday && <span className={styles.holidayDot} />}
+              </div>
+            ) : (
+              <div key={cell.dateStr} className={styles.contextDay}>
+                <span className={styles.dayNumber}>{cell.num}</span>
+              </div>
+            )
+          )
+        )}
+      </div>
 
       {/* Leyenda */}
       <div className={styles.legend}>

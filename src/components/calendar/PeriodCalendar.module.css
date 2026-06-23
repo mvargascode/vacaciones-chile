@@ -4,6 +4,13 @@
     gap: var(--space-4);
 }
 
+.monthLabel {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    text-transform: capitalize;
+}
+
 .grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -18,13 +25,7 @@
     padding: var(--space-1) 0;
 }
 
-.empty {
-    background: var(--color-bg-secondary);
-    border-radius: var(--radius-sm);
-    aspect-ratio: 1;
-    opacity: 0.4;
-}
-
+/* Días del período */
 .day {
     aspect-ratio: 1;
     display: flex;
@@ -40,6 +41,22 @@
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
     line-height: 1;
+}
+
+/* Días fuera del período (contexto visual) */
+.contextDay {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-secondary);
+    opacity: 0.45;
+}
+
+.contextDay .dayNumber {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
 }
 
 /* Tipos de día */
@@ -110,17 +127,4 @@
 .legendDot.fin_de_semana {
     background: var(--color-fin-semana);
     border: 1px solid var(--color-border);
-}
-
-.monthBlock {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-}
-
-.monthLabel {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
-    text-transform: capitalize;
 }
