@@ -46,7 +46,6 @@ function MiniCalendar({ days }: { days: CalendarDay[] }) {
   const dayMap = new Map(days.map(d => [d.date, d]))
 
   const firstDay = new Date(days[0].date + 'T00:00:00')
-  const lastDay = new Date(days[days.length - 1].date + 'T00:00:00')
 
   // Align to Sunday–Saturday weeks
   const weekStart = new Date(firstDay)
