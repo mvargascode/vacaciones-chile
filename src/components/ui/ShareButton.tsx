@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { copyToClipboard, shareToWhatsApp } from '../../services/shareService'
 import styles from './ShareButton.module.css'
 
@@ -8,7 +8,24 @@ interface ShareButtonProps {
 }
 
 export function ShareButton({ getText, compact = false }: ShareButtonProps) {
-  const [state, setState] = useState<'idle' | 'open' | 'copied'>('idle')
+  const [state, setState]   = useState<'idle' | 'open' | 'copied'>('idle')
+  const menuRef             = useRef<HTMLDivElement>(null)
+  const btnRef              = useRef<HTMLButtonElement>(null)
+
+  // Cierra el menú al hacer clic fuera
+  useEffect(() => {
+    if (state !== 'open') return
+    function handleClick(e: MouseEvent) {
+      if (
+        menuRef.current && !menuRef.current.contains(e.target as Node) &&
+        btnRef.current  && !btnRef.current.contains(e.target as Node)
+      ) {
+        setState('idle')
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [state])
 
   function handleCopy() {
     copyToClipboard(getText()).then(() => {
@@ -22,40 +39,38 @@ export function ShareButton({ getText, compact = false }: ShareButtonProps) {
     setState('idle')
   }
 
-  if (state === 'copied') {
-    return (
-      <div className={`${styles.btn} ${styles.copied}`}>
-        ✓ Copiado
-      </div>
-    )
-  }
-
-  if (state === 'open') {
-    return (
-      <div className={styles.menu}>
-        <button className={styles.menuItem} onClick={handleWhatsApp}>
-          <span>💬</span> Compartir por WhatsApp
-        </button>
-        <button className={styles.menuItem} onClick={handleCopy}>
-          <span>📋</span> Copiar texto
-        </button>
-        <button
-          className={`${styles.menuItem} ${styles.cancel}`}
-          onClick={() => setState('idle')}
-        >
-          Cancelar
-        </button>
-      </div>
-    )
-  }
-
   return (
-    <button
-      className={`${styles.btn} ${compact ? styles.compact : ''}`}
-      onClick={() => setState('open')}
-    >
-      <span>📤</span>
-      {!compact && ' Compartir'}
-    </button>
+    <div className={styles.wrapper}>
+      {state === 'copied' ? (
+        <div className={`${styles.btn} ${styles.copied}`}>
+          ✓ Copiado
+        </div>
+      ) : (
+        <button
+          ref={btnRef}
+          className={`${styles.btn} ${compact ? styles.compact : ''} ${state === 'open' ? styles.active : ''}`}
+          onClick={() => setState(state === 'open' ? 'idle' : 'open')}
+          aria-label="Compartir"
+        >
+          <span>📤</span>
+          {!compact && ' Compartir'}
+        </button>
+      )}
+
+      {/* Menú flotante */}
+      {state === 'open' && (
+        <div ref={menuRef} className={styles.popover}>
+          <button className={styles.menuItem} onClick={handleWhatsApp}>
+            <span>💬</span>
+            <span>Compartir por WhatsApp</span>
+          </button>
+          <div className={styles.divider} />
+          <button className={styles.menuItem} onClick={handleCopy}>
+            <span>📋</span>
+            <span>Copiar texto</span>
+          </button>
+        </div>
+      )}
+    </div>
   )
 }
