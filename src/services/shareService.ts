@@ -1,6 +1,73 @@
 import type { VacationWindow } from '../types/recommendation.types'
 import type { PeriodAnalysis } from './plannerService'
 
+// ── Calendar helpers ──────────────────────────────────────────────────────────
+
+function dateFmt(dateStr: string, offsetDays = 0): string {
+  const d = new Date(dateStr + 'T00:00:00')
+  d.setDate(d.getDate() + offsetDays)
+  return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`
+}
+
+function buildIcs(
+  id: string,
+  startDate: string,
+  endDate: string,
+  vacationDays: number,
+  holidays: { name: string }[],
+  totalDays: number,
+): string {
+  const now = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15) + 'Z'
+  const holidayLabel = holidays.length === 1 ? 'feriado incluido' : 'feriados incluidos'
+  const description = [
+    'Vacaciones planificadas con Vacaciones Chile',
+    `• ${vacationDays} días hábiles solicitados`,
+    `• ${holidays.length} ${holidayLabel} (${holidays.map(h => h.name).join(', ')})`,
+    `• ${totalDays} días de descanso en total`,
+  ].join('\\n')
+  return [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Vacaciones Chile//ES',
+    'BEGIN:VEVENT',
+    `UID:${id}@vacaciones-chile`,
+    `DTSTAMP:${now}`,
+    `DTSTART;VALUE=DATE:${dateFmt(startDate)}`,
+    `DTEND;VALUE=DATE:${dateFmt(endDate, 1)}`,
+    'SUMMARY:Vacaciones 🏖️',
+    `DESCRIPTION:${description}`,
+    'STATUS:CONFIRMED',
+    'TRANSP:OPAQUE',
+    'X-MICROSOFT-CDO-BUSYSTATUS:OOF',
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ].join('\r\n')
+}
+
+export function buildGCalUrlOpportunity(r: VacationWindow): string {
+  const title = encodeURIComponent(`Vacaciones (${r.holidays.map(h => h.name).join(' + ')})`)
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dateFmt(r.startDate)}/${dateFmt(r.endDate, 1)}`
+}
+
+export function buildGCalUrlPlanned(a: PeriodAnalysis): string {
+  const title = encodeURIComponent('Vacaciones 🏖️')
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dateFmt(a.period.startDate)}/${dateFmt(a.period.endDate, 1)}`
+}
+
+export function buildIcsOpportunity(r: VacationWindow): { content: string; filename: string } {
+  return {
+    content: buildIcs(r.id, r.startDate, r.endDate, r.vacationDaysRequired, r.holidays, r.totalDaysOff),
+    filename: `vacaciones-${r.startDate}.ics`,
+  }
+}
+
+export function buildIcsPlanned(a: PeriodAnalysis): { content: string; filename: string } {
+  return {
+    content: buildIcs(a.period.id, a.period.startDate, a.period.endDate, a.workdaysUsed, a.holidaysInside, a.totalDays),
+    filename: `vacaciones-${a.period.startDate}.ics`,
+  }
+}
+
 const APP_URL = 'https://vacaciones-chile.vercel.app'
 
 function formatShortDate(dateStr: string): string {

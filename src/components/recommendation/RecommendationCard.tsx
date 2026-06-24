@@ -1,10 +1,14 @@
-import { IconConfetti, IconCalendarPlus } from '@tabler/icons-react'
+import { IconConfetti } from '@tabler/icons-react'
 import type { VacationWindow } from '../../types/recommendation.types'
 import { Card } from '../ui/Card'
 import { Badge } from '../ui/Badge'
 import styles from './RecommendationCard.module.css'
 import { ShareButton } from '../ui'
-import { buildShareTextOpportunity } from '../../services/shareService'
+import {
+  buildShareTextOpportunity,
+  buildGCalUrlOpportunity,
+  buildIcsOpportunity,
+} from '../../services/shareService'
 
 interface RecommendationCardProps {
   recommendation: VacationWindow
@@ -28,57 +32,6 @@ function buildSummaryText(r: VacationWindow): string {
     ? dates[0]
     : dates.slice(0, -1).join(', ') + ' y ' + dates[dates.length - 1]
   return `Si pides vacaciones del ${start} al ${end}, descansas ${r.totalDaysOff} días seguidos gastando solo ${r.vacationDaysRequired} días de vacaciones. ${article} ${datesStr} ${verb} 🎉`
-}
-
-function buildGCalUrl(r: VacationWindow): string {
-  const startFmt = r.startDate.replace(/-/g, '')
-  const d = new Date(r.endDate + 'T00:00:00')
-  d.setDate(d.getDate() + 1)
-  const endFmt = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`
-  const title = encodeURIComponent(`Vacaciones (${r.holidays.map(h => h.name).join(' + ')})`)
-  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startFmt}/${endFmt}`
-}
-
-function buildIcsContent(r: VacationWindow): string {
-  const startFmt = r.startDate.replace(/-/g, '')
-  const d = new Date(r.endDate + 'T00:00:00')
-  d.setDate(d.getDate() + 1)
-  const endFmt = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`
-  const now = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15) + 'Z'
-  const holidayLabel = r.holidays.length === 1 ? 'feriado incluido' : 'feriados incluidos'
-  const description = [
-    'Vacaciones planificadas con Vacaciones Chile',
-    `• ${r.vacationDaysRequired} días hábiles solicitados`,
-    `• ${r.holidays.length} ${holidayLabel} (${r.holidays.map(h => h.name).join(', ')})`,
-    `• ${r.totalDaysOff} días de descanso en total`,
-  ].join('\\n')
-  return [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//Vacaciones Chile//ES',
-    'BEGIN:VEVENT',
-    `UID:${r.id}@vacaciones-chile`,
-    `DTSTAMP:${now}`,
-    `DTSTART;VALUE=DATE:${startFmt}`,
-    `DTEND;VALUE=DATE:${endFmt}`,
-    'SUMMARY:Vacaciones 🏖️',
-    `DESCRIPTION:${description}`,
-    'STATUS:CONFIRMED',
-    'TRANSP:OPAQUE',
-    'X-MICROSOFT-CDO-BUSYSTATUS:OOF',
-    'END:VEVENT',
-    'END:VCALENDAR',
-  ].join('\r\n')
-}
-
-function downloadIcs(r: VacationWindow): void {
-  const blob = new Blob([buildIcsContent(r)], { type: 'text/calendar;charset=utf-8' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = `vacaciones-${r.startDate}.ics`
-  a.click()
-  URL.revokeObjectURL(url)
 }
 
 export function RecommendationCard({ recommendation: r }: RecommendationCardProps) {
@@ -121,28 +74,14 @@ export function RecommendationCard({ recommendation: r }: RecommendationCardProp
         <span className={styles.holidayName}>{r.holidays.map(h => h.name).join(' + ')}</span>
       </div>
 
-      {/* Resumen + acciones */}
+      {/* Resumen + compartir */}
       <div className={styles.accordion}>
         <p className={styles.summaryText}>{buildSummaryText(r)}</p>
-
-        <div className={styles.actionRow}>
-          <a
-            href={buildGCalUrl(r)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.gcalBtn}
-          >
-            <IconCalendarPlus size={16} stroke={1.5} />
-            Google Calendar
-          </a>
-          <button
-            className={styles.icsBtn}
-            onClick={() => downloadIcs(r)}
-          >
-            Apple Calendar
-          </button>
-          <ShareButton getText={() => buildShareTextOpportunity(r)} />
-        </div>
+        <ShareButton
+          getText={() => buildShareTextOpportunity(r)}
+          gcalUrl={buildGCalUrlOpportunity(r)}
+          getIcs={() => buildIcsOpportunity(r)}
+        />
       </div>
     </Card>
   )

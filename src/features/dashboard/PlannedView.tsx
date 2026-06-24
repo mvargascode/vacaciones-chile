@@ -1,5 +1,5 @@
 import { ShareButton } from '../../components/ui'
-import { buildShareTextPlanned } from '../../services/shareService'
+import { buildShareTextPlanned, buildGCalUrlPlanned, buildIcsPlanned } from '../../services/shareService'
 import type { PeriodAnalysis } from '../../services/plannerService'
 import styles from './PlannedView.module.css'
 
@@ -77,6 +77,8 @@ export function PlannedView({
               <div className={styles.periodActions}>
                 <ShareButton
                   getText={() => buildShareTextPlanned(analysis)}
+                  gcalUrl={buildGCalUrlPlanned(analysis)}
+                  getIcs={() => buildIcsPlanned(analysis)}
                   compact={true}
                 />
                 <button

@@ -5,14 +5,26 @@ import styles from './ShareButton.module.css'
 interface ShareButtonProps {
   getText: () => string
   compact?: boolean
+  gcalUrl?: string
+  getIcs?: () => { content: string; filename: string }
 }
 
-export function ShareButton({ getText, compact = false }: ShareButtonProps) {
+function downloadIcs(getIcs: () => { content: string; filename: string }): void {
+  const { content, filename } = getIcs()
+  const blob = new Blob([content], { type: 'text/calendar;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
+export function ShareButton({ getText, compact = false, gcalUrl, getIcs }: ShareButtonProps) {
   const [state, setState]   = useState<'idle' | 'open' | 'copied'>('idle')
   const menuRef             = useRef<HTMLDivElement>(null)
   const btnRef              = useRef<HTMLButtonElement>(null)
 
-  // Cierra el menú al hacer clic fuera
   useEffect(() => {
     if (state !== 'open') return
     function handleClick(e: MouseEvent) {
@@ -39,6 +51,13 @@ export function ShareButton({ getText, compact = false }: ShareButtonProps) {
     setState('idle')
   }
 
+  function handleIcs() {
+    if (getIcs) downloadIcs(getIcs)
+    setState('idle')
+  }
+
+  const hasCalendarOptions = !!(gcalUrl || getIcs)
+
   return (
     <div className={styles.wrapper}>
       {state === 'copied' ? (
@@ -57,9 +76,27 @@ export function ShareButton({ getText, compact = false }: ShareButtonProps) {
         </button>
       )}
 
-      {/* Menú flotante */}
       {state === 'open' && (
         <div ref={menuRef} className={styles.popover}>
+          {gcalUrl && (
+            <a
+              className={styles.menuItem}
+              href={gcalUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setState('idle')}
+            >
+              <span>📅</span>
+              <span>Google Calendar</span>
+            </a>
+          )}
+          {getIcs && (
+            <button className={styles.menuItem} onClick={handleIcs}>
+              <span>🍎</span>
+              <span>Apple Calendar</span>
+            </button>
+          )}
+          {hasCalendarOptions && <div className={styles.divider} />}
           <button className={styles.menuItem} onClick={handleWhatsApp}>
             <span>💬</span>
             <span>Compartir por WhatsApp</span>
