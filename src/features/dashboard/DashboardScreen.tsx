@@ -105,7 +105,8 @@ export function DashboardScreen() {
         return [
           <li key="ad-between">
             <div className={`${styles.adSlotBase} ${styles.adLeaderboard}`}>
-              Publicidad · 728×90
+              <span className={styles.adLabelDesktop}>Publicidad · 728×90</span>
+              <span className={styles.adLabelMobile}>Publicidad · 320×50</span>
             </div>
           </li>,
           card,
@@ -118,7 +119,8 @@ export function DashboardScreen() {
   function renderAdAfterList() {
     return (
       <div className={`${styles.adSlotBase} ${styles.adLeaderboard} ${styles.adAfterList}`}>
-        Publicidad · 728×90
+        <span className={styles.adLabelDesktop}>Publicidad · 728×90</span>
+        <span className={styles.adLabelMobile}>Publicidad · 320×50</span>
       </div>
     )
   }

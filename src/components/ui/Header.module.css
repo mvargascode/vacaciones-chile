@@ -81,3 +81,23 @@
 .settingsBtn:hover {
     background: rgba(255, 255, 255, 0.22);
 }
+
+@media (max-width: 767px) {
+    .content {
+        padding: 0 var(--space-3);
+    }
+
+    .right {
+        gap: var(--space-1);
+    }
+
+    .year {
+        display: none;
+    }
+
+    .themeBtn,
+    .settingsBtn {
+        width: 28px;
+        height: 28px;
+    }
+}
