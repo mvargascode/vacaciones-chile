@@ -39,6 +39,48 @@ function buildGCalUrl(r: VacationWindow): string {
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startFmt}/${endFmt}`
 }
 
+function buildIcsContent(r: VacationWindow): string {
+  const startFmt = r.startDate.replace(/-/g, '')
+  const d = new Date(r.endDate + 'T00:00:00')
+  d.setDate(d.getDate() + 1)
+  const endFmt = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`
+  const now = new Date().toISOString().replace(/[-:.]/g, '').slice(0, 15) + 'Z'
+  const holidayLabel = r.holidays.length === 1 ? 'feriado incluido' : 'feriados incluidos'
+  const description = [
+    'Vacaciones planificadas con Vacaciones Chile',
+    `• ${r.vacationDaysRequired} días hábiles solicitados`,
+    `• ${r.holidays.length} ${holidayLabel} (${r.holidays.map(h => h.name).join(', ')})`,
+    `• ${r.totalDaysOff} días de descanso en total`,
+  ].join('\\n')
+  return [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Vacaciones Chile//ES',
+    'BEGIN:VEVENT',
+    `UID:${r.id}@vacaciones-chile`,
+    `DTSTAMP:${now}`,
+    `DTSTART;VALUE=DATE:${startFmt}`,
+    `DTEND;VALUE=DATE:${endFmt}`,
+    'SUMMARY:Vacaciones 🏖️',
+    `DESCRIPTION:${description}`,
+    'STATUS:CONFIRMED',
+    'TRANSP:OPAQUE',
+    'X-MICROSOFT-CDO-BUSYSTATUS:OOF',
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ].join('\r\n')
+}
+
+function downloadIcs(r: VacationWindow): void {
+  const blob = new Blob([buildIcsContent(r)], { type: 'text/calendar;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `vacaciones-${r.startDate}.ics`
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
 export function RecommendationCard({ recommendation: r }: RecommendationCardProps) {
   return (
     <Card accent={r.tier}>
@@ -91,8 +133,14 @@ export function RecommendationCard({ recommendation: r }: RecommendationCardProp
             className={styles.gcalBtn}
           >
             <IconCalendarPlus size={16} stroke={1.5} />
-            Exportar a Google Calendar
+            Google Calendar
           </a>
+          <button
+            className={styles.icsBtn}
+            onClick={() => downloadIcs(r)}
+          >
+            Apple Calendar
+          </button>
           <ShareButton getText={() => buildShareTextOpportunity(r)} />
         </div>
       </div>
