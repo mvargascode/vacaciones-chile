@@ -110,45 +110,6 @@
     border-left: 3px solid var(--color-primary);
 }
 
-/* Chips de desglose */
-.chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    align-items: center;
-}
-
-.chip {
-    display: inline-flex;
-    align-items: center;
-    padding: var(--space-1) var(--space-3);
-    border-radius: 999px;
-    font-size: var(--font-size-xs);
-    font-weight: var(--font-weight-medium);
-    white-space: nowrap;
-}
-
-.chipTotal {
-    background: #EFF6FF;
-    color: #1D4ED8;
-}
-
-.chipHoliday {
-    background: #F0FDF4;
-    color: #15803D;
-}
-
-.chipWeekend {
-    background: var(--color-bg-secondary);
-    color: var(--color-text-secondary);
-}
-
-.chipResult {
-    background: #EEF2FF;
-    color: var(--color-primary);
-    font-weight: var(--font-weight-bold);
-}
-
 /* Fila de acciones */
 .actionRow {
     display: flex;

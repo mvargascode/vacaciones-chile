@@ -9,6 +9,7 @@ import { buildShareTextOpportunity } from '../../services/shareService'
 
 interface RecommendationCardProps {
   recommendation: VacationWindow
+  onExpandChange?: (expanded: boolean) => void
 }
 
 function formatShortDate(dateStr: string): string {
@@ -40,10 +41,14 @@ function buildGCalUrl(r: VacationWindow): string {
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startFmt}/${endFmt}`
 }
 
-export function RecommendationCard({ recommendation: r }: RecommendationCardProps) {
+export function RecommendationCard({ recommendation: r, onExpandChange }: RecommendationCardProps) {
   const [expanded, setExpanded] = useState(false)
-  const feriados = r.days.filter(d => d.vacationDayType === 'inhabil_feriado').length
-  const finesDesemana = r.days.filter(d => d.vacationDayType === 'inhabil_domingo').length
+
+  function toggle() {
+    const next = !expanded
+    setExpanded(next)
+    onExpandChange?.(next)
+  }
 
   return (
     <Card accent={r.tier}>
@@ -89,13 +94,6 @@ export function RecommendationCard({ recommendation: r }: RecommendationCardProp
         <div className={styles.accordion}>
           <p className={styles.summaryText}>{buildSummaryText(r)}</p>
 
-          <div className={styles.chips}>
-            <span className={`${styles.chip} ${styles.chipTotal}`}>{r.totalDaysOff} días corridos</span>
-            <span className={`${styles.chip} ${styles.chipHoliday}`}>−{feriados} {feriados === 1 ? 'feriado' : 'feriados'}</span>
-            <span className={`${styles.chip} ${styles.chipWeekend}`}>−{finesDesemana} {finesDesemana === 1 ? 'fin de semana' : 'fines de semana'}</span>
-            <span className={`${styles.chip} ${styles.chipResult}`}>= {r.vacationDaysRequired} días a pedir</span>
-          </div>
-
           <div className={styles.actionRow}>
             <a
               href={buildGCalUrl(r)}
@@ -113,7 +111,7 @@ export function RecommendationCard({ recommendation: r }: RecommendationCardProp
 
       {/* Footer */}
       <div className={styles.footer}>
-        <button className={styles.detailBtn} onClick={() => setExpanded(e => !e)}>
+        <button className={styles.detailBtn} onClick={toggle}>
           {expanded
             ? <><IconChevronUp size={15} stroke={2} /> Ocultar detalle</>
             : <><IconChevronDown size={15} stroke={2} /> Ver detalle</>
