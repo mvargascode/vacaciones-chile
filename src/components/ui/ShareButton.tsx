@@ -19,27 +19,11 @@ function triggerDownload(content: string, filename: string): void {
   URL.revokeObjectURL(url)
 }
 
-async function openIcs(getIcs: () => { content: string; filename: string }): Promise<void> {
-  const { content, filename } = getIcs()
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
-  if (isIOS && navigator.canShare) {
-    const file = new File([content], filename, { type: 'text/calendar' })
-    if (navigator.canShare({ files: [file] })) {
-      try {
-        await navigator.share({ files: [file] })
-        return
-      } catch {
-        // user cancelled or share failed — fall through to download
-      }
-    }
-  }
-  triggerDownload(content, filename)
-}
-
 export function ShareButton({ getText, compact = false, gcalUrl, getIcs }: ShareButtonProps) {
-  const [state, setState]   = useState<'idle' | 'open' | 'copied'>('idle')
-  const menuRef             = useRef<HTMLDivElement>(null)
-  const btnRef              = useRef<HTMLButtonElement>(null)
+  const [state, setState]       = useState<'idle' | 'open' | 'copied'>('idle')
+  const [showHint, setShowHint] = useState(false)
+  const menuRef                 = useRef<HTMLDivElement>(null)
+  const btnRef                  = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     if (state !== 'open') return
@@ -67,66 +51,88 @@ export function ShareButton({ getText, compact = false, gcalUrl, getIcs }: Share
     setState('idle')
   }
 
-  function handleIcs() {
-    if (getIcs) openIcs(getIcs)
+  async function handleIcs() {
+    if (!getIcs) return
     setState('idle')
+    const { content, filename } = getIcs()
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    if (isIOS && navigator.canShare) {
+      const file = new File([content], filename, { type: 'text/calendar' })
+      if (navigator.canShare({ files: [file] })) {
+        setShowHint(true)
+        await new Promise<void>(resolve => setTimeout(resolve, 500))
+        try {
+          await navigator.share({ files: [file] })
+        } catch {
+          // cancelled or failed — fall through to download
+          triggerDownload(content, filename)
+        }
+        setShowHint(false)
+        return
+      }
+    }
+    triggerDownload(content, filename)
   }
 
   const hasCalendarOptions = !!(gcalUrl || getIcs)
 
   return (
-    <div className={styles.wrapper}>
-      {state === 'copied' ? (
-        <div className={`${styles.btn} ${styles.copied}`}>
-          ✓ Copiado
+    <>
+      {showHint && (
+        <div className={styles.iosHint}>
+          En el menú que aparece, desliza las apps hacia la derecha y toca &ldquo;Calendario&rdquo; para agregarlo
         </div>
-      ) : (
-        <button
-          ref={btnRef}
-          className={`${styles.btn} ${compact ? styles.compact : ''} ${state === 'open' ? styles.active : ''}`}
-          onClick={() => setState(state === 'open' ? 'idle' : 'open')}
-          aria-label="Compartir"
-        >
-          <span>📤</span>
-          {!compact && ' Compartir'}
-        </button>
       )}
+      <div className={styles.wrapper}>
+        {state === 'copied' ? (
+          <div className={`${styles.btn} ${styles.copied}`}>
+            ✓ Copiado
+          </div>
+        ) : (
+          <button
+            ref={btnRef}
+            className={`${styles.btn} ${compact ? styles.compact : ''} ${state === 'open' ? styles.active : ''}`}
+            onClick={() => setState(state === 'open' ? 'idle' : 'open')}
+            aria-label="Compartir"
+          >
+            <span>📤</span>
+            {!compact && ' Compartir'}
+          </button>
+        )}
 
-      {state === 'open' && (
-        <div ref={menuRef} className={styles.popover}>
-          {gcalUrl && (
-            <a
-              className={styles.menuItem}
-              href={gcalUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setState('idle')}
-            >
-              <span>📅</span>
-              <span>Google Calendar</span>
-            </a>
-          )}
-          {getIcs && (
-            <button className={styles.menuItem} onClick={handleIcs}>
-              <span>🍎</span>
-              <div className={styles.menuItemInner}>
+        {state === 'open' && (
+          <div ref={menuRef} className={styles.popover}>
+            {gcalUrl && (
+              <a
+                className={styles.menuItem}
+                href={gcalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setState('idle')}
+              >
+                <span>📅</span>
+                <span>Google Calendar</span>
+              </a>
+            )}
+            {getIcs && (
+              <button className={styles.menuItem} onClick={handleIcs}>
+                <span>🍎</span>
                 <span>Apple Calendar</span>
-                <span className={styles.menuHint}>Descarga el .ics y ábrelo para agregar</span>
-              </div>
+              </button>
+            )}
+            {hasCalendarOptions && <div className={styles.divider} />}
+            <button className={styles.menuItem} onClick={handleWhatsApp}>
+              <span>💬</span>
+              <span>Compartir por WhatsApp</span>
             </button>
-          )}
-          {hasCalendarOptions && <div className={styles.divider} />}
-          <button className={styles.menuItem} onClick={handleWhatsApp}>
-            <span>💬</span>
-            <span>Compartir por WhatsApp</span>
-          </button>
-          <div className={styles.divider} />
-          <button className={styles.menuItem} onClick={handleCopy}>
-            <span>📋</span>
-            <span>Copiar texto</span>
-          </button>
-        </div>
-      )}
-    </div>
+            <div className={styles.divider} />
+            <button className={styles.menuItem} onClick={handleCopy}>
+              <span>📋</span>
+              <span>Copiar texto</span>
+            </button>
+          </div>
+        )}
+      </div>
+    </>
   )
 }
