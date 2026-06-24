@@ -194,7 +194,8 @@
 }
 
 .applyCalc {
-    align-self: flex-start;
+    align-self: center;
+    text-align: center;
     background: none;
     border: none;
     padding: 0;
