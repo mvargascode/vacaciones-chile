@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { IconSun, IconMoon } from '@tabler/icons-react'
+import { useTheme } from '../../hooks/useTheme'
 import { useUserPreferences } from '../../hooks/useUserPreferences'
 import { Button } from '../../components/ui'
 import { FlagCL } from '../../assets/FlagCL'
@@ -14,6 +16,7 @@ type Step = 'region' | 'sector' | 'totalDays' | 'daysToUse' | 'year'
 const STEPS: Step[] = ['region', 'sector', 'totalDays', 'daysToUse', 'year']
 
 export function OnboardingScreen() {
+  const { theme, toggleTheme } = useTheme()
   const { preferences, confirmConfiguration } = useUserPreferences()
 
   const [localRegion,       setLocalRegion]       = useState(preferences.region)
@@ -60,6 +63,9 @@ export function OnboardingScreen() {
 
   return (
     <div className={`${styles.screen} animate-fade-in`}>
+      <button className={styles.themeBtn} onClick={toggleTheme} aria-label="Cambiar tema">
+        {theme === 'dark' ? <IconSun size={18} /> : <IconMoon size={18} />}
+      </button>
       <div className={styles.header}>
         <span className={styles.logo}>
           <FlagCL size={64} />

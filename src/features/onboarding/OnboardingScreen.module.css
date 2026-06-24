@@ -1,9 +1,31 @@
 .screen {
+    position: relative;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     padding: var(--space-6) var(--space-4);
     gap: var(--space-6);
+}
+
+.themeBtn {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.themeBtn:hover {
+    color: var(--color-text-primary);
+    background: var(--color-bg-tertiary);
 }
 
 .header {
