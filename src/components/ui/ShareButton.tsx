@@ -11,6 +11,10 @@ interface ShareButtonProps {
 
 function downloadIcs(getIcs: () => { content: string; filename: string }): void {
   const { content, filename } = getIcs()
+  if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+    window.location.href = 'data:text/calendar;charset=utf8,' + encodeURIComponent(content)
+    return
+  }
   const blob = new Blob([content], { type: 'text/calendar;charset=utf-8' })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
