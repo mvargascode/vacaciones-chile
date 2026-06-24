@@ -1,9 +1,8 @@
 import { useState } from 'react'
-import { IconConfetti, IconChevronDown, IconChevronUp, IconSquare, IconCalendarPlus } from '@tabler/icons-react'
+import { IconConfetti, IconChevronDown, IconChevronUp, IconCalendarPlus } from '@tabler/icons-react'
 import type { VacationWindow } from '../../types/recommendation.types'
 import { Card } from '../ui/Card'
 import { Badge } from '../ui/Badge'
-import { PeriodCalendar } from '../calendar/PeriodCalendar'
 import styles from './RecommendationCard.module.css'
 import { ShareButton } from '../ui'
 import { buildShareTextOpportunity } from '../../services/shareService'
@@ -41,14 +40,10 @@ function buildGCalUrl(r: VacationWindow): string {
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startFmt}/${endFmt}`
 }
 
-const CHECKLIST = [
-  'Avisar a tu jefe o equipo',
-  'Bloquear el período en tu calendario',
-  'Coordinar con familia o compañeros de viaje',
-]
-
 export function RecommendationCard({ recommendation: r }: RecommendationCardProps) {
   const [expanded, setExpanded] = useState(false)
+  const feriados = r.days.filter(d => d.vacationDayType === 'inhabil_feriado').length
+  const finesDesemana = r.days.filter(d => d.vacationDayType === 'inhabil_domingo').length
 
   return (
     <Card accent={r.tier}>
@@ -92,20 +87,16 @@ export function RecommendationCard({ recommendation: r }: RecommendationCardProp
       {/* Detalle expandido */}
       {expanded && (
         <div className={styles.accordion}>
-          {/* Resumen en texto natural */}
           <p className={styles.summaryText}>{buildSummaryText(r)}</p>
 
-          {/* Calendario */}
-          <PeriodCalendar days={r.days} />
+          <div className={styles.chips}>
+            <span className={`${styles.chip} ${styles.chipTotal}`}>{r.totalDaysOff} días corridos</span>
+            <span className={`${styles.chip} ${styles.chipHoliday}`}>−{feriados} {feriados === 1 ? 'feriado' : 'feriados'}</span>
+            <span className={`${styles.chip} ${styles.chipWeekend}`}>−{finesDesemana} {finesDesemana === 1 ? 'fin de semana' : 'fines de semana'}</span>
+            <span className={`${styles.chip} ${styles.chipResult}`}>= {r.vacationDaysRequired} días a pedir</span>
+          </div>
 
-          {/* Checklist de acción */}
-          <div className={styles.checklist}>
-            {CHECKLIST.map(item => (
-              <div key={item} className={styles.checkItem}>
-                <IconSquare size={16} stroke={1.5} className={styles.checkIcon} />
-                <span>{item}</span>
-              </div>
-            ))}
+          <div className={styles.actionRow}>
             <a
               href={buildGCalUrl(r)}
               target="_blank"
@@ -115,6 +106,7 @@ export function RecommendationCard({ recommendation: r }: RecommendationCardProp
               <IconCalendarPlus size={16} stroke={1.5} />
               Exportar a Google Calendar
             </a>
+            <ShareButton getText={() => buildShareTextOpportunity(r)} />
           </div>
         </div>
       )}
@@ -127,7 +119,6 @@ export function RecommendationCard({ recommendation: r }: RecommendationCardProp
             : <><IconChevronDown size={15} stroke={2} /> Ver detalle</>
           }
         </button>
-        <ShareButton getText={() => buildShareTextOpportunity(r)} compact={true} />
       </div>
     </Card>
   )

@@ -110,33 +110,59 @@
     border-left: 3px solid var(--color-primary);
 }
 
-/* Checklist de acción */
-.checklist {
+/* Chips de desglose */
+.chips {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: var(--space-2);
+    align-items: center;
 }
 
-.checkItem {
-    display: flex;
+.chip {
+    display: inline-flex;
     align-items: center;
-    gap: var(--space-2);
-    font-size: var(--font-size-sm);
+    padding: var(--space-1) var(--space-3);
+    border-radius: 999px;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    white-space: nowrap;
+}
+
+.chipTotal {
+    background: #EFF6FF;
+    color: #1D4ED8;
+}
+
+.chipHoliday {
+    background: #F0FDF4;
+    color: #15803D;
+}
+
+.chipWeekend {
+    background: var(--color-bg-secondary);
     color: var(--color-text-secondary);
 }
 
-.checkIcon {
-    color: var(--color-text-muted);
-    flex-shrink: 0;
+.chipResult {
+    background: #EEF2FF;
+    color: var(--color-primary);
+    font-weight: var(--font-weight-bold);
+}
+
+/* Fila de acciones */
+.actionRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
 }
 
 .gcalBtn {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: var(--space-2);
-    margin-top: var(--space-1);
-    padding: var(--space-3) var(--space-4);
+    padding: var(--space-2) var(--space-3);
     background: var(--color-primary);
     color: #ffffff;
     font-size: var(--font-size-sm);
