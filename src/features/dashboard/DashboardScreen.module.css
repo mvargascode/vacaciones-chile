@@ -60,7 +60,6 @@
 /* Fila card + slot inline */
 .cardRow {
     display: flex;
-    align-items: flex-start;
     gap: var(--space-4);
 }
 
@@ -96,9 +95,7 @@
     display: none;
     width: 300px;
     min-width: 300px;
-    height: 250px;
     flex-shrink: 0;
-    align-self: flex-start;
 }
 
 @media (min-width: 1100px) {
