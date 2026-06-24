@@ -137,30 +137,3 @@
     opacity: 0.85;
 }
 
-/* Footer */
-.footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-2);
-    border-top: 1px solid var(--color-border);
-    padding-top: var(--space-3);
-}
-
-.detailBtn {
-    display: flex;
-    align-items: center;
-    gap: var(--space-1);
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-primary);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    transition: opacity var(--transition-fast);
-}
-
-.detailBtn:hover {
-    opacity: 0.7;
-}

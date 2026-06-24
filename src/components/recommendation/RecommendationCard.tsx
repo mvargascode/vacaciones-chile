@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { IconConfetti, IconChevronDown, IconChevronUp, IconCalendarPlus } from '@tabler/icons-react'
+import { IconConfetti, IconCalendarPlus } from '@tabler/icons-react'
 import type { VacationWindow } from '../../types/recommendation.types'
 import { Card } from '../ui/Card'
 import { Badge } from '../ui/Badge'
@@ -9,7 +8,6 @@ import { buildShareTextOpportunity } from '../../services/shareService'
 
 interface RecommendationCardProps {
   recommendation: VacationWindow
-  onExpandChange?: (expanded: boolean) => void
 }
 
 function formatShortDate(dateStr: string): string {
@@ -41,15 +39,7 @@ function buildGCalUrl(r: VacationWindow): string {
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startFmt}/${endFmt}`
 }
 
-export function RecommendationCard({ recommendation: r, onExpandChange }: RecommendationCardProps) {
-  const [expanded, setExpanded] = useState(false)
-
-  function toggle() {
-    const next = !expanded
-    setExpanded(next)
-    onExpandChange?.(next)
-  }
-
+export function RecommendationCard({ recommendation: r }: RecommendationCardProps) {
   return (
     <Card accent={r.tier}>
       {/* Tier + eficiencia */}
@@ -89,34 +79,22 @@ export function RecommendationCard({ recommendation: r, onExpandChange }: Recomm
         <span className={styles.holidayName}>{r.holidays.map(h => h.name).join(' + ')}</span>
       </div>
 
-      {/* Detalle expandido */}
-      {expanded && (
-        <div className={styles.accordion}>
-          <p className={styles.summaryText}>{buildSummaryText(r)}</p>
+      {/* Resumen + acciones */}
+      <div className={styles.accordion}>
+        <p className={styles.summaryText}>{buildSummaryText(r)}</p>
 
-          <div className={styles.actionRow}>
-            <a
-              href={buildGCalUrl(r)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.gcalBtn}
-            >
-              <IconCalendarPlus size={16} stroke={1.5} />
-              Exportar a Google Calendar
-            </a>
-            <ShareButton getText={() => buildShareTextOpportunity(r)} />
-          </div>
+        <div className={styles.actionRow}>
+          <a
+            href={buildGCalUrl(r)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.gcalBtn}
+          >
+            <IconCalendarPlus size={16} stroke={1.5} />
+            Exportar a Google Calendar
+          </a>
+          <ShareButton getText={() => buildShareTextOpportunity(r)} />
         </div>
-      )}
-
-      {/* Footer */}
-      <div className={styles.footer}>
-        <button className={styles.detailBtn} onClick={toggle}>
-          {expanded
-            ? <><IconChevronUp size={15} stroke={2} /> Ocultar detalle</>
-            : <><IconChevronDown size={15} stroke={2} /> Ver detalle</>
-          }
-        </button>
       </div>
     </Card>
   )

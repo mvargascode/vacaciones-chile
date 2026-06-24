@@ -50,19 +50,9 @@ export function DashboardScreen() {
     preferences.sector
   )
 
-  const [activeTab,     setActiveTab]    = useState<FilterTab>('todas')
-  const [drawerOpen,    setDrawerOpen]   = useState(false)
-  const [filterByDays,  setFilterByDays] = useState(false)
-  const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set())
-
-  function handleCardExpand(id: string, expanded: boolean) {
-    setExpandedCards(prev => {
-      const next = new Set(prev)
-      if (expanded) next.add(id)
-      else next.delete(id)
-      return next
-    })
-  }
+  const [activeTab,    setActiveTab]   = useState<FilterTab>('todas')
+  const [drawerOpen,   setDrawerOpen]  = useState(false)
+  const [filterByDays, setFilterByDays] = useState(false)
 
   const hasPlannedPeriods = plannedPeriods.length > 0
 
@@ -101,17 +91,13 @@ export function DashboardScreen() {
 
   function renderCardList(list: VacationWindow[]) {
     return list.flatMap((r, i) => {
-      const isExpanded = expandedCards.has(r.id)
       const card = (
         <li key={r.id} className={styles.cardRow}>
           <div className={styles.cardMain}>
-            <RecommendationCard
-              recommendation={r}
-              onExpandChange={(exp) => handleCardExpand(r.id, exp)}
-            />
+            <RecommendationCard recommendation={r} />
           </div>
-          <div className={`${styles.adSlotBase} ${styles.adInline} ${isExpanded ? styles.adInlineExpanded : ''}`}>
-            Publicidad · {isExpanded ? '300×600' : '300×250'}
+          <div className={`${styles.adSlotBase} ${styles.adInline}`}>
+            Publicidad · 300×250
           </div>
         </li>
       )
