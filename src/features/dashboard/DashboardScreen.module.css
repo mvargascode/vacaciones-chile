@@ -109,7 +109,7 @@
     gap: var(--space-3);
     align-items: flex-start;
     padding: var(--space-3) var(--space-4);
-    background: #EEF2FF;
+    background: var(--color-bg-accent-blue);
     border-radius: var(--radius-md);
     border: 1px solid var(--color-primary-light);
     margin-bottom: var(--space-4);
@@ -122,7 +122,7 @@
     align-items: center;
     gap: var(--space-2);
     padding: var(--space-3) var(--space-4);
-    background: #EEF2FF;
+    background: var(--color-bg-accent-blue);
     border: 1px solid var(--color-primary-light);
     border-radius: var(--radius-md);
     color: var(--color-primary);
@@ -136,7 +136,7 @@
 }
 
 .plannerCta:hover {
-    background: #E0E7FF;
+    background: var(--color-bg-accent-blue-hover);
 }
 
 .plannedHeader {
@@ -223,5 +223,5 @@
 
 .toggleActive {
     background: var(--color-text-primary);
-    color: #ffffff;
+    color: var(--color-bg-primary);
 }

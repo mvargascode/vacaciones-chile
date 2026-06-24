@@ -41,7 +41,7 @@
 
 .option.selected {
     border-color: var(--color-primary);
-    background: #EEF2FF;
+    background: var(--color-bg-accent-blue);
 }
 
 .optionLabel {
@@ -115,17 +115,17 @@
 }
 
 .inputError {
-    border-color: #EF4444;
-    color: #EF4444;
+    border-color: var(--color-danger);
+    color: var(--color-danger);
 }
 
 .inputError:focus {
-    border-color: #EF4444;
+    border-color: var(--color-danger);
 }
 
 .warning {
     font-size: var(--font-size-xs);
-    color: #EF4444;
+    color: var(--color-danger);
     margin-top: calc(var(--space-1) * -1);
 }
 

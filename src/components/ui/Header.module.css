@@ -2,7 +2,7 @@
     position: sticky;
     top: 0;
     z-index: 10;
-    background: var(--color-text-primary);
+    background: var(--color-header-bg);
     height: var(--header-height);
     display: flex;
     align-items: center;
@@ -62,6 +62,7 @@
     letter-spacing: 0.05em;
 }
 
+.themeBtn,
 .settingsBtn {
     background: rgba(255, 255, 255, 0.12);
     border: none;
@@ -73,10 +74,10 @@
     justify-content: center;
     cursor: pointer;
     color: rgba(255, 255, 255, 0.85);
-    transition: background var(--transition-fast);
     flex-shrink: 0;
 }
 
+.themeBtn:hover,
 .settingsBtn:hover {
     background: rgba(255, 255, 255, 0.22);
 }

@@ -34,7 +34,7 @@
 
 .option.selected {
     border-color: var(--color-primary);
-    background: #EEF2FF;
+    background: var(--color-bg-accent-blue);
     color: var(--color-primary-dark);
     font-weight: var(--font-weight-bold);
 }

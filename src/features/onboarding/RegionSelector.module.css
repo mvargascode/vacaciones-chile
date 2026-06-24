@@ -36,7 +36,7 @@
 
 .option.selected {
     border-color: var(--color-primary);
-    background: #EEF2FF;
+    background: var(--color-bg-accent-blue);
 }
 
 .code {

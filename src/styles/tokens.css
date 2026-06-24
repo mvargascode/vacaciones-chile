@@ -1,4 +1,42 @@
+/* ── Non-color design tokens (shared across themes) ─────────────────────── */
 :root {
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 9999px;
+
+    --transition-fast: 150ms ease;
+    --transition-normal: 250ms ease;
+    --transition-slow: 400ms ease;
+
+    --max-width-app: 480px;
+    --header-height: 56px;
+    --bottom-nav-height: 64px;
+
+    /* ── Light theme (defaults) ──────────────────────────────────────────── */
     --color-primary: #003087;
     --color-primary-light: #1a4fa8;
     --color-primary-dark: #001f5c;
@@ -36,47 +74,88 @@
 
     --color-success: #16A34A;
     --color-success-bg: #F0FDF4;
+    --color-success-border: #86EFAC;
+
+    --color-danger: #DC2626;
+    --color-danger-bg: #FEE2E2;
+
+    --color-warning: #F97316;
+    --color-warning-bg: #FFF7ED;
+    --color-warning-text: #C2410C;
 
     --color-border: #E0E0E0;
     --color-border-strong: #CCCCCC;
 
-    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --font-size-xs: 0.75rem;
-    --font-size-sm: 0.875rem;
-    --font-size-base: 1rem;
-    --font-size-lg: 1.125rem;
-    --font-size-xl: 1.25rem;
-    --font-size-2xl: 1.5rem;
-
-    --font-weight-regular: 400;
-    --font-weight-medium: 500;
-    --font-weight-bold: 700;
-
-    --space-1: 0.25rem;
-    --space-2: 0.5rem;
-    --space-3: 0.75rem;
-    --space-4: 1rem;
-    --space-5: 1.25rem;
-    --space-6: 1.5rem;
-    --space-8: 2rem;
-    --space-10: 2.5rem;
-    --space-12: 3rem;
-
-    --radius-sm: 4px;
-    --radius-md: 8px;
-    --radius-lg: 12px;
-    --radius-xl: 16px;
-    --radius-full: 9999px;
+    --color-header-bg: #1A1A1A;
+    --color-bg-accent-blue: #EEF2FF;
+    --color-bg-accent-blue-hover: #E0E7FF;
+    --color-bg-wow: linear-gradient(135deg, #EEF2FF, #F0FDF4);
+    --color-bg-wow-border: #C7D2FE;
+    --color-calendar-selected: #93C5FD;
+    --color-calendar-range: #BFDBFE;
 
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.10);
     --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
 
-    --transition-fast: 150ms ease;
-    --transition-normal: 250ms ease;
-    --transition-slow: 400ms ease;
+/* ── Dark theme overrides ────────────────────────────────────────────────── */
+[data-theme="dark"] {
+    --color-primary: #4d9fff;
+    --color-primary-light: #6ab0ff;
+    --color-primary-dark: #2d87ff;
 
-    --max-width-app: 480px;
-    --header-height: 56px;
-    --bottom-nav-height: 64px;
+    --color-oro-bg: #2a1e08;
+    --color-oro-text: #f5c77a;
+
+    --color-plata-bg: #2a2a2a;
+    --color-plata-text: #c0c0c0;
+
+    --color-bronce-bg: #2a1a08;
+    --color-bronce-text: #e8a05a;
+
+    --color-feriado: #0f1f2e;
+    --color-feriado-border: #1a3d5c;
+    --color-feriado-text: #6ab0ff;
+
+    --color-vacacion: #2a2010;
+    --color-vacacion-border: #6b5800;
+    --color-vacacion-text: #ffd86e;
+
+    --color-fin-semana: #1c1c1c;
+    --color-laborable: #1e1e1e;
+
+    --color-text-primary: #f0f0f0;
+    --color-text-secondary: #a0a0a0;
+    --color-text-muted: #707070;
+
+    --color-bg-primary: #1a1a1a;
+    --color-bg-secondary: #242424;
+    --color-bg-tertiary: #0f0f0f;
+
+    --color-success: #4caf82;
+    --color-success-bg: #0f2e1a;
+    --color-success-border: #4caf82;
+
+    --color-danger: #f87171;
+    --color-danger-bg: #2d0f0f;
+
+    --color-warning: #fb923c;
+    --color-warning-bg: #2a1500;
+    --color-warning-text: #fb923c;
+
+    --color-border: rgba(255, 255, 255, 0.1);
+    --color-border-strong: rgba(255, 255, 255, 0.15);
+
+    --color-header-bg: #111111;
+    --color-bg-accent-blue: #1e2a45;
+    --color-bg-accent-blue-hover: #253355;
+    --color-bg-wow: linear-gradient(135deg, #1e2a45, #0f2e1a);
+    --color-bg-wow-border: #2d4a7a;
+    --color-calendar-selected: #2d5a9e;
+    --color-calendar-range: #1e3d6e;
+
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
 }

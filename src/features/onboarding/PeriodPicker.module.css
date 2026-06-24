@@ -42,7 +42,7 @@
 }
 
 .negative .counterNumber {
-    color: #DC2626;
+    color: var(--color-danger);
 }
 
 /* Hint */
@@ -174,7 +174,7 @@
 }
 
 .selectable:hover {
-    background: #EEF2FF;
+    background: var(--color-bg-accent-blue);
 }
 
 /* Período seleccionado */
@@ -194,7 +194,7 @@
 
 /* Selección en curso */
 .inSelect {
-    background: #93C5FD;
+    background: var(--color-calendar-selected);
     color: var(--color-primary-dark);
     border-radius: 0;
 }
@@ -221,7 +221,7 @@
 
 /* Día dentro del período que NO descuenta (domingo, sábado en público, feriado) */
 .inPeriodFree {
-    background: #BFDBFE;
+    background: var(--color-calendar-range);
     /* azul muy claro */
     color: var(--color-primary-dark);
     border-radius: 0;
@@ -233,8 +233,8 @@
 }
 
 .legendFree {
-    background: #BFDBFE;
-    border: 1px solid #93C5FD;
+    background: var(--color-calendar-range);
+    border: 1px solid var(--color-calendar-selected);
 }
 
 .legendHoliday {
@@ -272,8 +272,8 @@
 }
 
 .legendFree {
-    background: #BFDBFE;
-    border: 1px solid #93C5FD;
+    background: var(--color-calendar-range);
+    border: 1px solid var(--color-calendar-selected);
 }
 
 .legendHoliday {

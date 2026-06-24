@@ -145,7 +145,7 @@
     font-size: var(--font-size-xs);
     font-weight: var(--font-weight-bold);
     color: var(--color-primary);
-    background: #EEF2FF;
+    background: var(--color-bg-accent-blue);
     padding: var(--space-1) var(--space-2);
     border-radius: var(--radius-full);
     flex-shrink: 0;

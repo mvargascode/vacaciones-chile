@@ -35,7 +35,7 @@
 
 .option.selected {
     border-color: var(--color-primary);
-    background: #EEF2FF;
+    background: var(--color-bg-accent-blue);
 }
 
 .year {
@@ -52,7 +52,7 @@
     font-size: var(--font-size-xs);
     color: var(--color-primary);
     font-weight: var(--font-weight-medium);
-    background: #EEF2FF;
+    background: var(--color-bg-accent-blue);
     padding: var(--space-1) var(--space-2);
     border-radius: var(--radius-full);
     text-align: center;
