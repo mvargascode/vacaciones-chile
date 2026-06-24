@@ -9,8 +9,7 @@ interface ShareButtonProps {
   getIcs?: () => { content: string; filename: string }
 }
 
-function downloadIcs(getIcs: () => { content: string; filename: string }): void {
-  const { content, filename } = getIcs()
+function triggerDownload(content: string, filename: string): void {
   const blob = new Blob([content], { type: 'text/calendar;charset=utf-8' })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
@@ -18,6 +17,23 @@ function downloadIcs(getIcs: () => { content: string; filename: string }): void 
   a.download = filename
   a.click()
   URL.revokeObjectURL(url)
+}
+
+async function openIcs(getIcs: () => { content: string; filename: string }): Promise<void> {
+  const { content, filename } = getIcs()
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+  if (isIOS && navigator.canShare) {
+    const file = new File([content], filename, { type: 'text/calendar' })
+    if (navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file] })
+        return
+      } catch {
+        // user cancelled or share failed — fall through to download
+      }
+    }
+  }
+  triggerDownload(content, filename)
 }
 
 export function ShareButton({ getText, compact = false, gcalUrl, getIcs }: ShareButtonProps) {
@@ -52,7 +68,7 @@ export function ShareButton({ getText, compact = false, gcalUrl, getIcs }: Share
   }
 
   function handleIcs() {
-    if (getIcs) downloadIcs(getIcs)
+    if (getIcs) openIcs(getIcs)
     setState('idle')
   }
 
