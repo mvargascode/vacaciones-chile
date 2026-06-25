@@ -1,4 +1,5 @@
 import type { RecommendationTier } from '../../types/recommendation.types'
+import { TierInfoButton } from '../../components/ui'
 import styles from './SidebarFilter.module.css'
 
 type FilterTab = 'todas' | RecommendationTier
@@ -30,6 +31,11 @@ export function SidebarFilter({ active, onChange, counts }: SidebarFilterProps) 
   ]
 
   return (
+    <div className={styles.wrapper}>
+      <div className={styles.sectionHeader}>
+        <span className={styles.sectionTitle}>Por medalla</span>
+        <TierInfoButton />
+      </div>
     <nav className={styles.nav} aria-label="Filtrar por tier">
       {options.map(opt => (
         <button
@@ -44,5 +50,6 @@ export function SidebarFilter({ active, onChange, counts }: SidebarFilterProps) 
         </button>
       ))}
     </nav>
+    </div>
   )
 }

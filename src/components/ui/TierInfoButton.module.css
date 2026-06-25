@@ -1,0 +1,178 @@
+.trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: var(--radius-full);
+    border: 1.5px solid var(--color-text-muted);
+    background: none;
+    color: var(--color-text-muted);
+    font-size: 10px;
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.trigger:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+    animation: fadeIn 150ms ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Popup */
+.popup {
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 400px;
+    animation: scaleIn 150ms ease;
+}
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.title {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+.closeBtn {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-md);
+    border: none;
+    background: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.closeBtn:hover {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-primary);
+}
+
+.body {
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.intro {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+}
+
+.tiers {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.tierRow {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+}
+
+.medal {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 2px;
+}
+
+.tierInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.tierName {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+}
+
+.tierRange {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+}
+
+.tierDetail {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    margin-top: 2px;
+}
+
+/* Colores por tier */
+.oro {
+    background: var(--color-oro-bg);
+    border-color: var(--color-oro);
+}
+
+.oro .tierName {
+    color: var(--color-oro-text);
+}
+
+.plata {
+    background: var(--color-plata-bg);
+    border-color: var(--color-plata);
+}
+
+.plata .tierName {
+    color: var(--color-plata-text);
+}
+
+.bronce {
+    background: var(--color-bronce-bg);
+    border-color: var(--color-bronce);
+}
+
+.bronce .tierName {
+    color: var(--color-bronce-text);
+}

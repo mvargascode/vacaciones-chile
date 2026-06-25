@@ -4,7 +4,7 @@ import { useHolidaysApi } from '../../hooks/useHolidaysApi'
 import { useRecommendations } from '../../hooks/useRecommendations'
 import { usePlanner } from '../../hooks/usePlanner'
 import { buildYearCalendar } from '../../services/calendarService'
-import { Header, Tabs, EmptyState, Sidebar, SidebarSection, Drawer } from '../../components/ui'
+import { Header, Tabs, EmptyState, Sidebar, SidebarSection, Drawer, TierInfoButton } from '../../components/ui'
 import { RecommendationCard } from '../../components/recommendation'
 import { SidebarFilter } from './SidebarFilter'
 import { SidebarInfo } from './SidebarInfo'
@@ -179,7 +179,12 @@ export function DashboardScreen() {
               )}
 
               <div className={styles.tabsWrapper}>
-                <Tabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
+                <div className={styles.tabsRow}>
+                  <Tabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
+                  <div className={styles.tabsInfoBtn}>
+                    <TierInfoButton />
+                  </div>
+                </div>
               </div>
 
               <div className={styles.toggleWrapper}>
