@@ -101,7 +101,6 @@ export function OnboardingScreen() {
           <DaysSelector
             value={localTotalDays}
             onChange={handleTotalDaysChange}
-            sector={localSector}
           />
         )}
         {currentStep === 'daysToUse' && (
