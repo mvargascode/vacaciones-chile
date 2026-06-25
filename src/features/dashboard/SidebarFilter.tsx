@@ -30,7 +30,7 @@ export function SidebarFilter({ active, onChange, counts }: SidebarFilterProps) 
   ]
 
   return (
-    <nav className={styles.nav}>
+    <nav className={styles.nav} aria-label="Filtrar por tier">
       {options.map(opt => (
         <button
           key={opt.value}

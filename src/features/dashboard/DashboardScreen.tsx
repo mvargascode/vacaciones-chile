@@ -145,7 +145,7 @@ export function DashboardScreen() {
         </div>
       )}
 
-      <div className={styles.layout}>
+      <div id="main-content" className={styles.layout}>
         <Sidebar>
           <SidebarSection title="Filtrar por tier">
             <SidebarFilter
@@ -210,7 +210,7 @@ export function DashboardScreen() {
                   />
                 ) : (
                   <>
-                    <p className={styles.count}>
+                    <p className={styles.count} aria-live="polite" aria-atomic="true">
                       {filtered.length} {filtered.length === 1 ? 'oportunidad' : 'oportunidades'}
                       {activeTab !== 'todas' ? ` ${activeTab}` : ''} para {year}
                     </p>
