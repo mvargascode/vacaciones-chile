@@ -53,7 +53,7 @@ export async function fetchHolidaysFromApi(year: number): Promise<Holiday[]> {
 
     const json: BoostrResponse = await response.json()
 
-    if (json.status !== 'ok' || !Array.isArray(json.data)) {
+    if (json.status !== 'success' || !Array.isArray(json.data)) {
       throw new Error('Formato de respuesta inesperado')
     }
 
