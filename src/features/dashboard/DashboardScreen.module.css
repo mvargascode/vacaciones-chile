@@ -237,3 +237,21 @@
     background: var(--color-text-primary);
     color: var(--color-bg-primary);
 }
+
+.footer {
+    padding: var(--space-2) var(--space-4);
+    text-align: center;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    background: transparent;
+}
+
+.footerLink {
+    color: inherit;
+    text-decoration: none;
+}
+
+.footerLink:hover {
+    color: var(--color-text-secondary);
+    text-decoration: underline;
+}

@@ -259,6 +259,18 @@ export function DashboardScreen() {
         </div>
       </main>
 
+      <footer className={styles.footer}>
+        <a
+          href="https://github.com/mvargascode"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.footerLink}
+        >
+          mvargascode
+        </a>
+        {' · Santiago, Chile · 2026'}
+      </footer>
+
       <Drawer
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
