@@ -62,7 +62,7 @@ export function OnboardingScreen() {
   }
 
   return (
-    <div className={`${styles.screen} animate-fade-in`}>
+    <main id="main-content" className={`${styles.screen} animate-fade-in`}>
       <button
         className={styles.themeBtn}
         onClick={toggleTheme}
@@ -90,7 +90,7 @@ export function OnboardingScreen() {
         ))}
       </div>
 
-      <div id="main-content" className={styles.content}>
+      <div className={styles.content}>
         {currentStep === 'region' && (
           <RegionSelector value={localRegion} onChange={setLocalRegion} />
         )}
@@ -137,6 +137,6 @@ export function OnboardingScreen() {
           )}
         </div>
       </div>
-    </div>
+    </main>
   )
 }

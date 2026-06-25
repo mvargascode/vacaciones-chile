@@ -145,7 +145,7 @@ export function DashboardScreen() {
         </div>
       )}
 
-      <div id="main-content" className={styles.layout}>
+      <main id="main-content" className={styles.layout}>
         <Sidebar>
           <SidebarSection title="Filtrar por tier">
             <SidebarFilter
@@ -257,7 +257,7 @@ export function DashboardScreen() {
             </div>
           )}
         </div>
-      </div>
+      </main>
 
       <Drawer
         isOpen={drawerOpen}
