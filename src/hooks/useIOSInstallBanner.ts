@@ -7,8 +7,12 @@ function isIOS(): boolean {
     !(navigator as Navigator & { standalone?: boolean }).standalone
 }
 
+function isBrave(): boolean {
+  return 'brave' in navigator
+}
+
 function isSafariIOS(): boolean {
-  return /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+  return !isBrave() && /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
 }
 
 export function useIOSInstallBanner() {

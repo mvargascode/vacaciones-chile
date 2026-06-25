@@ -8,10 +8,11 @@ export function IOSInstallBanner() {
   return (
     <div className={styles.banner} role="note" aria-label="Instrucciones para instalar la app">
       <p className={styles.message}>
-        {isSafari
-          ? <>📱 Instala esta app: toca ↑ y elige <strong>«Agregar a Inicio»</strong></>
-          : <>🌐 Para instalar: ábrelo en Safari, toca ↑ y elige <strong>«Agregar a Inicio»</strong></>
-        }
+        {isSafari ? (
+          <>📱 Instala esta app:<br />Toca ↑ y elige <strong>«Agregar a Inicio»</strong></>
+        ) : (
+          <>🌐 Para instalar, ábrelo en Safari:<br />Toca ↑ y elige <strong>«Agregar a Inicio»</strong></>
+        )}
       </p>
       <button className={styles.closeBtn} onClick={dismiss} aria-label="Cerrar">
         ✕
