@@ -12,7 +12,7 @@ interface PlannerPanelProps {
 
 export function PlannerPanel({ calendarDays }: PlannerPanelProps) {
   const { preferences, addPlannedPeriod, removePlannedPeriod } = useUserPreferences()
-  const { plannedPeriods, daysToUse, sector } = preferences
+  const { plannedPeriods, daysToUse } = preferences
   const [expanded, setExpanded] = useState(plannedPeriods.length > 0)
 
   const { analyses, totalUsed, remaining } = usePlanner(
@@ -104,7 +104,6 @@ export function PlannerPanel({ calendarDays }: PlannerPanelProps) {
   onRemovePeriod={removePlannedPeriod}
   availableDays={daysToUse}
   usedDays={totalUsed}
-  sector={sector}   // ← agrega esto
 />
           </div>
         </div>

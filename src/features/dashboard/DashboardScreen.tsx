@@ -47,7 +47,6 @@ export function DashboardScreen() {
     plannedPeriods,
     calendarDays,
     daysToUse,
-    preferences.sector
   )
 
   const [activeTab,    setActiveTab]   = useState<FilterTab>('todas')
@@ -283,7 +282,6 @@ export function DashboardScreen() {
           onRemovePeriod={removePlannedPeriod}
           availableDays={daysToUse}
           usedDays={totalUsed}
-          sector={preferences.sector}
         />
       </Drawer>
     </div>

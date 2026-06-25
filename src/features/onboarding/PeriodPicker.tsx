@@ -11,7 +11,6 @@ interface PeriodPickerProps {
   onRemovePeriod: (id: string) => void
   availableDays: number
   usedDays: number
-  sector: 'privado' | 'publico'   // ← nuevo
 }
 
 const todayStr = new Date().toISOString().split('T')[0]
@@ -59,7 +58,6 @@ export function PeriodPicker({
   onRemovePeriod,
   availableDays,
   usedDays,
-  sector,   // ← nuevo
 }: PeriodPickerProps) {
   const [selecting, setSelecting] = useState<string | null>(null)
   const [hoverDate, setHoverDate] = useState<string | null>(null)

@@ -1,4 +1,4 @@
-import type { PlannedPeriod, Sector } from '../types/user.types'
+import type { PlannedPeriod } from '../types/user.types'
 import type { Holiday } from '../types/holiday.types'
 import type { CalendarDay } from '../types/calendar.types'
 import { isVacationHabil } from './calendarService'
@@ -35,7 +35,6 @@ const NEARBY_DAYS = 4
 export function analyzePeriod(
   period: PlannedPeriod,
   calendarDays: CalendarDay[],
-  sector: Sector = 'privado'
 ): PeriodAnalysis {
   const startIdx = calendarDays.findIndex(d => d.date === period.startDate)
   const endIdx   = calendarDays.findIndex(d => d.date === period.endDate)
@@ -60,7 +59,7 @@ export function analyzePeriod(
   const saturdaysInside = periodDays.filter(d => d.dayOfWeek === 6 && !d.holiday).length
   const totalDays       = periodDays.length
 
-  const suggestions = generateSuggestions(calendarDays, startIdx, endIdx, sector)
+  const suggestions = generateSuggestions(calendarDays, startIdx, endIdx)
 
   return {
     period,
@@ -77,7 +76,6 @@ function generateSuggestions(
   calendarDays: CalendarDay[],
   startIdx: number,
   endIdx: number,
-  sector: Sector
 ): OptimizationSuggestion[] {
   const suggestions: OptimizationSuggestion[] = []
 
@@ -139,9 +137,8 @@ function generateSuggestions(
 export function analyzeAllPeriods(
   periods: PlannedPeriod[],
   calendarDays: CalendarDay[],
-  sector: Sector = 'privado'
 ): PeriodAnalysis[] {
-  return periods.map(p => analyzePeriod(p, calendarDays, sector))
+  return periods.map(p => analyzePeriod(p, calendarDays))
 }
 
 export function totalWorkdaysUsed(analyses: PeriodAnalysis[]): number {
@@ -154,7 +151,6 @@ export function recalculateEndDate(
   newStartDate: string,
   workdaysTarget: number,
   calendarDays: CalendarDay[],
-  sector: Sector
 ): string {
   const startIdx = calendarDays.findIndex(d => d.date === newStartDate)
   if (startIdx === -1) return newStartDate
