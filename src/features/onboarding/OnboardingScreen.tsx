@@ -63,7 +63,11 @@ export function OnboardingScreen() {
 
   return (
     <div className={`${styles.screen} animate-fade-in`}>
-      <button className={styles.themeBtn} onClick={toggleTheme} aria-label="Cambiar tema">
+      <button
+        className={styles.themeBtn}
+        onClick={toggleTheme}
+        aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+      >
         {theme === 'dark' ? <IconSun size={18} /> : <IconMoon size={18} />}
       </button>
       <div className={styles.header}>
@@ -74,16 +78,19 @@ export function OnboardingScreen() {
         <p className={styles.subtitle}>Aprovecha los feriados al máximo</p>
       </div>
 
-      <div className={styles.progress}>
+      <div className={styles.progress} role="list" aria-label="Progreso del formulario">
         {STEPS.map((step, i) => (
           <div
             key={step}
+            role="listitem"
+            aria-label={`Paso ${i + 1} de ${STEPS.length}`}
+            aria-current={i === stepIndex ? 'step' : undefined}
             className={`${styles.dot} ${i <= stepIndex ? styles.dotActive : ''}`}
           />
         ))}
       </div>
 
-      <div className={styles.content}>
+      <div id="main-content" className={styles.content}>
         {currentStep === 'region' && (
           <RegionSelector value={localRegion} onChange={setLocalRegion} />
         )}
