@@ -36,7 +36,7 @@ export function SidebarInfo({
         <div className={styles.configRow}>
           <span className={styles.configLabel}>Sector</span>
           <span className={styles.configValue}>
-            {sector === 'publico' ? '🏛️ Público' : '🏢 Privado'}
+            {sector === 'publico' ? '🏛️ Público' : sector === 'honorarios' ? '📄 Honorarios' : '🏢 Privado'}
           </span>
         </div>
         <div className={styles.configRow}>

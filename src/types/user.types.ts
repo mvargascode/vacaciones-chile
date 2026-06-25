@@ -1,4 +1,4 @@
-export type Sector = 'privado' | 'publico'
+export type Sector = 'privado' | 'publico' | 'honorarios'
 
 export interface PlannedPeriod {
   id: string

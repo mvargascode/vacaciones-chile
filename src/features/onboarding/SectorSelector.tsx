@@ -11,7 +11,7 @@ export function SectorSelector({ value, onChange }: SectorSelectorProps) {
     <div className={styles.container}>
       <label className={styles.label}>¿En qué sector trabajas?</label>
       <p className={styles.sublabel}>
-        Esto determina cómo se calculan tus días de vacaciones legales.
+        Esto determina cómo se cuentan tus días hábiles.
       </p>
 
       <div className={styles.options}>
@@ -49,6 +49,24 @@ export function SectorSelector({ value, onChange }: SectorSelectorProps) {
             </span>
           </div>
           {value === 'publico' && <span className={styles.check}>✓</span>}
+        </button>
+
+        <button
+          type="button"
+          className={`${styles.option} ${value === 'honorarios' ? styles.selected : ''}`}
+          onClick={() => onChange('honorarios')}
+        >
+          <span className={styles.icon}>📄</span>
+          <div className={styles.optionInfo}>
+            <span className={styles.optionTitle}>Honorarios</span>
+            <span className={styles.optionDesc}>
+              Boleta de honorarios, independiente
+            </span>
+            <span className={styles.optionRule}>
+              Sin vacaciones legales · igual que privado
+            </span>
+          </div>
+          {value === 'honorarios' && <span className={styles.check}>✓</span>}
         </button>
       </div>
 

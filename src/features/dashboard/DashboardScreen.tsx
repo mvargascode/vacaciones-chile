@@ -171,6 +171,13 @@ export function DashboardScreen() {
         <div className={styles.main}>
           {!hasPlannedPeriods && (
             <>
+              {preferences.sector === 'honorarios' && (
+                <div className={styles.honorariosNotice}>
+                  <span>ℹ️</span>
+                  <p>Como trabajador a honorarios no tienes vacaciones legales, pero puedes aprovechar estos feriados para descansar.</p>
+                </div>
+              )}
+
               <div className={styles.tabsWrapper}>
                 <Tabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
               </div>

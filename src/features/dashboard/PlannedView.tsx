@@ -1,13 +1,14 @@
 import { ShareButton } from '../../components/ui'
 import { buildShareTextPlanned, buildGCalUrlPlanned, buildIcsPlanned } from '../../services/shareService'
 import type { PeriodAnalysis } from '../../services/plannerService'
+import type { Sector } from '../../types/user.types'
 import styles from './PlannedView.module.css'
 
 interface PlannedViewProps {
   analyses: PeriodAnalysis[]
   availableDays: number
   totalUsed: number
-  sector: 'privado' | 'publico'
+  sector: Sector
   onRemovePeriod: (id: string) => void
   onApplySuggestion: (periodId: string, newStart: string, newEnd: string) => void
   onOpenPlanner: () => void
@@ -38,6 +39,15 @@ export function PlannedView({
 
   return (
     <div className={styles.container}>
+
+      {sector === 'honorarios' && (
+        <div className={styles.honorariosNotice}>
+          <span className={styles.honorariosIcon}>ℹ️</span>
+          <p className={styles.honorariosText}>
+            Como trabajador a honorarios no tienes vacaciones legales, pero puedes aprovechar estos feriados para descansar.
+          </p>
+        </div>
+      )}
 
       {/* Resumen general */}
       <div className={styles.summary}>

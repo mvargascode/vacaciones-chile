@@ -4,6 +4,27 @@
     gap: var(--space-5);
 }
 
+.honorariosNotice {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--color-primary-light);
+}
+
+.honorariosIcon {
+    flex-shrink: 0;
+    font-size: var(--font-size-base);
+}
+
+.honorariosText {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+}
+
 /* Resumen */
 .summary {
     display: flex;
