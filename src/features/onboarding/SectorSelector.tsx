@@ -63,7 +63,7 @@ export function SectorSelector({ value, onChange }: SectorSelectorProps) {
               Boleta de honorarios, independiente
             </span>
             <span className={styles.optionRule}>
-              Sin vacaciones legales · igual que privado
+              Puedes aprovechar los feriados · sin días de vacaciones legales
             </span>
           </div>
           {value === 'honorarios' && <span className={styles.check}>✓</span>}
@@ -76,7 +76,7 @@ export function SectorSelector({ value, onChange }: SectorSelectorProps) {
           <div className={styles.exampleCase}>
             <span className={styles.exampleLabel}>Privado</span>
             <span className={styles.exampleValue}>
-              Jue + Vie + <strong>Sáb</strong> = 3 días hábiles usados
+              Jue + Vie = 2 días hábiles usados
             </span>
           </div>
           <div className={styles.exampleCase}>
@@ -85,9 +85,15 @@ export function SectorSelector({ value, onChange }: SectorSelectorProps) {
               Jue + Vie = 2 días hábiles usados
             </span>
           </div>
+          <div className={styles.exampleCase}>
+            <span className={styles.exampleLabel}>Honorarios</span>
+            <span className={styles.exampleValue}>
+              Jue + Vie = 2 días hábiles usados
+            </span>
+          </div>
         </div>
         <p className={styles.exampleNote}>
-          En ambos casos descansas 4 días (jue, vie, sáb, dom)
+          En todos los casos descansas 4 días (jue, vie, sáb, dom)
         </p>
       </div>
     </div>
