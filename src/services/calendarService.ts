@@ -19,14 +19,14 @@ export function buildYearCalendar(year: number, holidays: Holiday[]): CalendarDa
     else                                          dayType = 'laborable'
 
     // Tipo legal para efectos de vacaciones
-    // Ley chilena: descuentan lunes a sábado que NO sean feriado
+    // Ley chilena: descuentan lunes a viernes que NO sean feriado
     let vacationDayType: VacationDayType
     if (holiday) {
       vacationDayType = 'inhabil_feriado'  // feriado nunca descuenta
     } else if (dayOfWeek === 0) {
       vacationDayType = 'inhabil_domingo'  // domingo nunca descuenta
     } else {
-      vacationDayType = 'habil'            // lun-sáb sin feriado: descuenta
+      vacationDayType = 'habil'            // lun-sáb sin feriado (sáb se filtra en isVacationHabil)
     }
 
     days.push({
@@ -53,11 +53,11 @@ export function isWorkday(day: CalendarDay): boolean {
 }
 
 // Día hábil para efectos de vacaciones según sector
-// Privado: lunes a sábado sin feriados (art. 67 CT)
-// Público: lunes a viernes sin feriados (art. 97 EA)
+// Privado y público: lunes a viernes sin feriados
+// El sábado no descuenta en ningún sector
 export function isVacationHabil(day: CalendarDay, sector: 'privado' | 'publico' = 'privado'): boolean {
   if (day.vacationDayType === 'inhabil_feriado') return false
   if (day.vacationDayType === 'inhabil_domingo') return false
-  if (sector === 'publico' && day.dayOfWeek === 6) return false  // sábado no descuenta en público
+  if (day.dayOfWeek === 6) return false  // sábado no descuenta en ningún sector
   return day.vacationDayType === 'habil'
 }
