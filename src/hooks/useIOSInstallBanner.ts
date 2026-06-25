@@ -3,11 +3,12 @@ import { useState } from 'react'
 const STORAGE_KEY = 'ios-install-banner-dismissed'
 
 function isIOS(): boolean {
-  return /iPad|iPhone|iPod/.test(navigator.userAgent)
+  return /iphone|ipad|ipod/i.test(navigator.userAgent) &&
+    !(navigator as Navigator & { standalone?: boolean }).standalone
 }
 
-function isStandalone(): boolean {
-  return (navigator as Navigator & { standalone?: boolean }).standalone === true
+function isSafariIOS(): boolean {
+  return /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
 }
 
 export function useIOSInstallBanner() {
@@ -15,12 +16,13 @@ export function useIOSInstallBanner() {
     () => localStorage.getItem(STORAGE_KEY) === 'true'
   )
 
-  const visible = isIOS() && !isStandalone() && !dismissed
+  const visible = isIOS() && !dismissed
+  const isSafari = isSafariIOS()
 
   function dismiss() {
     localStorage.setItem(STORAGE_KEY, 'true')
     setDismissed(true)
   }
 
-  return { visible, dismiss }
+  return { visible, isSafari, dismiss }
 }
