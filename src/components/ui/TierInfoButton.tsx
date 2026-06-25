@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import styles from './TierInfoButton.module.css'
 
 const TIERS = [
@@ -54,7 +55,7 @@ export function TierInfoButton() {
         ?
       </button>
 
-      {open && (
+      {open && createPortal(
         <div
           className={styles.overlay}
           ref={overlayRef}
@@ -98,7 +99,8 @@ export function TierInfoButton() {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   )
