@@ -8,8 +8,8 @@ export function IOSInstallBanner() {
   return (
     <div className={styles.banner} role="note" aria-label="Instrucciones para instalar la app">
       <p className={styles.message}>
-        📱 Instala esta app: abre en Safari, toca ↑ y elige{' '}
-        <strong>Añadir a pantalla de inicio</strong>
+        📱 Para instalar esta app en iPhone:<br />
+        Toca ↑ Compartir → <strong>Añadir a pantalla de inicio</strong>
       </p>
       <button className={styles.closeBtn} onClick={dismiss} aria-label="Cerrar">
         ✕
