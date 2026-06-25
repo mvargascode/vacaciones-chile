@@ -82,6 +82,28 @@
     background: rgba(255, 255, 255, 0.22);
 }
 
+.installBtn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 0 var(--space-3);
+    height: 32px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: var(--radius-md);
+    color: rgba(255, 255, 255, 0.90);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.installBtn:hover {
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 255, 255, 0.40);
+}
+
 @media (max-width: 767px) {
     .content {
         padding: 0 var(--space-3);
@@ -99,5 +121,10 @@
     .settingsBtn {
         width: 28px;
         height: 28px;
+    }
+
+    .installBtn {
+        height: 28px;
+        padding: 0 var(--space-2);
     }
 }

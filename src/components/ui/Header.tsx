@@ -1,6 +1,7 @@
-import { IconSettings, IconSun, IconMoon } from '@tabler/icons-react'
+import { IconSettings, IconSun, IconMoon, IconDownload } from '@tabler/icons-react'
 import { FlagCL } from '../../assets/FlagCL'
 import { useTheme } from '../../hooks/useTheme'
+import { useInstallPrompt } from '../../hooks/useInstallPrompt'
 import styles from './Header.module.css'
 
 interface HeaderProps {
@@ -17,6 +18,7 @@ export function Header({
   onSettingsClick,
 }: HeaderProps) {
   const { theme, toggleTheme } = useTheme()
+  const { canInstall, triggerInstall } = useInstallPrompt()
 
   return (
     <header className={styles.header}>
@@ -30,6 +32,16 @@ export function Header({
         </div>
         <div className={styles.right}>
           {year && <span className={styles.year}>{year}</span>}
+          {canInstall && (
+            <button
+              className={styles.installBtn}
+              onClick={triggerInstall}
+              aria-label="Instalar aplicación"
+            >
+              <IconDownload size={14} stroke={1.5} />
+              Instalar
+            </button>
+          )}
           <button
             className={styles.themeBtn}
             onClick={toggleTheme}
