@@ -55,7 +55,7 @@ export function isWorkday(day: CalendarDay): boolean {
 // Día hábil para efectos de vacaciones según sector
 // Privado y público: lunes a viernes sin feriados
 // El sábado no descuenta en ningún sector
-export function isVacationHabil(day: CalendarDay, sector: 'privado' | 'publico' = 'privado'): boolean {
+export function isVacationHabil(day: CalendarDay): boolean {
   if (day.vacationDayType === 'inhabil_feriado') return false
   if (day.vacationDayType === 'inhabil_domingo') return false
   if (day.dayOfWeek === 6) return false  // sábado no descuenta en ningún sector

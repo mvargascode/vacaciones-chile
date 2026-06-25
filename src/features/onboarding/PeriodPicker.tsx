@@ -103,7 +103,7 @@ function calculateAutoEnd(startDate: string, daysNeeded: number): string {
   let endIdx = startIdx
 
   for (let i = startIdx; i < calendarDays.length; i++) {
-    if (isVacationHabil(calendarDays[i], sector)) {  // ← pasa sector
+    if (isVacationHabil(calendarDays[i])) {
       habilCount++
     }
     endIdx = i
@@ -209,7 +209,7 @@ function calculateAutoEnd(startDate: string, daysNeeded: number): string {
   const isStart     = isPeriodStart(day.date, periods) || day.date === selecting
   const isEnd       = isPeriodEnd(day.date, periods)
   const isNonWork   = day.dayType === 'fin_de_semana' || day.dayType === 'feriado'
-  const isHabil     = isVacationHabil(day, sector)   // ← nuevo
+  const isHabil     = isVacationHabil(day)
   const dayNum      = new Date(day.date + 'T00:00:00').getDate()
   const isToday     = day.date === todayStr
 

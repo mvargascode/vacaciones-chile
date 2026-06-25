@@ -54,7 +54,7 @@ export function analyzePeriod(
 
   const periodDays = calendarDays.slice(startIdx, endIdx + 1)
 
-  const workdaysUsed    = periodDays.filter(d => isVacationHabil(d, sector)).length
+  const workdaysUsed    = periodDays.filter(d => isVacationHabil(d)).length
   const holidaysInside  = periodDays.filter(d => d.holiday).map(d => d.holiday!)
   const sundaysInside   = periodDays.filter(d => d.dayOfWeek === 0).length
   const saturdaysInside = periodDays.filter(d => d.dayOfWeek === 6 && !d.holiday).length
@@ -88,7 +88,7 @@ function generateSuggestions(
       const idx           = calendarDays.indexOf(day)
       const bridgeDays    = calendarDays.slice(idx, startIdx)
       const daysAdjusted  = bridgeDays.length
-      const workdaysSaved = bridgeDays.filter(d => isVacationHabil(d, sector)).length
+      const workdaysSaved = bridgeDays.filter(d => isVacationHabil(d)).length
 
       if (workdaysSaved > 0) {
         suggestions.push({
@@ -116,7 +116,7 @@ function generateSuggestions(
       const idx           = calendarDays.indexOf(day)
       const bridgeDays    = calendarDays.slice(endIdx + 1, idx + 1)
       const daysAdjusted  = bridgeDays.length
-      const workdaysSaved = bridgeDays.filter(d => isVacationHabil(d, sector)).length
+      const workdaysSaved = bridgeDays.filter(d => isVacationHabil(d)).length
 
       if (workdaysSaved > 0) {
         suggestions.push({
@@ -163,7 +163,7 @@ export function recalculateEndDate(
   let endIdx = startIdx
 
   for (let i = startIdx; i < calendarDays.length; i++) {
-    if (isVacationHabil(calendarDays[i], sector)) count++
+    if (isVacationHabil(calendarDays[i])) count++
     endIdx = i
     if (count >= workdaysTarget) break
   }
