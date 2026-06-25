@@ -7,12 +7,11 @@ function App() {
   useTheme()
   const { isConfigured } = useUserPreferences()
 
-  if (!isConfigured) return <OnboardingScreen />
-
   return (
-    <div className="app-container">
-      <DashboardScreen />
-    </div>
+    <>
+      <a href="#main-content" className="skip-link">Saltar al contenido principal</a>
+      {!isConfigured ? <OnboardingScreen /> : <DashboardScreen />}
+    </>
   )
 }
 
