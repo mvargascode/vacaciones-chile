@@ -43,7 +43,7 @@ export function DaysSelector({ value, onChange, sector }: DaysSelectorProps) {
       </div>
 
       <div className={styles.customContainer}>
-        <label className={styles.customLabel}>O ingresa un número exacto:</label>
+        <label className={styles.customLabel} htmlFor="days-custom-input">O ingresa un número exacto:</label>
         <div className={styles.inputRow}>
           <button
             className={styles.stepper}
@@ -54,6 +54,7 @@ export function DaysSelector({ value, onChange, sector }: DaysSelectorProps) {
             −
           </button>
           <input
+            id="days-custom-input"
             type="number"
             className={styles.input}
             value={value}
@@ -105,7 +106,9 @@ export function DaysSelector({ value, onChange, sector }: DaysSelectorProps) {
     −
   </button>
   <input
+    id="years-input"
     type="number"
+    aria-label="Años de antigüedad"
     className={styles.yearsInputField}
     value={workYears}
     min={1}

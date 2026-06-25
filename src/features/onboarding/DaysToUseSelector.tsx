@@ -98,14 +98,16 @@ export function DaysToUseSelector({
 
       {/* Input manual */}
       <div className={styles.customContainer}>
-        <label className={styles.customLabel}>O elige un número exacto:</label>
+        <label className={styles.customLabel} htmlFor="days-to-use-input">O elige un número exacto:</label>
         <div className={styles.inputRow}>
           <button
             className={styles.stepper}
             onClick={() => handleStepper(Math.max(1, value - 1))}
             type="button"
+            aria-label="Reducir días a usar"
           >−</button>
           <input
+            id="days-to-use-input"
             type="number"
             className={`${styles.input} ${showWarning ? styles.inputError : ''}`}
             value={inputStr}
@@ -118,6 +120,7 @@ export function DaysToUseSelector({
             className={styles.stepper}
             onClick={() => handleStepper(Math.min(totalAvailable, value + 1))}
             type="button"
+            aria-label="Aumentar días a usar"
           >+</button>
         </div>
         {showWarning && (
