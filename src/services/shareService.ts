@@ -68,7 +68,7 @@ export function buildIcsPlanned(a: PeriodAnalysis): { content: string; filename:
   }
 }
 
-const APP_URL = 'https://vacaciones-chile.vercel.app'
+const APP_URL = 'https://www.vacaciones-chile.cl'
 
 function formatShortDate(dateStr: string): string {
   return new Date(dateStr + 'T00:00:00').toLocaleDateString('es-CL', {
