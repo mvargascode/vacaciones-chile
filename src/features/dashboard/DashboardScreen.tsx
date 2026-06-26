@@ -294,6 +294,7 @@ export function DashboardScreen() {
           onRemovePeriod={removePlannedPeriod}
           availableDays={daysToUse}
           usedDays={totalUsed}
+          onDone={() => setDrawerOpen(false)}
         />
       </Drawer>
     </div>
