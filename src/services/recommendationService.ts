@@ -14,21 +14,38 @@ export function generateRecommendations(calendarDays: CalendarDay[]): VacationWi
     if (day.dayType !== "feriado") continue;
 
     const dow = day.dayOfWeek; // 0=Dom, 1=Lun, 2=Mar, 3=Mié, 4=Jue, 5=Vie, 6=Sáb
-
-    // Feriados en sáb/dom no son oportunidades: la gente ya no trabaja esos días
     if (dow === 0 || dow === 6) continue;
 
-    // [startOffset, endOffset] relativos al índice del feriado
+    // Candidatos [startOffset, endOffset] relativos al índice del feriado.
+    // Por cada feriado se generan hasta 3 ventanas:
+    //   - Mínima: el puente más corto al fin de semana más cercano (1-2 días vac)
+    //   - Máxima: captura ambos fines de semana (sáb previo → dom siguiente = 9 días)
+    // Lun: solo opción gratis (extender hacia adelante no ancla a otro finde).
+    // Vie: gratis + opción máxima (semana previa completa).
     const candidates: [number, number][] = [];
 
-    if (dow === 1) candidates.push([-2, 0]);  // Lun: Sáb–Dom–Lun (gratis)
-    else if (dow === 2) candidates.push([-3, 0]);  // Mar: Sáb–Dom–Lun(vac)–Mar → 1 día vac
-    else if (dow === 3) {
-      candidates.push([-4, 0]); // Mié opción A: Sáb–Dom–Lun(vac)–Mar(vac)–Mié → 2 días vac
-      candidates.push([0, 4]);  // Mié opción B: Mié–Jue(vac)–Vie(vac)–Sáb–Dom → 2 días vac
+    switch (dow) {
+      case 1: // Lun → solo fin de semana largo gratis [sáb–dom–lun]
+        candidates.push([-2, 0]);
+        break;
+      case 2: // Mar → mínimo 1 día vac + máximo semana completa
+        candidates.push([-3,  0]); // sáb–dom–lun(vac)–mar(h)
+        candidates.push([-3, +5]); // sáb–dom–lun(vac)–mar(h)–mié(vac)–jue(vac)–vie(vac)–sáb–dom
+        break;
+      case 3: // Mié → mínimo atrás + mínimo adelante + máximo
+        candidates.push([-4,  0]); // sáb–dom–lun(vac)–mar(vac)–mié(h)
+        candidates.push([ 0, +4]); // mié(h)–jue(vac)–vie(vac)–sáb–dom
+        candidates.push([-4, +4]); // sáb–dom–lun(vac)–mar(vac)–mié(h)–jue(vac)–vie(vac)–sáb–dom
+        break;
+      case 4: // Jue → mínimo 1 día vac + máximo semana completa
+        candidates.push([ 0, +3]); // jue(h)–vie(vac)–sáb–dom
+        candidates.push([-5, +3]); // sáb–dom–lun(vac)–mar(vac)–mié(vac)–jue(h)–vie(vac)–sáb–dom
+        break;
+      case 5: // Vie → gratis + máximo (semana completa hacia atrás)
+        candidates.push([ 0, +2]); // vie(h)–sáb–dom
+        candidates.push([-6, +2]); // sáb–dom–lun(vac)–mar(vac)–mié(vac)–jue(vac)–vie(h)–sáb–dom
+        break;
     }
-    else if (dow === 4) candidates.push([0, 3]);  // Jue: Jue–Vie(vac)–Sáb–Dom → 1 día vac
-    else if (dow === 5) candidates.push([0, 2]);  // Vie: Vie–Sáb–Dom (gratis)
 
     for (const [startOff, endOff] of candidates) {
       const s = Math.max(0, i + startOff);
@@ -61,13 +78,18 @@ export function generateRecommendations(calendarDays: CalendarDay[]): VacationWi
     }
   }
 
-  // Eliminar ventanas que son subconjunto de otra ventana más grande
+  // Eliminar ventanas dominadas: W se elimina si existe O que la contiene
+  // estrictamente Y tiene igual o mejor eficiencia (O es objetivamente superior).
+  // Esto fusiona las ventanas redundantes de feriados consecutivos (ej: jue+vie)
+  // sin eliminar las opciones mínimas que coexisten con las máximas
+  // (la mínima siempre tiene mejor eficiencia que la máxima que la contiene).
   const deduped = windows.filter(w =>
     !windows.some(other =>
       other !== w &&
       other.startDate <= w.startDate &&
       other.endDate >= w.endDate &&
-      (other.startDate < w.startDate || other.endDate > w.endDate)
+      (other.startDate < w.startDate || other.endDate > w.endDate) &&
+      other.efficiency >= w.efficiency
     )
   );
 
