@@ -53,14 +53,24 @@ export function generateRecommendations(calendarDays: CalendarDay[]): VacationWi
         vacationDaysRequired: vacDays,
         efficiency,
         holidays,
-        tier: getTier(efficiency),
+        tier: getTier(efficiency, vacDays),
         description: buildDescription(day.holiday?.name, vacDays, totalDays),
         days: slice,
       });
     }
   }
 
-  return windows.sort((a, b) => {
+  // Eliminar ventanas que son subconjunto de otra ventana más grande
+  const deduped = windows.filter(w =>
+    !windows.some(other =>
+      other !== w &&
+      other.startDate <= w.startDate &&
+      other.endDate >= w.endDate &&
+      (other.startDate < w.startDate || other.endDate > w.endDate)
+    )
+  );
+
+  return deduped.sort((a, b) => {
     if (!isFinite(a.efficiency) && !isFinite(b.efficiency)) return 0;
     if (!isFinite(a.efficiency)) return -1;
     if (!isFinite(b.efficiency)) return 1;
@@ -68,7 +78,8 @@ export function generateRecommendations(calendarDays: CalendarDay[]): VacationWi
   });
 }
 
-function getTier(efficiency: number): RecommendationTier {
+function getTier(efficiency: number, vacDays: number): RecommendationTier {
+  if (vacDays === 0) return "gratis";
   if (efficiency >= 3.0) return "oro";
   if (efficiency >= 2.0) return "plata";
   return "bronce";

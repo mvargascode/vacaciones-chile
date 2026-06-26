@@ -53,6 +53,10 @@
     --color-bronce-bg: #FFF1E0;
     --color-bronce-text: #6B3D00;
 
+    --color-gratis: #16A34A;
+    --color-gratis-bg: #F0FDF4;
+    --color-gratis-text: #14532D;
+
     --color-feriado: #E8F4FD;
     --color-feriado-border: #A8D4F5;
     --color-feriado-text: #1a4fa8;
@@ -113,6 +117,9 @@
 
     --color-bronce-bg: #2a1a08;
     --color-bronce-text: #e8a05a;
+
+    --color-gratis-bg: #0a2010;
+    --color-gratis-text: #4ade80;
 
     --color-feriado: #0f1f2e;
     --color-feriado-border: #1a3d5c;

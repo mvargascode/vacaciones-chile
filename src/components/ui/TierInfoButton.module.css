@@ -176,3 +176,12 @@
 .bronce .tierName {
     color: var(--color-bronce-text);
 }
+
+.gratis {
+    background: var(--color-gratis-bg);
+    border-color: var(--color-gratis);
+}
+
+.gratis .tierName {
+    color: var(--color-gratis-text);
+}

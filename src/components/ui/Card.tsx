@@ -4,7 +4,7 @@ import styles from './Card.module.css'
 interface CardProps {
   children: ReactNode
   onClick?: () => void
-  accent?: 'oro' | 'plata' | 'bronce'
+  accent?: 'oro' | 'plata' | 'bronce' | 'gratis'
 }
 
 export function Card({ children, onClick, accent }: CardProps) {

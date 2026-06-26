@@ -87,3 +87,7 @@
 .option.active.bronce .label {
     color: var(--color-bronce-text);
 }
+
+.option.active.gratis .label {
+    color: var(--color-gratis-text);
+}

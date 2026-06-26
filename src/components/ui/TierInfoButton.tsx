@@ -4,6 +4,13 @@ import styles from './TierInfoButton.module.css'
 
 const TIERS = [
   {
+    medal:   '🎁',
+    name:    'Gratis',
+    range:   '0 días de vacaciones gastados',
+    detail:  'El feriado cae en fin de semana — tienes días libres sin usar vacaciones.',
+    cls:     styles.gratis,
+  },
+  {
     medal:   '🥇',
     name:    'Oro',
     range:   'Eficiencia mayor a 3x',

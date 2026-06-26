@@ -1,7 +1,7 @@
 import type { Holiday } from "./holiday.types";
 import type { CalendarDay } from "./calendar.types";
 
-export type RecommendationTier = "oro" | "plata" | "bronce";
+export type RecommendationTier = "oro" | "plata" | "bronce" | "gratis";
 
 export interface VacationWindow {
   id: string;

@@ -1,12 +1,13 @@
 import styles from './Badge.module.css'
 
-type BadgeVariant = 'oro' | 'plata' | 'bronce'
+type BadgeVariant = 'oro' | 'plata' | 'bronce' | 'gratis'
 
 interface BadgeProps {
   variant: BadgeVariant
 }
 
 const LABELS: Record<BadgeVariant, string> = {
+  gratis: '🎁 Gratis',
   oro:    '🥇 Oro',
   plata:  '🥈 Plata',
   bronce: '🥉 Bronce',

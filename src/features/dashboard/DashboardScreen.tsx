@@ -61,16 +61,18 @@ export function DashboardScreen() {
 
   const counts = {
     todas:  filteredByDays.length,
+    gratis: filteredByDays.filter(r => r.tier === 'gratis').length,
     oro:    filteredByDays.filter(r => r.tier === 'oro').length,
     plata:  filteredByDays.filter(r => r.tier === 'plata').length,
     bronce: filteredByDays.filter(r => r.tier === 'bronce').length,
   }
 
   const tabs = [
-    { value: 'todas'  as FilterTab, label: 'Todas',     count: counts.todas },
-    { value: 'oro'    as FilterTab, label: '🥇 Oro',    count: counts.oro },
-    { value: 'plata'  as FilterTab, label: '🥈 Plata',  count: counts.plata },
-    { value: 'bronce' as FilterTab, label: '🥉 Bronce', count: counts.bronce },
+    { value: 'todas'  as FilterTab, label: 'Todas',      count: counts.todas },
+    { value: 'gratis' as FilterTab, label: '🎁 Gratis',  count: counts.gratis },
+    { value: 'oro'    as FilterTab, label: '🥇 Oro',     count: counts.oro },
+    { value: 'plata'  as FilterTab, label: '🥈 Plata',   count: counts.plata },
+    { value: 'bronce' as FilterTab, label: '🥉 Bronce',  count: counts.bronce },
   ]
 
   const filtered = activeTab === 'todas'
@@ -78,10 +80,11 @@ export function DashboardScreen() {
     : filteredByDays.filter(r => r.tier === activeTab)
 
   const emptyMessages: Record<FilterTab, { title: string; description: string }> = {
-    todas:  { title: 'Sin oportunidades',       description: 'No encontramos oportunidades para tu configuración.' },
-    oro:    { title: 'Sin oportunidades oro',    description: 'No hay feriados que permitan eficiencia 3x o más.' },
-    plata:  { title: 'Sin oportunidades plata',  description: 'No hay oportunidades de eficiencia 2x.' },
-    bronce: { title: 'Sin oportunidades bronce', description: 'Todas las oportunidades son de mayor eficiencia.' },
+    todas:  { title: 'Sin oportunidades',        description: 'No encontramos oportunidades para tu configuración.' },
+    gratis: { title: 'Sin oportunidades gratis', description: 'No hay feriados que caigan en fin de semana este año.' },
+    oro:    { title: 'Sin oportunidades oro',     description: 'No hay feriados que permitan eficiencia 3x o más.' },
+    plata:  { title: 'Sin oportunidades plata',   description: 'No hay oportunidades de eficiencia 2x.' },
+    bronce: { title: 'Sin oportunidades bronce',  description: 'Todas las oportunidades son de mayor eficiencia.' },
   }
 
   function handleApplySuggestion(periodId: string, newStart: string, newEnd: string) {

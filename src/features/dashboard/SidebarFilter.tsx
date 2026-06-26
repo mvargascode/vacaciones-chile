@@ -16,6 +16,7 @@ interface SidebarFilterProps {
   onChange: (value: FilterTab) => void
   counts: {
     todas: number
+    gratis: number
     oro: number
     plata: number
     bronce: number
@@ -25,9 +26,10 @@ interface SidebarFilterProps {
 export function SidebarFilter({ active, onChange, counts }: SidebarFilterProps) {
   const options: FilterOption[] = [
     { value: 'todas',  label: 'Todas las oportunidades', count: counts.todas },
-    { value: 'oro',    label: '🥇 Oro',    count: counts.oro },
-    { value: 'plata',  label: '🥈 Plata',  count: counts.plata },
-    { value: 'bronce', label: '🥉 Bronce', count: counts.bronce },
+    { value: 'gratis', label: '🎁 Gratis',  count: counts.gratis },
+    { value: 'oro',    label: '🥇 Oro',     count: counts.oro },
+    { value: 'plata',  label: '🥈 Plata',   count: counts.plata },
+    { value: 'bronce', label: '🥉 Bronce',  count: counts.bronce },
   ]
 
   return (

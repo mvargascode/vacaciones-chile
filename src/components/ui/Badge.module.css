@@ -27,3 +27,9 @@
     color: var(--color-bronce-text);
     border: 1px solid var(--color-bronce);
 }
+
+.gratis {
+    background: var(--color-gratis-bg);
+    color: var(--color-gratis-text);
+    border: 1px solid var(--color-gratis);
+}
