@@ -6,12 +6,11 @@ import type { Holiday } from '../types/holiday.types'
 
 export function useRecommendations(
   year: number,
-  holidays: Holiday[],        // ← ahora recibe holidays ya resueltos
-  availableDays: number
+  holidays: Holiday[],
 ): VacationWindow[] {
   return useMemo(() => {
     if (holidays.length === 0) return []
     const calendar = buildYearCalendar(year, holidays)
-    return generateRecommendations(calendar, availableDays)
-  }, [year, holidays, availableDays])
+    return generateRecommendations(calendar)
+  }, [year, holidays])
 }

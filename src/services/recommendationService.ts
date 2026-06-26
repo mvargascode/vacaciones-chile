@@ -5,72 +5,67 @@ import type {
 } from "../types/recommendation.types";
 import { isWorkday } from "./calendarService";
 
-const MAX_VACATION_DAYS = 10;
-const MAX_GAP_TO_BRIDGE = 4;
-
-export function generateRecommendations(
-  calendarDays: CalendarDay[],
-  availableDays: number,
-): VacationWindow[] {
+export function generateRecommendations(calendarDays: CalendarDay[]): VacationWindow[] {
   const windows: VacationWindow[] = [];
+  const seen = new Set<string>();
 
   for (let i = 0; i < calendarDays.length; i++) {
-    if (calendarDays[i].dayType !== "feriado") continue;
+    const day = calendarDays[i];
+    if (day.dayType !== "feriado") continue;
 
-    let start = i;
-    while (start > 0) {
-      let backIdx = start - 1;
-      while (backIdx >= 0 && calendarDays[backIdx].dayType === "laborable")
-        backIdx--;
-      if (backIdx < 0 || start - backIdx > MAX_GAP_TO_BRIDGE) break;
-      start = backIdx;
+    const dow = day.dayOfWeek; // 0=Dom, 1=Lun, 2=Mar, 3=Mié, 4=Jue, 5=Vie, 6=Sáb
+
+    // [startOffset, endOffset] relativos al índice del feriado
+    const candidates: [number, number][] = [];
+
+    if (dow === 0) candidates.push([-1, 0]);       // Dom: Sáb–Dom (gratis)
+    else if (dow === 1) candidates.push([-2, 0]);  // Lun: Sáb–Dom–Lun (gratis)
+    else if (dow === 2) candidates.push([-3, 0]);  // Mar: Sáb–Dom–Lun–Mar (1 día vac)
+    else if (dow === 3) {
+      candidates.push([-4, 0]); // Mié opción A: Sáb–Dom–Lun–Mar–Mié (2 días vac)
+      candidates.push([0, 4]);  // Mié opción B: Mié–Jue–Vie–Sáb–Dom (2 días vac)
     }
+    else if (dow === 4) candidates.push([0, 3]);   // Jue: Jue–Vie–Sáb–Dom (1 día vac)
+    else if (dow === 5) candidates.push([0, 2]);   // Vie: Vie–Sáb–Dom (gratis)
+    else if (dow === 6) candidates.push([0, 1]);   // Sáb: Sáb–Dom (gratis)
 
-    let end = i;
-    while (end < calendarDays.length - 1) {
-      let fwdIdx = end + 1;
-      while (
-        fwdIdx < calendarDays.length &&
-        calendarDays[fwdIdx].dayType === "laborable"
-      )
-        fwdIdx++;
-      if (fwdIdx >= calendarDays.length || fwdIdx - end > MAX_GAP_TO_BRIDGE)
-        break;
-      end = fwdIdx;
+    for (const [startOff, endOff] of candidates) {
+      const s = Math.max(0, i + startOff);
+      const e = Math.min(calendarDays.length - 1, i + endOff);
+      const slice = calendarDays.slice(s, e + 1);
+
+      const key = `${slice[0].date}_${slice[slice.length - 1].date}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+
+      const vacDays = slice.filter(isWorkday).length;
+      const totalDays = slice.length;
+      const efficiency = vacDays === 0
+        ? Infinity
+        : Math.round((totalDays / vacDays) * 10) / 10;
+      const holidays = slice.filter(d => d.holiday).map(d => d.holiday!);
+
+      windows.push({
+        id: key,
+        startDate: slice[0].date,
+        endDate: slice[slice.length - 1].date,
+        totalDaysOff: totalDays,
+        vacationDaysRequired: vacDays,
+        efficiency,
+        holidays,
+        tier: getTier(efficiency),
+        description: buildDescription(day.holiday?.name, vacDays, totalDays),
+        days: slice,
+      });
     }
-
-    const windowDays = calendarDays.slice(start, end + 1);
-    const vacationDaysRequired = windowDays.filter(isWorkday).length;
-
-    if (vacationDaysRequired === 0) continue;
-    if (vacationDaysRequired > availableDays) continue;
-    if (vacationDaysRequired > MAX_VACATION_DAYS) continue;
-    if (windows.some((w) => w.startDate === windowDays[0].date)) continue;
-
-    const totalDaysOff = windowDays.length;
-    const efficiency =
-      Math.round((totalDaysOff / vacationDaysRequired) * 10) / 10;
-    const holidays = windowDays.filter((d) => d.holiday).map((d) => d.holiday!);
-
-    windows.push({
-      id: `${windowDays[0].date}_${windowDays[windowDays.length - 1].date}`,
-      startDate: windowDays[0].date,
-      endDate: windowDays[windowDays.length - 1].date,
-      totalDaysOff,
-      vacationDaysRequired,
-      efficiency,
-      holidays,
-      tier: getTier(efficiency),
-      description: buildDescription(
-        holidays[0]?.name,
-        vacationDaysRequired,
-        totalDaysOff,
-      ),
-      days: windowDays,
-    });
   }
 
-  return windows.sort((a, b) => b.efficiency - a.efficiency);
+  return windows.sort((a, b) => {
+    if (!isFinite(a.efficiency) && !isFinite(b.efficiency)) return 0;
+    if (!isFinite(a.efficiency)) return -1;
+    if (!isFinite(b.efficiency)) return 1;
+    return b.efficiency - a.efficiency;
+  });
 }
 
 function getTier(efficiency: number): RecommendationTier {
@@ -79,10 +74,7 @@ function getTier(efficiency: number): RecommendationTier {
   return "bronce";
 }
 
-function buildDescription(
-  name: string | undefined,
-  vacDays: number,
-  totalDays: number,
-): string {
+function buildDescription(name: string | undefined, vacDays: number, totalDays: number): string {
+  if (vacDays === 0) return `${name ?? "Feriado"}: ${totalDays} días libres sin gastar vacaciones`;
   return `${name ?? "Feriado"}: ${totalDays} días libres usando solo ${vacDays} de vacaciones`;
 }

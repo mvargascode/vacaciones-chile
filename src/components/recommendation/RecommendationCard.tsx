@@ -31,6 +31,9 @@ function buildSummaryText(r: VacationWindow): string {
   const datesStr = dates.length === 1
     ? dates[0]
     : dates.slice(0, -1).join(', ') + ' y ' + dates[dates.length - 1]
+  if (r.vacationDaysRequired === 0) {
+    return `Del ${start} al ${end} tienes ${r.totalDaysOff} días libres sin gastar días de vacaciones. ${article} ${datesStr} ${verb} 🎉`
+  }
   return `Si pides vacaciones del ${start} al ${end}, descansas ${r.totalDaysOff} días seguidos gastando solo ${r.vacationDaysRequired} días de vacaciones. ${article} ${datesStr} ${verb} 🎉`
 }
 
@@ -40,7 +43,9 @@ export function RecommendationCard({ recommendation: r }: RecommendationCardProp
       {/* Tier + eficiencia */}
       <div className={styles.header}>
         <Badge variant={r.tier} />
-        <span className={styles.efficiency}>{r.efficiency}x eficiencia</span>
+        <span className={styles.efficiency}>
+          {Number.isFinite(r.efficiency) ? `${r.efficiency}x eficiencia` : 'Gratis 🎉'}
+        </span>
       </div>
 
       {/* Fecha */}

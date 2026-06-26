@@ -28,7 +28,7 @@ export function DashboardScreen() {
 
   const { holidays, loading, fromApi } = useHolidaysApi(year, region)
 
-  const allRecommendations = useRecommendations(year, holidays, totalAvailableDays)
+  const allRecommendations = useRecommendations(year, holidays)
 
   const recommendations = useMemo(() => {
     const today = new Date()
