@@ -130,7 +130,7 @@ export function DashboardScreen() {
         title="Vacaciones Chile"
         subtitle={`${region} · ${daysToUse} de ${totalAvailableDays} días disponibles`}
         year={year}
-        onSettingsClick={resetConfiguration}
+        onBack={resetConfiguration}
       />
 
       {loading && (
@@ -162,7 +162,6 @@ export function DashboardScreen() {
               year={year}
               sector={preferences.sector}
               totalRecommendations={recommendations.length}
-              onReset={resetConfiguration}
               fromApi={fromApi}
             />
           </SidebarSection>

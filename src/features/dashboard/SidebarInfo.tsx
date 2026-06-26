@@ -1,27 +1,24 @@
-import { Button } from '../../components/ui'
 import { REGIONS } from '../../data/regions'
 import type { Sector } from '../../types/user.types'
 import styles from './SidebarInfo.module.css'
 
 interface SidebarInfoProps {
   region: string
-  totalAvailableDays: number   // ← reemplaza availableDays
-  daysToUse: number            // ← nuevo
+  totalAvailableDays: number
+  daysToUse: number
   year: number
   sector: Sector
   totalRecommendations: number
-  onReset: () => void
   fromApi: boolean
 }
 
 export function SidebarInfo({
   region,
-  totalAvailableDays,   // ← reemplaza availableDays
-  daysToUse,            // ← nuevo
+  totalAvailableDays,
+  daysToUse,
   year,
   sector,
   totalRecommendations,
-  onReset,
   fromApi,
 }: SidebarInfoProps) {
   const regionName = REGIONS.find(r => r.code === region)?.name ?? region
@@ -58,10 +55,6 @@ export function SidebarInfo({
       </div>
 
       <div className={styles.adSlot}>Publicidad · 160×160</div>
-
-      <Button variant="secondary" size="sm" fullWidth onClick={onReset}>
-        ⚙️ Reconfigurar
-      </Button>
 
       <p style={{
         fontSize: 'var(--font-size-xs)',

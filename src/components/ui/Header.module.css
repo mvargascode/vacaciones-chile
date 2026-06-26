@@ -62,8 +62,7 @@
     letter-spacing: 0.05em;
 }
 
-.themeBtn,
-.settingsBtn {
+.themeBtn {
     background: rgba(255, 255, 255, 0.12);
     border: none;
     border-radius: var(--radius-md);
@@ -77,9 +76,30 @@
     flex-shrink: 0;
 }
 
-.themeBtn:hover,
-.settingsBtn:hover {
+.themeBtn:hover {
     background: rgba(255, 255, 255, 0.22);
+}
+
+.backBtn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 0 var(--space-3);
+    height: 32px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.30);
+    border-radius: var(--radius-md);
+    color: rgba(255, 255, 255, 0.95);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.backBtn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.50);
 }
 
 .installBtn {
@@ -117,10 +137,15 @@
         display: none;
     }
 
-    .themeBtn,
-    .settingsBtn {
+    .themeBtn {
         width: 28px;
         height: 28px;
+    }
+
+    .backBtn {
+        height: 28px;
+        padding: 0 var(--space-2);
+        font-size: var(--font-size-xs);
     }
 
     .installBtn {

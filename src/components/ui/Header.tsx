@@ -1,4 +1,4 @@
-import { IconSettings, IconSun, IconMoon, IconDownload } from '@tabler/icons-react'
+import { IconSun, IconMoon, IconDownload } from '@tabler/icons-react'
 import { FlagCL } from '../../assets/FlagCL'
 import { useTheme } from '../../hooks/useTheme'
 import { useInstallPrompt } from '../../hooks/useInstallPrompt'
@@ -8,14 +8,14 @@ interface HeaderProps {
   title?: string
   subtitle?: string
   year?: number
-  onSettingsClick?: () => void
+  onBack?: () => void
 }
 
 export function Header({
   title = 'Vacaciones Chile',
   subtitle,
   year,
-  onSettingsClick,
+  onBack,
 }: HeaderProps) {
   const { theme, toggleTheme } = useTheme()
   const { canInstall, triggerInstall } = useInstallPrompt()
@@ -52,13 +52,13 @@ export function Header({
               : <IconMoon size={16} stroke={1.5} />
             }
           </button>
-          {onSettingsClick && (
+          {onBack && (
             <button
-              className={styles.settingsBtn}
-              onClick={onSettingsClick}
-              aria-label="Configuración"
+              className={styles.backBtn}
+              onClick={onBack}
+              aria-label="Volver a configuración"
             >
-              <IconSettings size={18} stroke={1.5} />
+              ← Atrás
             </button>
           )}
         </div>
