@@ -224,10 +224,12 @@ export function PlannedView({
       </div>
 
       {/* Botón agregar período */}
-      <button className={styles.addBtn} onClick={onOpenPlanner}>
-        <span className={styles.addIcon}>+</span>
-        Agregar otro período de vacaciones
-      </button>
+      {remaining > 0 && (
+        <button className={styles.addBtn} onClick={onOpenPlanner}>
+          <span className={styles.addIcon}>+</span>
+          Agregar otro período de vacaciones
+        </button>
+      )}
 
     </div>
   )
