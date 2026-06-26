@@ -13,15 +13,15 @@ const TIERS = [
   {
     medal:   '🥇',
     name:    'Oro',
-    range:   'Eficiencia mayor a 3x',
-    detail:  'Descansas 3 o más días por cada día de vacaciones usado.',
+    range:   'Eficiencia 4x o más',
+    detail:  'Descansas 4 o más días por cada día de vacaciones usado. Ej: pides 1 día y descansas 4.',
     cls:     styles.oro,
   },
   {
     medal:   '🥈',
     name:    'Plata',
-    range:   'Eficiencia entre 2x y 3x',
-    detail:  'Descansas entre 2 y 3 días por cada día de vacaciones usado.',
+    range:   'Eficiencia entre 2x y 4x',
+    detail:  'Descansas entre 2 y 4 días por cada día de vacaciones usado.',
     cls:     styles.plata,
   },
   {

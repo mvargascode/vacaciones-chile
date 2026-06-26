@@ -15,19 +15,20 @@ export function generateRecommendations(calendarDays: CalendarDay[]): VacationWi
 
     const dow = day.dayOfWeek; // 0=Dom, 1=Lun, 2=Mar, 3=Mié, 4=Jue, 5=Vie, 6=Sáb
 
+    // Feriados en sáb/dom no son oportunidades: la gente ya no trabaja esos días
+    if (dow === 0 || dow === 6) continue;
+
     // [startOffset, endOffset] relativos al índice del feriado
     const candidates: [number, number][] = [];
 
-    if (dow === 0) candidates.push([-1, 0]);       // Dom: Sáb–Dom (gratis)
-    else if (dow === 1) candidates.push([-2, 0]);  // Lun: Sáb–Dom–Lun (gratis)
-    else if (dow === 2) candidates.push([-3, 0]);  // Mar: Sáb–Dom–Lun–Mar (1 día vac)
+    if (dow === 1) candidates.push([-2, 0]);  // Lun: Sáb–Dom–Lun (gratis)
+    else if (dow === 2) candidates.push([-3, 0]);  // Mar: Sáb–Dom–Lun(vac)–Mar → 1 día vac
     else if (dow === 3) {
-      candidates.push([-4, 0]); // Mié opción A: Sáb–Dom–Lun–Mar–Mié (2 días vac)
-      candidates.push([0, 4]);  // Mié opción B: Mié–Jue–Vie–Sáb–Dom (2 días vac)
+      candidates.push([-4, 0]); // Mié opción A: Sáb–Dom–Lun(vac)–Mar(vac)–Mié → 2 días vac
+      candidates.push([0, 4]);  // Mié opción B: Mié–Jue(vac)–Vie(vac)–Sáb–Dom → 2 días vac
     }
-    else if (dow === 4) candidates.push([0, 3]);   // Jue: Jue–Vie–Sáb–Dom (1 día vac)
-    else if (dow === 5) candidates.push([0, 2]);   // Vie: Vie–Sáb–Dom (gratis)
-    else if (dow === 6) candidates.push([0, 1]);   // Sáb: Sáb–Dom (gratis)
+    else if (dow === 4) candidates.push([0, 3]);  // Jue: Jue–Vie(vac)–Sáb–Dom → 1 día vac
+    else if (dow === 5) candidates.push([0, 2]);  // Vie: Vie–Sáb–Dom (gratis)
 
     for (const [startOff, endOff] of candidates) {
       const s = Math.max(0, i + startOff);
@@ -54,7 +55,7 @@ export function generateRecommendations(calendarDays: CalendarDay[]): VacationWi
         efficiency,
         holidays,
         tier: getTier(efficiency, vacDays),
-        description: buildDescription(day.holiday?.name, vacDays, totalDays),
+        description: buildDescription(vacDays, totalDays),
         days: slice,
       });
     }
@@ -80,12 +81,14 @@ export function generateRecommendations(calendarDays: CalendarDay[]): VacationWi
 
 function getTier(efficiency: number, vacDays: number): RecommendationTier {
   if (vacDays === 0) return "gratis";
-  if (efficiency >= 3.0) return "oro";
+  if (efficiency >= 4.0) return "oro";
   if (efficiency >= 2.0) return "plata";
   return "bronce";
 }
 
-function buildDescription(name: string | undefined, vacDays: number, totalDays: number): string {
-  if (vacDays === 0) return `${name ?? "Feriado"}: ${totalDays} días libres sin gastar vacaciones`;
-  return `${name ?? "Feriado"}: ${totalDays} días libres usando solo ${vacDays} de vacaciones`;
+function buildDescription(vacDays: number, totalDays: number): string {
+  if (vacDays === 0) {
+    return `Fin de semana largo — ${totalDays} día${totalDays !== 1 ? 's' : ''} libres sin gastar vacaciones`;
+  }
+  return `Pide ${vacDays} día${vacDays !== 1 ? 's' : ''} de vacaciones y descansa ${totalDays} días seguidos`;
 }
