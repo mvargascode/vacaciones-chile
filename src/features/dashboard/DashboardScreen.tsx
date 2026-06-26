@@ -15,6 +15,13 @@ import styles from './DashboardScreen.module.css'
 
 type FilterTab = 'todas' | RecommendationTier
 
+function formatSector(sector: string): string {
+  if (sector === 'privado') return 'Sector privado'
+  if (sector === 'publico') return 'Sector público'
+  if (sector === 'honorarios') return 'A honorarios'
+  return sector
+}
+
 export function DashboardScreen() {
   const {
     preferences,
@@ -94,19 +101,14 @@ export function DashboardScreen() {
   function renderCardList(list: VacationWindow[]) {
     return list.flatMap((r, i) => {
       const card = (
-        <li key={r.id} className={styles.cardRow}>
-          <div className={styles.cardMain}>
-            <RecommendationCard recommendation={r} />
-          </div>
-          <div className={`${styles.adSlotBase} ${styles.adInline}`}>
-            Publicidad · 300×250
-          </div>
+        <li key={r.id}>
+          <RecommendationCard recommendation={r} />
         </li>
       )
-      if ((i + 1) % 3 === 0) {
+      if ((i + 1) % 4 === 0) {
         return [
           card,
-          <li key={`ad-${i}`}>
+          <li key={`ad-${i}`} className={styles.adBreak}>
             <div className={`${styles.adSlotBase} ${styles.adLeaderboard}`}>
               <span className={styles.adLabelDesktop}>Publicidad · 728×90</span>
               <span className={styles.adLabelMobile}>Publicidad · 320×50</span>
@@ -211,8 +213,12 @@ export function DashboardScreen() {
                   className={styles.plannerCta}
                   onClick={() => setDrawerOpen(true)}
                 >
-                  <span>📅</span>
-                  <span>¿Ya sabes cuándo quieres vacaciones? Planifica aquí →</span>
+                  <span className={styles.plannerCtaIcon}>📅</span>
+                  <div className={styles.plannerCtaText}>
+                    <span className={styles.plannerCtaTitle}>¿Ya sabes cuándo quieres vacaciones?</span>
+                    <span className={styles.plannerCtaSubtitle}>Planifica tus períodos y ve cuántos días usas</span>
+                  </div>
+                  <span className={styles.plannerCtaArrow}>→</span>
                 </button>
 
                 {filtered.length === 0 ? (
@@ -223,10 +229,14 @@ export function DashboardScreen() {
                   />
                 ) : (
                   <>
-                    <p className={styles.count} aria-live="polite" aria-atomic="true">
-                      {filtered.length} {filtered.length === 1 ? 'oportunidad' : 'oportunidades'}
-                      {activeTab !== 'todas' ? ` ${activeTab}` : ''} para {year}
-                    </p>
+                    <div className={styles.sectionHeading} aria-live="polite" aria-atomic="true">
+                      <h2 className={styles.sectionTitle}>
+                        Todas tus oportunidades de feriados {year}
+                      </h2>
+                      <p className={styles.sectionSubtitle}>
+                        {filtered.length} {filtered.length === 1 ? 'resultado' : 'resultados'} · {region} · {formatSector(preferences.sector)}
+                      </p>
+                    </div>
                     <ul className={styles.list}>
                       {renderCardList(filtered)}
                     </ul>
