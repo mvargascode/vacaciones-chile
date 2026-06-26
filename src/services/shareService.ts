@@ -21,9 +21,9 @@ function buildIcs(
   const holidayLabel = holidays.length === 1 ? 'feriado incluido' : 'feriados incluidos'
   const description = [
     'Vacaciones planificadas con Vacaciones Chile',
-    `• ${vacationDays} días hábiles solicitados`,
+    `• ${vacationDays} día${vacationDays !== 1 ? 's' : ''} hábile${vacationDays !== 1 ? 's' : ''} solicitado${vacationDays !== 1 ? 's' : ''}`,
     `• ${holidays.length} ${holidayLabel} (${holidays.map(h => h.name).join(', ')})`,
-    `• ${totalDays} días de descanso en total`,
+    `• ${totalDays} día${totalDays !== 1 ? 's' : ''} de descanso en total`,
   ].join('\\n')
   return [
     'BEGIN:VCALENDAR',
@@ -86,7 +86,7 @@ export function buildShareTextOpportunity(r: VacationWindow): string {
 📅 ${formatShortDate(r.startDate)} → ${formatShortDate(r.endDate)}
 
 ✅ Solo uso *${r.vacationDaysRequired} día${r.vacationDaysRequired !== 1 ? 's' : ''} de vacaciones*
-🎉 Descanso *${r.totalDaysOff} días* en total
+🎉 Descanso *${r.totalDaysOff} día${r.totalDaysOff !== 1 ? 's' : ''}* en total
 ⚡ Eficiencia: *${r.efficiency}x*
 
 Feriados incluidos:
@@ -99,14 +99,15 @@ ${APP_URL}`
 export function buildShareTextPlanned(analysis: PeriodAnalysis): string {
   const holidays    = analysis.holidaysInside.map(h => `• ${h.name}`).join('\n')
   const hasHolidays = analysis.holidaysInside.length > 0
+  const freeDays    = analysis.totalDays - analysis.workdaysUsed
 
   return `🏖️ *Mis vacaciones planificadas* 🏖️
 
 📅 ${formatShortDate(analysis.period.startDate)} → ${formatShortDate(analysis.period.endDate)}
 
 ✅ Uso *${analysis.workdaysUsed} día${analysis.workdaysUsed !== 1 ? 's' : ''} de vacaciones*
-🎉 Descanso *${analysis.totalDays} días* en total
-😴 *${analysis.totalDays - analysis.workdaysUsed} días gratis* (feriados + fines de semana)
+🎉 Descanso *${analysis.totalDays} día${analysis.totalDays !== 1 ? 's' : ''}* en total
+😴 *${freeDays} día${freeDays !== 1 ? 's' : ''} gratis* (feriados + fines de semana)
 ${hasHolidays ? `\nFeriados incluidos:\n${holidays}` : ''}
 
 Planifica las tuyas en 👇

@@ -100,15 +100,15 @@ export function DashboardScreen() {
           </div>
         </li>
       )
-      if (i === 1) {
+      if ((i + 1) % 3 === 0) {
         return [
-          <li key="ad-between">
+          card,
+          <li key={`ad-${i}`}>
             <div className={`${styles.adSlotBase} ${styles.adLeaderboard}`}>
               <span className={styles.adLabelDesktop}>Publicidad · 728×90</span>
               <span className={styles.adLabelMobile}>Publicidad · 320×50</span>
             </div>
           </li>,
-          card,
         ]
       }
       return [card]

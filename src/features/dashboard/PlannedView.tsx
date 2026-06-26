@@ -105,7 +105,7 @@ export function PlannedView({
             <div className={styles.wowMessage}>
               <span className={styles.wowIcon}>🎉</span>
               <p className={styles.wowText}>
-                Usas <strong>{analysis.workdaysUsed} día{analysis.workdaysUsed !== 1 ? 's' : ''} de vacaciones</strong> y descansas <strong>{analysis.totalDays} días en total</strong>
+                Usas <strong>{analysis.workdaysUsed} día{analysis.workdaysUsed !== 1 ? 's' : ''} de vacaciones</strong> y descansas <strong>{analysis.totalDays} día{analysis.totalDays !== 1 ? 's' : ''} en total</strong>
               </p>
             </div>
 
@@ -134,7 +134,7 @@ export function PlannedView({
             {/* Desglose */}
             <div className={styles.breakdown}>
               <span className={styles.breakdownItem}>
-                📅 {analysis.workdaysUsed} días hábiles
+                📅 {analysis.workdaysUsed} día{analysis.workdaysUsed !== 1 ? 's' : ''} hábile{analysis.workdaysUsed !== 1 ? 's' : ''}
               </span>
               {analysis.holidaysInside.length > 0 && (
                 <span className={styles.breakdownItem}>

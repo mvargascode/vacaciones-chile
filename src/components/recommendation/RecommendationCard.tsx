@@ -32,9 +32,9 @@ function buildSummaryText(r: VacationWindow): string {
     ? dates[0]
     : dates.slice(0, -1).join(', ') + ' y ' + dates[dates.length - 1]
   if (r.vacationDaysRequired === 0) {
-    return `Del ${start} al ${end} tienes ${r.totalDaysOff} días libres sin gastar días de vacaciones. ${article} ${datesStr} ${verb} 🎉`
+    return `Del ${start} al ${end} tienes ${r.totalDaysOff} día${r.totalDaysOff !== 1 ? 's' : ''} libre${r.totalDaysOff !== 1 ? 's' : ''} sin gastar días de vacaciones. ${article} ${datesStr} ${verb} 🎉`
   }
-  return `Si pides vacaciones del ${start} al ${end}, descansas ${r.totalDaysOff} días seguidos gastando solo ${r.vacationDaysRequired} días de vacaciones. ${article} ${datesStr} ${verb} 🎉`
+  return `Si pides vacaciones del ${start} al ${end}, descansas ${r.totalDaysOff} día${r.totalDaysOff !== 1 ? 's' : ''} seguido${r.totalDaysOff !== 1 ? 's' : ''} gastando solo ${r.vacationDaysRequired} día${r.vacationDaysRequired !== 1 ? 's' : ''} de vacaciones. ${article} ${datesStr} ${verb} 🎉`
 }
 
 export function RecommendationCard({ recommendation: r }: RecommendationCardProps) {

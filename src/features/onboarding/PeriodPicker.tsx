@@ -130,7 +130,7 @@ export function PeriodPicker({
       <div className={styles.container}>
         <div className={styles.modeSelect}>
           <p className={styles.modeQuestion}>
-            Tienes <strong>{availableDays} días</strong> de vacaciones.<br />
+            Tienes <strong>{availableDays} día{availableDays !== 1 ? 's' : ''}</strong> de vacaciones.<br />
             ¿Cómo quieres planificarlos?
           </p>
 
@@ -248,7 +248,7 @@ export function PeriodPicker({
 
         {!hasPeriod && (
           <p className={styles.hint}>
-            📅 Toca el día en que empezarían tus vacaciones — el sistema asignará tus {remaining} días automáticamente
+            📅 Toca el día en que empezarían tus vacaciones — el sistema asignará tus {remaining} día{remaining !== 1 ? 's' : ''} automáticamente
           </p>
         )}
 
@@ -359,7 +359,7 @@ export function PeriodPicker({
       {!selecting && remaining > 0 && (
         <p className={styles.hint}>
           {periods.length > 0
-            ? `+ Agrega otro período — te quedan ${remaining} días`
+            ? `+ Agrega otro período — te quedan ${remaining} día${remaining !== 1 ? 's' : ''}`
             : 'Toca el día en que empezarían tus vacaciones'}
         </p>
       )}
