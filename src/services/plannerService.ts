@@ -20,15 +20,7 @@ export interface OptimizationSuggestion {
   suggestedDate: string
   daysAdjusted: number
   workdaysSaved: number
-}
-export interface OptimizationSuggestion {
-  type: 'extend_start' | 'extend_end'
-  description: string
-  holidayName: string
-  suggestedDate: string
-  daysAdjusted: number
-  workdaysSaved: number
-  workdaysNeeded: number   // ← nuevo: días hábiles extra que necesita
+  workdaysNeeded: number
 }
 const NEARBY_DAYS = 4
 
@@ -90,14 +82,14 @@ function generateSuggestions(
 
       if (workdaysSaved > 0) {
         suggestions.push({
-  type:           'extend_start',
-  description:    `Empieza ${daysAdjusted} días antes para incluir ${day.holiday.name}`,
-  holidayName:    day.holiday.name,
-  suggestedDate:  day.date,
-  daysAdjusted,
-  workdaysSaved:  0,
-  workdaysNeeded: workdaysSaved,  // días hábiles extra que necesita
-})
+          type:           'extend_start',
+          description:    `Empieza ${daysAdjusted} días antes para incluir ${day.holiday.name}`,
+          holidayName:    day.holiday.name,
+          suggestedDate:  day.date,
+          daysAdjusted,
+          workdaysSaved,
+          workdaysNeeded: workdaysSaved,
+        })
 
       }
       break
@@ -118,14 +110,14 @@ function generateSuggestions(
 
       if (workdaysSaved > 0) {
         suggestions.push({
-  type:          'extend_end',
-  description:   `Extiende ${daysAdjusted} días para incluir ${day.holiday.name}`,
-  holidayName:   day.holiday.name,
-  suggestedDate: day.date,
-  daysAdjusted,
-  workdaysSaved,
-  workdaysNeeded: workdaysSaved,  // extend_end necesita días hábiles extra
-})
+          type:           'extend_end',
+          description:    `Extiende ${daysAdjusted} días para incluir ${day.holiday.name}`,
+          holidayName:    day.holiday.name,
+          suggestedDate:  day.date,
+          daysAdjusted,
+          workdaysSaved,
+          workdaysNeeded: workdaysSaved,
+        })
       }
       break
     }

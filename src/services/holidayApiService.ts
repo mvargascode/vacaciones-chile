@@ -23,14 +23,22 @@ interface BoostrResponse {
 
 // Convierte el formato de Boostr al formato interno de la app
 function mapBoostrHoliday(h: BoostrHoliday, index: number): Holiday {
-  const type = h.inalienable ? 'irrenunciable' : 'nacional'
-  const category = h.type.toLowerCase().includes('religioso')
-    ? 'religioso'
-    : h.type.toLowerCase().includes('civil') || h.type.toLowerCase().includes('cívico')
-    ? 'civico'
-    : h.type.toLowerCase().includes('irrenunciable')
-    ? 'laboral'
-    : 'civico'
+  const typeStr = h.type.toLowerCase()
+  const type: Holiday['type'] = h.inalienable ? 'irrenunciable' : 'nacional'
+
+  let category: Holiday['category']
+  if (typeStr.includes('religioso')) {
+    category = 'religioso'
+  } else if (typeStr.includes('laboral') || typeStr.includes('trabajo')) {
+    category = 'laboral'
+  } else {
+    category = 'civico'
+  }
+
+  // Día del Trabajo es irrenunciable de categoría laboral
+  if (h.inalienable && (h.title.toLowerCase().includes('trabajo') || h.title.toLowerCase().includes('trabajador'))) {
+    category = 'laboral'
+  }
 
   return {
     id: `${h.date}-${index}`,
@@ -57,7 +65,11 @@ export async function fetchHolidaysFromApi(year: number): Promise<Holiday[]> {
       throw new Error('Formato de respuesta inesperado')
     }
 
-    return json.data.map(mapBoostrHoliday)
+    const apiHolidays = json.data.map(mapBoostrHoliday)
+
+    // Agregar feriados regionales del fallback que la API nacional no incluye
+    const fallbackRegionales = (FALLBACK[year] ?? []).filter(h => h.type === 'regional')
+    return [...apiHolidays, ...fallbackRegionales]
   } catch (error) {
     console.warn(`[HolidayAPI] Falló para ${year}, usando fallback:`, error)
     return FALLBACK[year] ?? []
