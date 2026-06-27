@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect } from 'react'
 import { REGIONS } from '../../data/regions'
 import type { Sector } from '../../types/user.types'
 import styles from './SidebarInfo.module.css'
@@ -38,6 +39,22 @@ export function SidebarInfo({
   onDaysToUseChange,
   onYearChange,
 }: SidebarInfoProps) {
+  const [regionOpen, setRegionOpen] = useState(false)
+  const regionRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!regionOpen) return
+    function handleOutside(e: MouseEvent) {
+      if (regionRef.current && !regionRef.current.contains(e.target as Node)) {
+        setRegionOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleOutside)
+    return () => document.removeEventListener('mousedown', handleOutside)
+  }, [regionOpen])
+
+  const currentShortName = REGIONS.find(r => r.code === region)?.shortName ?? region
+
   function cycleSector() {
     const idx = SECTOR_CYCLE.indexOf(sector)
     onSectorChange(SECTOR_CYCLE[(idx + 1) % SECTOR_CYCLE.length])
@@ -60,18 +77,43 @@ export function SidebarInfo({
         {/* Región */}
         <div className={styles.configRow}>
           <span className={styles.configLabel}>Región</span>
-          <div className={styles.selectWrapper}>
-            <select
-              className={styles.regionSelect}
-              value={region}
-              onChange={e => onRegionChange(e.target.value)}
+          <div className={styles.regionDropdownWrapper} ref={regionRef}>
+            <button
+              className={styles.regionTrigger}
+              onClick={() => setRegionOpen(o => !o)}
+              aria-haspopup="listbox"
+              aria-expanded={regionOpen}
               aria-label="Seleccionar región"
             >
-              {REGIONS.map(r => (
-                <option key={r.code} value={r.code}>{r.shortName}</option>
-              ))}
-            </select>
-            <span className={styles.selectArrow} aria-hidden="true">▾</span>
+              <span className={styles.regionTriggerText}>{currentShortName}</span>
+              <span
+                className={`${styles.chevron} ${regionOpen ? styles.chevronOpen : ''}`}
+                aria-hidden="true"
+              >▾</span>
+            </button>
+
+            {regionOpen && (
+              <ul
+                className={styles.regionDropdownPanel}
+                role="listbox"
+                aria-label="Regiones disponibles"
+              >
+                {REGIONS.map(r => (
+                  <li
+                    key={r.code}
+                    role="option"
+                    aria-selected={r.code === region}
+                    className={`${styles.regionOption} ${r.code === region ? styles.regionOptionActive : ''}`}
+                    onMouseDown={() => {
+                      onRegionChange(r.code)
+                      setRegionOpen(false)
+                    }}
+                  >
+                    {r.shortName}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
 

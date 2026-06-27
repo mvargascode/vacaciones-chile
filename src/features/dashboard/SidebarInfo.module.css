@@ -10,8 +10,19 @@
     gap: 0;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    overflow: hidden;
+    /* overflow: hidden eliminado para que el dropdown pueda desbordarse */
     background: var(--color-bg-primary);
+}
+
+/* Clip visual de esquinas superior e inferior sin bloquear el dropdown */
+.configRow:first-child {
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    overflow: hidden;
+}
+
+.configRow:last-child {
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    overflow: hidden;
 }
 
 .configRow {
@@ -40,43 +51,95 @@
     text-align: right;
 }
 
-/* ---------- Region select ---------- */
-.selectWrapper {
+/* ---------- Region dropdown custom ---------- */
+.regionDropdownWrapper {
     position: relative;
-    display: flex;
-    align-items: center;
-    max-width: 130px;
 }
 
-.regionSelect {
-    font-size: var(--font-size-sm);
-    font-weight: var(--font-weight-medium);
-    color: var(--color-text-primary);
+.regionTrigger {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
     background: transparent;
     border: none;
     cursor: pointer;
-    outline: none;
-    appearance: none;
-    -webkit-appearance: none;
-    padding-right: 14px;
-    width: 100%;
-    text-align: right;
-    direction: rtl;
+    padding: 0;
+    font-family: inherit;
+    color: var(--color-text-primary);
 }
 
-.regionSelect option {
-    direction: ltr;
-    color: initial;
-    background: initial;
+.regionTriggerText {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    white-space: nowrap;
 }
 
-.selectArrow {
+.chevron {
+    font-size: 10px;
+    color: var(--color-text-muted);
+    line-height: 1;
+    transition: transform 0.15s ease;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.chevronOpen {
+    transform: rotate(180deg);
+}
+
+.regionDropdownPanel {
     position: absolute;
     right: 0;
-    font-size: 9px;
-    color: var(--color-text-muted);
-    pointer-events: none;
-    line-height: 1;
+    top: calc(100% + 6px);
+    z-index: 100;
+    list-style: none;
+    margin: 0;
+    padding: var(--space-1) 0;
+    min-width: 160px;
+    max-height: 220px;
+    overflow-y: auto;
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+/* Scrollbar discreta */
+.regionDropdownPanel::-webkit-scrollbar {
+    width: 4px;
+}
+
+.regionDropdownPanel::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.regionDropdownPanel::-webkit-scrollbar-thumb {
+    background: var(--color-border-strong);
+    border-radius: 2px;
+}
+
+.regionOption {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.1s;
+}
+
+.regionOption:hover {
+    background: var(--color-bg-secondary);
+}
+
+.regionOptionActive {
+    background: var(--color-bg-accent-blue);
+    color: var(--color-primary);
+    font-weight: var(--font-weight-medium);
+}
+
+.regionOptionActive:hover {
+    background: var(--color-bg-accent-blue-hover);
 }
 
 /* ---------- Sector toggle ---------- */
