@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { IconSun, IconMoon } from '@tabler/icons-react'
 import { useTheme } from '../../hooks/useTheme'
 import { useUserPreferences } from '../../hooks/useUserPreferences'
@@ -17,7 +17,7 @@ const STEPS: Step[] = ['region', 'sector', 'totalDays', 'daysToUse', 'year']
 
 export function OnboardingScreen() {
   const { theme, toggleTheme } = useTheme()
-  const { preferences, confirmConfiguration } = useUserPreferences()
+  const { preferences, confirmConfiguration, onboardingReturnStep, clearReturnStep } = useUserPreferences()
 
   const [localRegion,       setLocalRegion]       = useState(preferences.region)
   const [localSector,       setLocalSector]       = useState<Sector>(preferences.sector)
@@ -25,7 +25,14 @@ export function OnboardingScreen() {
   const [localDaysToUse,    setLocalDaysToUse]    = useState(preferences.daysToUse)
   const [daysToUseValid,    setDaysToUseValid]    = useState(true)
   const [localYear,         setLocalYear]         = useState(preferences.year)
-  const [currentStep,       setCurrentStep]       = useState<Step>('region')
+  const [currentStep,       setCurrentStep]       = useState<Step>(
+    (onboardingReturnStep as Step | null) ?? 'region'
+  )
+
+  // Limpia el step de retorno tras usarlo (solo una vez al montar)
+  useEffect(() => {
+    if (onboardingReturnStep) clearReturnStep()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const stepIndex  = STEPS.indexOf(currentStep)
   const isLastStep = currentStep === 'year'

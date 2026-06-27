@@ -25,7 +25,12 @@ function formatSector(sector: string): string {
 export function DashboardScreen() {
   const {
     preferences,
-    resetConfiguration,
+    setRegion,
+    setTotalAvailableDays,
+    setDaysToUse,
+    setYear,
+    setSector,
+    goBackToOnboarding,
     addPlannedPeriod,
     removePlannedPeriod,
     updatePlannedPeriod,
@@ -135,7 +140,7 @@ export function DashboardScreen() {
         title="Vacaciones Chile"
         subtitle={`${region} · ${daysToUse} de ${totalAvailableDays} días disponibles`}
         year={year}
-        onBack={resetConfiguration}
+        onBack={goBackToOnboarding}
       />
 
       {loading && (
@@ -168,6 +173,11 @@ export function DashboardScreen() {
               sector={preferences.sector}
               totalRecommendations={recommendations.length}
               fromApi={fromApi}
+              onRegionChange={setRegion}
+              onSectorChange={setSector}
+              onTotalAvailableDaysChange={setTotalAvailableDays}
+              onDaysToUseChange={setDaysToUse}
+              onYearChange={setYear}
             />
           </SidebarSection>
         </Sidebar>

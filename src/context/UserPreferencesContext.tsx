@@ -34,8 +34,11 @@ interface UserPreferencesContextType {
   setYear: (year: number) => void
   setSector: (sector: Sector) => void
   isConfigured: boolean
+  onboardingReturnStep: string | null
   confirmConfiguration: (prefs: UserPreferences) => void
   resetConfiguration: () => void
+  goBackToOnboarding: () => void
+  clearReturnStep: () => void
   addPlannedPeriod: (period: PlannedPeriod) => void
   removePlannedPeriod: (id: string) => void
   updatePlannedPeriod: (id: string, startDate: string, endDate: string) => void
@@ -47,6 +50,7 @@ export function UserPreferencesProvider({ children }: { children: ReactNode }) {
   const loaded = loadPreferences()
   const [preferences, setPreferences] = useState<UserPreferences>(loaded.preferences)
   const [isConfigured, setIsConfigured] = useState<boolean>(loaded.isConfigured)
+  const [onboardingReturnStep, setOnboardingReturnStep] = useState<string | null>(null)
 
   useEffect(() => {
     if (isConfigured) {
@@ -85,6 +89,17 @@ export function UserPreferencesProvider({ children }: { children: ReactNode }) {
     setIsConfigured(false)
   }
 
+  // Vuelve al onboarding sin borrar preferencias ni localStorage,
+  // posicionando al usuario en el último paso (year)
+  function goBackToOnboarding() {
+    setOnboardingReturnStep('year')
+    setIsConfigured(false)
+  }
+
+  function clearReturnStep() {
+    setOnboardingReturnStep(null)
+  }
+
   function addPlannedPeriod(period: PlannedPeriod) {
     setPreferences(prev => ({
       ...prev,
@@ -117,8 +132,11 @@ export function UserPreferencesProvider({ children }: { children: ReactNode }) {
       setYear,
       setSector,
       isConfigured,
+      onboardingReturnStep,
       confirmConfiguration,
       resetConfiguration,
+      goBackToOnboarding,
+      clearReturnStep,
       addPlannedPeriod,
       removePlannedPeriod,
       updatePlannedPeriod,

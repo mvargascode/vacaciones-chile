@@ -40,6 +40,143 @@
     text-align: right;
 }
 
+/* ---------- Region select ---------- */
+.selectWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: 130px;
+}
+
+.regionSelect {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 14px;
+    width: 100%;
+    text-align: right;
+    direction: rtl;
+}
+
+.regionSelect option {
+    direction: ltr;
+    color: initial;
+    background: initial;
+}
+
+.selectArrow {
+    position: absolute;
+    right: 0;
+    font-size: 9px;
+    color: var(--color-text-muted);
+    pointer-events: none;
+    line-height: 1;
+}
+
+/* ---------- Sector toggle ---------- */
+.sectorToggle {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    padding: var(--space-1) var(--space-2);
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+}
+
+.sectorToggle:hover {
+    background: var(--color-bg-tertiary);
+    border-color: var(--color-border-strong);
+}
+
+/* ---------- Stepper (±) ---------- */
+.stepper {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.stepBtn {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s;
+    padding: 0;
+    user-select: none;
+}
+
+.stepBtn:hover:not(:disabled) {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-primary);
+}
+
+.stepBtn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.stepValue {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    min-width: 22px;
+    text-align: center;
+}
+
+/* ---------- Year toggle ---------- */
+.yearToggle {
+    display: flex;
+    gap: 2px;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 2px;
+}
+
+.yearBtn {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-muted);
+    background: transparent;
+    border: none;
+    border-radius: calc(var(--radius-md) - 2px);
+    cursor: pointer;
+    padding: 2px var(--space-2);
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+
+.yearBtn:hover {
+    color: var(--color-text-secondary);
+}
+
+.yearActive {
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-bold);
+    box-shadow: var(--shadow-sm);
+}
+
+/* ---------- Ad slot ---------- */
 .adSlot {
     display: flex;
     align-items: center;
