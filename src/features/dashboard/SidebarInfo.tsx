@@ -18,6 +18,15 @@ interface SidebarInfoProps {
   onYearChange: (year: number) => void
 }
 
+interface DropdownPos {
+  top: number
+  left: number
+  minWidth: number
+}
+
+const DROPDOWN_MAX_HEIGHT = 224 // px — debe coincidir con max-height del CSS
+const DROPDOWN_GAP = 6
+
 const SECTOR_LABELS: Record<Sector, string> = {
   privado:    '🏢 Privado',
   publico:    '🏛️ Público',
@@ -40,18 +49,48 @@ export function SidebarInfo({
   onYearChange,
 }: SidebarInfoProps) {
   const [regionOpen, setRegionOpen] = useState(false)
-  const regionRef = useRef<HTMLDivElement>(null)
+  const [dropdownPos, setDropdownPos] = useState<DropdownPos | null>(null)
 
+  // triggerRef: para leer getBoundingClientRect() al abrir
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  // wrapperRef: para detectar clic fuera (funciona aunque el panel sea fixed,
+  //             porque el panel sigue siendo hijo DOM del wrapper)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+
+  // Cierra al hacer clic fuera
   useEffect(() => {
     if (!regionOpen) return
     function handleOutside(e: MouseEvent) {
-      if (regionRef.current && !regionRef.current.contains(e.target as Node)) {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
         setRegionOpen(false)
       }
     }
     document.addEventListener('mousedown', handleOutside)
     return () => document.removeEventListener('mousedown', handleOutside)
   }, [regionOpen])
+
+  function openDropdown() {
+    if (!triggerRef.current) return
+    const rect = triggerRef.current.getBoundingClientRect()
+    const fitsBelow = rect.bottom + DROPDOWN_GAP + DROPDOWN_MAX_HEIGHT < window.innerHeight
+
+    setDropdownPos({
+      top: fitsBelow
+        ? rect.bottom + DROPDOWN_GAP
+        : rect.top - DROPDOWN_GAP - DROPDOWN_MAX_HEIGHT,
+      left: rect.left,
+      minWidth: Math.max(rect.width, 200),
+    })
+    setRegionOpen(true)
+  }
+
+  function toggleDropdown() {
+    if (regionOpen) {
+      setRegionOpen(false)
+    } else {
+      openDropdown()
+    }
+  }
 
   const currentShortName = REGIONS.find(r => r.code === region)?.shortName ?? region
 
@@ -77,10 +116,11 @@ export function SidebarInfo({
         {/* Región */}
         <div className={styles.configRow}>
           <span className={styles.configLabel}>Región</span>
-          <div className={styles.regionDropdownWrapper} ref={regionRef}>
+          <div className={styles.regionDropdownWrapper} ref={wrapperRef}>
             <button
+              ref={triggerRef}
               className={styles.regionTrigger}
-              onClick={() => setRegionOpen(o => !o)}
+              onClick={toggleDropdown}
               aria-haspopup="listbox"
               aria-expanded={regionOpen}
               aria-label="Seleccionar región"
@@ -92,11 +132,16 @@ export function SidebarInfo({
               >▾</span>
             </button>
 
-            {regionOpen && (
+            {regionOpen && dropdownPos && (
               <ul
                 className={styles.regionDropdownPanel}
                 role="listbox"
                 aria-label="Regiones disponibles"
+                style={{
+                  top:      dropdownPos.top,
+                  left:     dropdownPos.left,
+                  minWidth: dropdownPos.minWidth,
+                }}
               >
                 {REGIONS.map(r => (
                   <li
