@@ -97,10 +97,11 @@
     /* top / left / min-width vienen via inline styles desde getBoundingClientRect() */
     max-height: 224px;
     overflow-y: auto;
-    background: var(--color-bg-primary);
+    /* --color-bg-secondary coincide con el fondo del sidebar en ambos temas */
+    background: var(--color-bg-secondary);
     border: 1px solid var(--color-border-strong);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-lg);
 }
 
 /* Scrollbar discreta */
@@ -120,6 +121,7 @@
 .regionOption {
     padding: var(--space-2) var(--space-3);
     font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
     color: var(--color-text-primary);
     cursor: pointer;
     white-space: nowrap;
@@ -127,13 +129,13 @@
 }
 
 .regionOption:hover {
-    background: var(--color-bg-secondary);
+    background: var(--color-bg-tertiary);
 }
 
 .regionOptionActive {
     background: var(--color-bg-accent-blue);
     color: var(--color-primary);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-bold);
 }
 
 .regionOptionActive:hover {

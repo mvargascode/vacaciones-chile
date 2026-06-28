@@ -57,6 +57,12 @@ export function SidebarInfo({
   //             porque el panel sigue siendo hijo DOM del wrapper)
   const wrapperRef = useRef<HTMLDivElement>(null)
 
+  // El panel usa position:fixed y puede perder la cascada de variables CSS en
+  // algunos navegadores. Leer el data-theme actual del <html> y aplicarlo
+  // directamente al <ul> garantiza que [data-theme="dark"] resuelva las
+  // variables correctamente sobre el elemento mismo.
+  const currentTheme = document.documentElement.getAttribute('data-theme') ?? 'light'
+
   // Cierra al hacer clic fuera
   useEffect(() => {
     if (!regionOpen) return
@@ -137,6 +143,7 @@ export function SidebarInfo({
                 className={styles.regionDropdownPanel}
                 role="listbox"
                 aria-label="Regiones disponibles"
+                data-theme={currentTheme}
                 style={{
                   top:      dropdownPos.top,
                   left:     dropdownPos.left,
