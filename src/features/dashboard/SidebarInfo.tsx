@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { REGIONS } from '../../data/regions'
 import type { Sector } from '../../types/user.types'
 import styles from './SidebarInfo.module.css'
@@ -24,7 +25,7 @@ interface DropdownPos {
   minWidth: number
 }
 
-const DROPDOWN_MAX_HEIGHT = 224 // px — debe coincidir con max-height del CSS
+const DROPDOWN_MAX_HEIGHT = 224
 const DROPDOWN_GAP = 6
 
 const SECTOR_LABELS: Record<Sector, string> = {
@@ -51,25 +52,24 @@ export function SidebarInfo({
   const [regionOpen, setRegionOpen] = useState(false)
   const [dropdownPos, setDropdownPos] = useState<DropdownPos | null>(null)
 
-  // triggerRef: para leer getBoundingClientRect() al abrir
   const triggerRef = useRef<HTMLButtonElement>(null)
-  // wrapperRef: para detectar clic fuera (funciona aunque el panel sea fixed,
-  //             porque el panel sigue siendo hijo DOM del wrapper)
   const wrapperRef = useRef<HTMLDivElement>(null)
+  // panelRef separado porque el portal vive en document.body,
+  // fuera del árbol DOM de wrapperRef
+  const panelRef = useRef<HTMLUListElement>(null)
 
-  // El panel usa position:fixed y puede perder la cascada de variables CSS en
-  // algunos navegadores. Leer el data-theme actual del <html> y aplicarlo
-  // directamente al <ul> garantiza que [data-theme="dark"] resuelva las
-  // variables correctamente sobre el elemento mismo.
+  // El panel se renderiza en document.body via portal.
+  // data-theme se aplica directamente para que las variables CSS
+  // de [data-theme="dark"] resuelvan sobre el elemento mismo.
   const currentTheme = document.documentElement.getAttribute('data-theme') ?? 'light'
 
-  // Cierra al hacer clic fuera
   useEffect(() => {
     if (!regionOpen) return
     function handleOutside(e: MouseEvent) {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
-        setRegionOpen(false)
-      }
+      const target = e.target as Node
+      const inWrapper = wrapperRef.current?.contains(target) ?? false
+      const inPanel   = panelRef.current?.contains(target)   ?? false
+      if (!inWrapper && !inPanel) setRegionOpen(false)
     }
     document.addEventListener('mousedown', handleOutside)
     return () => document.removeEventListener('mousedown', handleOutside)
@@ -79,23 +79,19 @@ export function SidebarInfo({
     if (!triggerRef.current) return
     const rect = triggerRef.current.getBoundingClientRect()
     const fitsBelow = rect.bottom + DROPDOWN_GAP + DROPDOWN_MAX_HEIGHT < window.innerHeight
-
     setDropdownPos({
       top: fitsBelow
         ? rect.bottom + DROPDOWN_GAP
         : rect.top - DROPDOWN_GAP - DROPDOWN_MAX_HEIGHT,
-      left: rect.left,
+      left:     rect.left,
       minWidth: Math.max(rect.width, 200),
     })
     setRegionOpen(true)
   }
 
   function toggleDropdown() {
-    if (regionOpen) {
-      setRegionOpen(false)
-    } else {
-      openDropdown()
-    }
+    if (regionOpen) setRegionOpen(false)
+    else openDropdown()
   }
 
   const currentShortName = REGIONS.find(r => r.code === region)?.shortName ?? region
@@ -114,6 +110,41 @@ export function SidebarInfo({
   function changeDaysToUse(delta: number) {
     onDaysToUseChange(Math.min(totalAvailableDays, Math.max(1, daysToUse + delta)))
   }
+
+  // Panel renderizado fuera del sidebar via portal → escapa cualquier
+  // stacking context o overflow del contenedor padre
+  const dropdownPortal = regionOpen && dropdownPos
+    ? createPortal(
+        <ul
+          ref={panelRef}
+          className={styles.regionDropdownPanel}
+          role="listbox"
+          aria-label="Regiones disponibles"
+          data-theme={currentTheme}
+          style={{
+            top:      dropdownPos.top,
+            left:     dropdownPos.left,
+            minWidth: dropdownPos.minWidth,
+          }}
+        >
+          {REGIONS.map(r => (
+            <li
+              key={r.code}
+              role="option"
+              aria-selected={r.code === region}
+              className={`${styles.regionOption} ${r.code === region ? styles.regionOptionActive : ''}`}
+              onMouseDown={() => {
+                onRegionChange(r.code)
+                setRegionOpen(false)
+              }}
+            >
+              {r.shortName}
+            </li>
+          ))}
+        </ul>,
+        document.body
+      )
+    : null
 
   return (
     <div className={styles.container}>
@@ -137,35 +168,6 @@ export function SidebarInfo({
                 aria-hidden="true"
               >▾</span>
             </button>
-
-            {regionOpen && dropdownPos && (
-              <ul
-                className={styles.regionDropdownPanel}
-                role="listbox"
-                aria-label="Regiones disponibles"
-                data-theme={currentTheme}
-                style={{
-                  top:      dropdownPos.top,
-                  left:     dropdownPos.left,
-                  minWidth: dropdownPos.minWidth,
-                }}
-              >
-                {REGIONS.map(r => (
-                  <li
-                    key={r.code}
-                    role="option"
-                    aria-selected={r.code === region}
-                    className={`${styles.regionOption} ${r.code === region ? styles.regionOptionActive : ''}`}
-                    onMouseDown={() => {
-                      onRegionChange(r.code)
-                      setRegionOpen(false)
-                    }}
-                  >
-                    {r.shortName}
-                  </li>
-                ))}
-              </ul>
-            )}
           </div>
         </div>
 
@@ -255,6 +257,9 @@ export function SidebarInfo({
       }}>
         Datos: {fromApi ? '🟢 API oficial' : '🟡 Datos locales'}
       </p>
+
+      {/* Portal: se monta en document.body, fuera de cualquier stacking context */}
+      {dropdownPortal}
     </div>
   )
 }
