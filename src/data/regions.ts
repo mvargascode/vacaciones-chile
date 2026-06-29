@@ -4,6 +4,31 @@ export interface Region {
   shortName: string;
 }
 
+// Etiquetas en números romanos según la numeración oficial de regiones de Chile.
+// RM se muestra sin numeración porque así se conoce popularmente.
+const REGION_ROMAN_LABELS: Record<string, string> = {
+  'XV': 'XV Región',
+  '01': 'I Región',
+  '02': 'II Región',
+  '03': 'III Región',
+  '04': 'IV Región',
+  '05': 'V Región',
+  'RM': 'RM',
+  '06': 'VI Región',
+  '07': 'VII Región',
+  '08': 'VIII Región',
+  '09': 'IX Región',
+  '10': 'X Región',
+  '11': 'XI Región',
+  '12': 'XII Región',
+  '14': 'XIV Región',
+  '16': 'XVI Región',
+}
+
+export function getRegionLabel(code: string): string {
+  return REGION_ROMAN_LABELS[code] ?? code
+}
+
 export const REGIONS: Region[] = [
   { code: "XV", name: "Arica y Parinacota", shortName: "Arica" },
   { code: "01", name: "Tarapacá", shortName: "Tarapacá" },

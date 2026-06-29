@@ -4,6 +4,7 @@ import { useHolidaysApi } from '../../hooks/useHolidaysApi'
 import { useRecommendations } from '../../hooks/useRecommendations'
 import { usePlanner } from '../../hooks/usePlanner'
 import { buildYearCalendar } from '../../services/calendarService'
+import { getRegionLabel } from '../../data/regions'
 import { Header, Tabs, EmptyState, Sidebar, SidebarSection, Drawer, TierInfoButton } from '../../components/ui'
 import { RecommendationCard } from '../../components/recommendation'
 import { SidebarFilter } from './SidebarFilter'
@@ -138,7 +139,7 @@ export function DashboardScreen() {
     <div className="app-container animate-fade-in">
       <Header
         title="Vacaciones Chile"
-        subtitle={`${region} · ${daysToUse} de ${totalAvailableDays} días disponibles`}
+        subtitle={`${getRegionLabel(region)} · ${daysToUse} de ${totalAvailableDays} días disponibles`}
         year={year}
         onBack={goBackToOnboarding}
       />
@@ -244,7 +245,7 @@ export function DashboardScreen() {
                         Todas tus oportunidades de feriados {year}
                       </h2>
                       <p className={styles.sectionSubtitle}>
-                        {filtered.length} {filtered.length === 1 ? 'resultado' : 'resultados'} · {region} · {formatSector(preferences.sector)}
+                        {filtered.length} {filtered.length === 1 ? 'resultado' : 'resultados'} · {getRegionLabel(region)} · {formatSector(preferences.sector)}
                       </p>
                     </div>
                     <ul className={styles.list}>
