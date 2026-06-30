@@ -59,7 +59,7 @@ export function AcercaDe() {
               >
                 mvargascode
               </a>
-              , desarrollador independiente basado en Santiago, Chile.
+              , desarrollador independiente de Santiago, Chile.
               Es un proyecto personal, open source y sin fines de lucro.
             </p>
           </div>
