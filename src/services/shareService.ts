@@ -114,6 +114,27 @@ Planifica las tuyas en 👇
 ${APP_URL}`
 }
 
+export function downloadIcs(content: string, filename: string): void {
+  const ua    = navigator.userAgent.toLowerCase()
+  const isIOS = /iphone|ipad|ipod/.test(ua)
+
+  if (isIOS) {
+    // iOS: data URI con location.href funciona en Safari, Chrome y Brave
+    window.location.href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(content)
+    return
+  }
+
+  const blob = new Blob([content], { type: 'text/calendar;charset=utf-8' })
+  const url  = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href     = url
+  link.download = filename
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  setTimeout(() => URL.revokeObjectURL(url), 1000)
+}
+
 export async function copyToClipboard(text: string): Promise<boolean> {
   try {
     await navigator.clipboard.writeText(text)
