@@ -84,8 +84,11 @@ export function ShareButton({ getText, compact = false, gcalUrl, getIcs }: Share
           )}
           {getIcs && (
             <button className={styles.menuItem} onClick={handleIcs}>
-              <span>🍎</span>
-              <span>Apple Calendar</span>
+              <span>📅</span>
+              <div className={styles.menuItemText}>
+                <span>Descargar (.ics)</span>
+                <span className={styles.menuHint}>Compatible con Apple Calendar y Outlook</span>
+              </div>
             </button>
           )}
           {hasCalendarOptions && <div className={styles.divider} />}
