@@ -89,7 +89,6 @@ export function PlannedView({
                   getText={() => buildShareTextPlanned(analysis)}
                   gcalUrl={buildGCalUrlPlanned(analysis)}
                   getIcs={() => buildIcsPlanned(analysis)}
-                  compact={true}
                 />
                 <button
                   className={styles.removeBtn}

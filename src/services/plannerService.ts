@@ -70,11 +70,16 @@ function generateSuggestions(
   endIdx: number,
 ): OptimizationSuggestion[] {
   const suggestions: OptimizationSuggestion[] = []
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
 
   // Buscar feriados ANTES del inicio
   const beforeRange = calendarDays.slice(Math.max(0, startIdx - NEARBY_DAYS), startIdx)
   for (const day of [...beforeRange].reverse()) {
     if (day.holiday) {
+      // No sugerir empezar en una fecha que ya pasó
+      if (new Date(day.date + 'T00:00:00') < today) break
+
       const idx           = calendarDays.indexOf(day)
       const bridgeDays    = calendarDays.slice(idx, startIdx)
       const daysAdjusted  = bridgeDays.length
@@ -90,7 +95,6 @@ function generateSuggestions(
           workdaysSaved,
           workdaysNeeded: workdaysSaved,
         })
-
       }
       break
     }
@@ -103,6 +107,9 @@ function generateSuggestions(
   )
   for (const day of afterRange) {
     if (day.holiday) {
+      // No sugerir extender a una fecha que ya pasó
+      if (new Date(day.date + 'T00:00:00') < today) break
+
       const idx           = calendarDays.indexOf(day)
       const bridgeDays    = calendarDays.slice(endIdx + 1, idx + 1)
       const daysAdjusted  = bridgeDays.length
