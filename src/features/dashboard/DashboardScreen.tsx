@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import { useUserPreferences } from '../../hooks/useUserPreferences'
 import { useHolidaysApi } from '../../hooks/useHolidaysApi'
 import { useRecommendations } from '../../hooks/useRecommendations'
@@ -302,7 +303,10 @@ export function DashboardScreen() {
         >
           mvargascode
         </a>
-        {' · Santiago, Chile · 2026'}
+        {' · Santiago, Chile · 2026 · '}
+        <Link to="/acerca-de" className={styles.footerLink}>Acerca de</Link>
+        {' · '}
+        <Link to="/contacto" className={styles.footerLink}>Contacto</Link>
       </footer>
 
       <Drawer
