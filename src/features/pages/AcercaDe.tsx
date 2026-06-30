@@ -11,12 +11,10 @@ export function AcercaDe() {
 
       <div className={styles.hero}>
         <span className={styles.heroEmoji}>🏖️</span>
-        <div className={styles.heroText}>
-          <h1 className={styles.heroTitle}>Vacaciones Chile</h1>
-          <p className={styles.heroSubtitle}>
-            Planifica tus vacaciones aprovechando al máximo los feriados de Chile.
-          </p>
-        </div>
+        <h1 className={styles.heroTitle}>Vacaciones Chile</h1>
+        <p className={styles.heroSubtitle}>
+          Planifica tus vacaciones aprovechando al máximo los feriados de Chile.
+        </p>
       </div>
 
       <main className={styles.pageContent}>

@@ -11,12 +11,10 @@ export function Contacto() {
 
       <div className={styles.hero}>
         <span className={styles.heroEmoji}>📧</span>
-        <div className={styles.heroText}>
-          <h1 className={styles.heroTitle}>Contacto</h1>
-          <p className={styles.heroSubtitle}>
-            ¿Tienes dudas, sugerencias o encontraste un error? Escríbenos.
-          </p>
-        </div>
+        <h1 className={styles.heroTitle}>Contacto</h1>
+        <p className={styles.heroSubtitle}>
+          ¿Tienes dudas, sugerencias o encontraste un error? Escríbenos.
+        </p>
       </div>
 
       <main className={styles.pageContent}>
