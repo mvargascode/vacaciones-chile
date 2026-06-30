@@ -7,10 +7,19 @@ export function AcercaDe() {
 
   return (
     <div className={`${styles.page} animate-fade-in`}>
+
       <header className={styles.pageHeader}>
         <Link to="/" className={styles.backLink}>← Inicio</Link>
-        <h1 className={styles.pageTitle}>Acerca de Vacaciones Chile</h1>
       </header>
+
+      <div className={styles.hero}>
+        <span className={styles.heroEmoji}>🏖️</span>
+        <h1 className={styles.heroTitle}>Vacaciones Chile</h1>
+        <p className={styles.heroSubtitle}>
+          La herramienta gratuita para planificar tus vacaciones aprovechando
+          al máximo los feriados de Chile.
+        </p>
+      </div>
 
       <main className={styles.pageContent}>
 
@@ -50,8 +59,7 @@ export function AcercaDe() {
               href="https://github.com/mvargascode"
               target="_blank"
               rel="noopener noreferrer"
-              className={styles.footerLink}
-              style={{ color: 'var(--color-primary)', textDecoration: 'underline' }}
+              style={{ color: 'var(--color-primary)' }}
             >
               mvargascode
             </a>
@@ -85,11 +93,17 @@ export function AcercaDe() {
       </main>
 
       <footer className={styles.footer}>
-        <Link to="/" className={styles.footerLink}>Inicio</Link>
-        {' · '}
-        <Link to="/contacto" className={styles.footerLink}>Contacto</Link>
-        {' · Santiago, Chile · 2026'}
+        <div className={styles.footerInner}>
+          <Link to="/" className={styles.footerLink}>Inicio</Link>
+          <span className={styles.sep}>·</span>
+          <Link to="/contacto" className={styles.footerLink}>Contacto</Link>
+          <span className={styles.sep}>·</span>
+          <span>Santiago, Chile</span>
+          <span className={styles.sep}>·</span>
+          <span>2026</span>
+        </div>
       </footer>
+
     </div>
   )
 }

@@ -295,18 +295,24 @@ export function DashboardScreen() {
       </main>
 
       <footer className={styles.footer}>
-        <a
-          href="https://github.com/mvargascode"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.footerLink}
-        >
-          mvargascode
-        </a>
-        {' · Santiago, Chile · 2026 · '}
-        <Link to="/acerca-de" className={styles.footerLink}>Acerca de</Link>
-        {' · '}
-        <Link to="/contacto" className={styles.footerLink}>Contacto</Link>
+        <div className={styles.footerInner}>
+          <a
+            href="https://github.com/mvargascode"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.footerLink}
+          >
+            mvargascode
+          </a>
+          <span className={styles.footerSep}>·</span>
+          <span>Santiago, Chile</span>
+          <span className={styles.footerSep}>·</span>
+          <span>2026</span>
+          <span className={styles.footerSep}>·</span>
+          <Link to="/acerca-de" className={styles.footerLink}>Acerca de</Link>
+          <span className={styles.footerSep}>·</span>
+          <Link to="/contacto" className={styles.footerLink}>Contacto</Link>
+        </div>
       </footer>
 
       <Drawer

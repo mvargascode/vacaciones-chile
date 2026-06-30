@@ -1,14 +1,18 @@
+/* ── Página base ─────────────────────────────────────────── */
 .page {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    /* Crítico: sin esto el fondo no hereda dark mode */
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
 }
 
+/* ── Header con botón de retorno ─────────────────────────── */
 .pageHeader {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    padding: var(--space-4) var(--space-6);
+    align-items: center;
+    padding: var(--space-3) var(--space-6);
     border-bottom: 1px solid var(--color-border);
     background: var(--color-bg-primary);
     position: sticky;
@@ -20,24 +24,51 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-1);
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-sm);
     color: var(--color-text-muted);
     text-decoration: none;
     transition: color 0.15s;
-    width: fit-content;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-md);
 }
 
 .backLink:hover {
-    color: var(--color-text-secondary);
+    color: var(--color-primary);
+    background: var(--color-bg-accent-blue);
 }
 
-.pageTitle {
-    font-size: var(--font-size-xl);
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-3);
+    padding: var(--space-10) var(--space-6) var(--space-8);
+    background: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.heroEmoji {
+    font-size: 3rem;
+    line-height: 1;
+}
+
+.heroTitle {
+    font-size: var(--font-size-2xl);
     font-weight: var(--font-weight-bold);
     color: var(--color-text-primary);
     margin: 0;
 }
 
+.heroSubtitle {
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 480px;
+}
+
+/* ── Contenido principal ──────────────────────────────────── */
 .pageContent {
     flex: 1;
     max-width: 720px;
@@ -49,42 +80,64 @@
     gap: var(--space-8);
 }
 
+/* ── Sección ──────────────────────────────────────────────── */
 .section {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
+    gap: var(--space-4);
 }
 
 .sectionTitle {
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-bold);
-    color: var(--color-text-primary);
+    /* color de acento de la app */
+    color: var(--color-primary);
     margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
 }
 
 .sectionBody {
     font-size: var(--font-size-base);
     color: var(--color-text-secondary);
-    line-height: 1.7;
+    line-height: 1.75;
     margin: 0;
 }
 
+/* ── Lista con flechas estilizadas ────────────────────────── */
 .list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
-    padding-left: var(--space-5);
-    margin: 0;
-    color: var(--color-text-secondary);
-    font-size: var(--font-size-base);
-    line-height: 1.7;
+    gap: var(--space-3);
 }
 
+.list li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    font-size: var(--font-size-base);
+    color: var(--color-text-secondary);
+    line-height: 1.65;
+}
+
+.list li::before {
+    content: '→';
+    color: var(--color-primary);
+    font-weight: var(--font-weight-bold);
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* ── Grilla de datos ──────────────────────────────────────── */
 .dataGrid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-3) var(--space-6);
-    padding: var(--space-4);
+    gap: var(--space-4) var(--space-6);
+    padding: var(--space-5);
     background: var(--color-bg-secondary);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
@@ -99,14 +152,15 @@
 .dataItem {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: var(--space-1);
 }
 
 .dataLabel {
     font-size: var(--font-size-xs);
     color: var(--color-text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
+    font-weight: var(--font-weight-medium);
 }
 
 .dataValue {
@@ -115,13 +169,14 @@
     color: var(--color-text-primary);
 }
 
+/* ── Tarjeta de contacto ──────────────────────────────────── */
 .contactCard {
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
     padding: var(--space-6);
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
+    background: var(--color-bg-accent-blue);
+    border: 1px solid var(--color-bg-wow-border);
     border-radius: var(--radius-xl);
 }
 
@@ -129,32 +184,52 @@
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-base);
     font-weight: var(--font-weight-medium);
     color: var(--color-primary);
+    text-decoration: none;
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition: border-color 0.15s, background 0.15s;
+    width: fit-content;
+}
+
+.emailLink:hover {
+    border-color: var(--color-primary);
+    background: var(--color-bg-accent-blue-hover);
+    text-decoration: none;
+}
+
+/* ── Footer de página ─────────────────────────────────────── */
+.footer {
+    padding: var(--space-4) var(--space-6);
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg-primary);
+}
+
+.footerInner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+}
+
+.footerLink {
+    color: var(--color-text-muted);
     text-decoration: none;
     transition: color 0.15s;
 }
 
-.emailLink:hover {
-    color: var(--color-primary-light);
-    text-decoration: underline;
-}
-
-.footer {
-    padding: var(--space-4) var(--space-6);
-    text-align: center;
-    font-size: var(--font-size-xs);
-    color: var(--color-text-muted);
-    border-top: 1px solid var(--color-border);
-}
-
-.footerLink {
-    color: inherit;
-    text-decoration: none;
-}
-
 .footerLink:hover {
-    color: var(--color-text-secondary);
-    text-decoration: underline;
+    color: var(--color-primary);
+}
+
+.sep {
+    opacity: 0.4;
+    user-select: none;
 }

@@ -7,18 +7,26 @@ export function Contacto() {
 
   return (
     <div className={`${styles.page} animate-fade-in`}>
+
       <header className={styles.pageHeader}>
         <Link to="/" className={styles.backLink}>← Inicio</Link>
-        <h1 className={styles.pageTitle}>Contacto</h1>
       </header>
+
+      <div className={styles.hero}>
+        <span className={styles.heroEmoji}>✉️</span>
+        <h1 className={styles.heroTitle}>Contacto</h1>
+        <p className={styles.heroSubtitle}>
+          ¿Tienes dudas, sugerencias o encontraste un error?
+          Nos encantaría saber de ti.
+        </p>
+      </div>
 
       <main className={styles.pageContent}>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>¿Tienes dudas, sugerencias o encontraste un error?</h2>
+          <h2 className={styles.sectionTitle}>📬 Escríbenos directamente</h2>
           <p className={styles.sectionBody}>
-            Nos encantaría saber de ti. Puedes escribirnos directamente a nuestro correo
-            y te responderemos a la brevedad.
+            Puedes contactarnos en cualquier momento y te responderemos a la brevedad.
           </p>
           <div className={styles.contactCard}>
             <a
@@ -28,14 +36,14 @@ export function Contacto() {
               📧 hola.vacacioneschile@gmail.com
             </a>
             <p className={styles.sectionBody} style={{ margin: 0 }}>
-              También puedes escribirnos para reportar errores, sugerir nuevas funciones
-              o simplemente contarnos cómo usas la aplicación.
+              Úsalo para reportar errores, sugerir funciones o simplemente
+              contarnos cómo usas la aplicación. Leemos todos los mensajes.
             </p>
           </div>
         </section>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>¿Encontraste un error en un feriado?</h2>
+          <h2 className={styles.sectionTitle}>🐛 ¿Encontraste un error en un feriado?</h2>
           <p className={styles.sectionBody}>
             Si crees que hay un feriado incorrecto o faltante, escríbenos indicando
             la fecha, el nombre del feriado y la fuente oficial donde lo verificaste.
@@ -44,7 +52,7 @@ export function Contacto() {
         </section>
 
         <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>¿Quieres sugerir una nueva función?</h2>
+          <h2 className={styles.sectionTitle}>💡 ¿Quieres sugerir una nueva función?</h2>
           <p className={styles.sectionBody}>
             Todas las sugerencias son bienvenidas. Este proyecto crece gracias
             al feedback de sus usuarios.
@@ -54,11 +62,17 @@ export function Contacto() {
       </main>
 
       <footer className={styles.footer}>
-        <Link to="/" className={styles.footerLink}>Inicio</Link>
-        {' · '}
-        <Link to="/acerca-de" className={styles.footerLink}>Acerca de</Link>
-        {' · Santiago, Chile · 2026'}
+        <div className={styles.footerInner}>
+          <Link to="/" className={styles.footerLink}>Inicio</Link>
+          <span className={styles.sep}>·</span>
+          <Link to="/acerca-de" className={styles.footerLink}>Acerca de</Link>
+          <span className={styles.sep}>·</span>
+          <span>Santiago, Chile</span>
+          <span className={styles.sep}>·</span>
+          <span>2026</span>
+        </div>
       </footer>
+
     </div>
   )
 }
