@@ -12,8 +12,8 @@ export default defineConfig({
       manifest: {
         name: 'Vacaciones Chile',
         short_name: 'VacChile',
-        description: 'Descubre los mejores destinos de Chile',
-        theme_color: '#ffffff',
+        description: 'Planifica tus vacaciones en Chile aprovechando al máximo los feriados. Descubre cuántos días puedes descansar usando menos vacaciones.',
+        theme_color: '#003087',
         background_color: '#ffffff',
         display: 'standalone',
         scope: '/',

@@ -129,10 +129,21 @@ export const HOLIDAYS_2026: Holiday[] = [
     category: "religioso",
     irrenunciable: true,
   },
+  // Ley 20.663 — solo Región de Arica y Parinacota
   {
-    id: "2026-06-26-nuble",
-    date: "2026-06-26",
-    name: "Día de Ñuble",
+    id: "2026-06-07-arica",
+    date: "2026-06-07",
+    name: "Asalto y Toma del Morro de Arica",
+    type: "regional",
+    category: "civico",
+    irrenunciable: false,
+    regions: ["XV"],
+  },
+  // Ley 20.768 — solo comunas de Chillán y Chillán Viejo (región de Ñuble)
+  {
+    id: "2026-08-20-procer",
+    date: "2026-08-20",
+    name: "Nacimiento del Prócer de la Independencia",
     type: "regional",
     category: "civico",
     irrenunciable: false,
