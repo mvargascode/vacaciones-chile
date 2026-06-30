@@ -29,6 +29,12 @@ export function getRegionLabel(code: string): string {
   return REGION_ROMAN_LABELS[code] ?? code
 }
 
+export function getRegionNumeral(code: string): string {
+  const label = REGION_ROMAN_LABELS[code]
+  if (!label) return code
+  return label.replace(' Región', '')
+}
+
 export const REGIONS: Region[] = [
   { code: "XV", name: "Arica y Parinacota", shortName: "Arica" },
   { code: "01", name: "Tarapacá", shortName: "Tarapacá" },

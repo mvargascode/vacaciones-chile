@@ -1,4 +1,4 @@
-import { REGIONS } from '../../data/regions'
+import { REGIONS, getRegionNumeral } from '../../data/regions'
 import styles from './RegionSelector.module.css'
 
 interface RegionSelectorProps {
@@ -18,7 +18,7 @@ export function RegionSelector({ value, onChange }: RegionSelectorProps) {
             onClick={() => onChange(region.code)}
             type="button"
           >
-            <span className={styles.code}>{region.code}</span>
+            <span className={styles.code}>{getRegionNumeral(region.code)}</span>
             <span className={styles.name}>{region.shortName}</span>
           </button>
         ))}
