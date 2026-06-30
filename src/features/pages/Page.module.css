@@ -1,8 +1,7 @@
 /* ── Base ─────────────────────────────────────────────────── */
 .page {
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    width: 100%;
     background-color: var(--color-bg-primary);
     color: var(--color-text-primary);
     font-family: var(--font-sans);
@@ -77,8 +76,6 @@
 
 /* ── Contenido principal centrado ────────────────────────── */
 .pageContent {
-    flex: 1;
-    width: 100%;
     max-width: 780px;
     margin: 0 auto;
     padding: var(--space-6) var(--space-5);
