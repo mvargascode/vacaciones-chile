@@ -71,7 +71,7 @@ export function UserPreferencesProvider({ children }: { children: ReactNode }) {
   }
 
   function setYear(year: number) {
-    setPreferences(prev => ({ ...prev, year }))
+    setPreferences(prev => ({ ...prev, year, plannedPeriods: [] }))
   }
 
   function setSector(sector: Sector) {

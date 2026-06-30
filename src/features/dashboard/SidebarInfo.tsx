@@ -77,14 +77,19 @@ export function SidebarInfo({
 
   function openDropdown() {
     if (!triggerRef.current) return
-    const rect = triggerRef.current.getBoundingClientRect()
-    const fitsBelow = rect.bottom + DROPDOWN_GAP + DROPDOWN_MAX_HEIGHT < window.innerHeight
+    const rect          = triggerRef.current.getBoundingClientRect()
+    const fitsBelow     = rect.bottom + DROPDOWN_GAP + DROPDOWN_MAX_HEIGHT < window.innerHeight
+    const dropdownWidth = 200
+    const margin        = 8
+    let left = rect.left
+    if (left + dropdownWidth > window.innerWidth - margin) left = window.innerWidth - dropdownWidth - margin
+    if (left < margin) left = margin
     setDropdownPos({
       top: fitsBelow
         ? rect.bottom + DROPDOWN_GAP
         : rect.top - DROPDOWN_GAP - DROPDOWN_MAX_HEIGHT,
-      left:     rect.left,
-      minWidth: Math.max(rect.width, 200),
+      left,
+      minWidth: Math.max(rect.width, dropdownWidth),
     })
     setRegionOpen(true)
   }
@@ -231,10 +236,14 @@ export function SidebarInfo({
             <button
               className={`${styles.yearBtn} ${year === 2026 ? styles.yearActive : ''}`}
               onClick={() => onYearChange(2026)}
+              aria-pressed={year === 2026}
+              aria-label="Año 2026"
             >2026</button>
             <button
               className={`${styles.yearBtn} ${year === 2027 ? styles.yearActive : ''}`}
               onClick={() => onYearChange(2027)}
+              aria-pressed={year === 2027}
+              aria-label="Año 2027"
             >2027</button>
           </div>
         </div>
