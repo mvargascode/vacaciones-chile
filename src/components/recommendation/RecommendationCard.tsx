@@ -47,7 +47,6 @@ export function RecommendationCard({ recommendation: r }: RecommendationCardProp
       <div className={styles.bottomRow}>
         <span className={styles.statsLine}>{parts.join(' · ')}</span>
         <ShareButton
-          compact
           getText={() => buildShareTextOpportunity(r)}
           gcalUrl={buildGCalUrlOpportunity(r)}
           getIcs={() => buildIcsOpportunity(r)}
