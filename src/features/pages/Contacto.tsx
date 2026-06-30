@@ -1,63 +1,63 @@
 import { Link } from 'react-router-dom'
-import { useTheme } from '../../hooks/useTheme'
 import styles from './Page.module.css'
 
 export function Contacto() {
-  useTheme()
-
   return (
     <div className={`${styles.page} animate-fade-in`}>
 
-      <header className={styles.pageHeader}>
+      <div className={styles.topBar}>
         <Link to="/" className={styles.backLink}>← Inicio</Link>
-      </header>
+      </div>
 
       <div className={styles.hero}>
-        <span className={styles.heroEmoji}>✉️</span>
-        <h1 className={styles.heroTitle}>Contacto</h1>
-        <p className={styles.heroSubtitle}>
-          ¿Tienes dudas, sugerencias o encontraste un error?
-          Nos encantaría saber de ti.
-        </p>
+        <span className={styles.heroEmoji}>📧</span>
+        <div className={styles.heroText}>
+          <h1 className={styles.heroTitle}>Contacto</h1>
+          <p className={styles.heroSubtitle}>
+            ¿Tienes dudas, sugerencias o encontraste un error? Escríbenos.
+          </p>
+        </div>
       </div>
 
       <main className={styles.pageContent}>
 
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>📬 Escríbenos directamente</h2>
-          <p className={styles.sectionBody}>
-            Puedes contactarnos en cualquier momento y te responderemos a la brevedad.
+        <div className={styles.emailCard}>
+          <div className={styles.emailCardHeader}>
+            <span className={styles.emailIcon}>✉️</span>
+            <h2 className={styles.emailCardTitle}>Escríbenos directamente</h2>
+          </div>
+          <a
+            href="mailto:hola.vacacioneschile@gmail.com"
+            className={styles.emailLink}
+          >
+            hola.vacacioneschile@gmail.com
+          </a>
+          <p className={styles.emailCardNote}>
+            Leemos todos los mensajes y respondemos a la brevedad. Úsalo para reportar
+            errores, sugerir funciones o contarnos cómo usas la aplicación.
           </p>
-          <div className={styles.contactCard}>
-            <a
-              href="mailto:hola.vacacioneschile@gmail.com"
-              className={styles.emailLink}
-            >
-              📧 hola.vacacioneschile@gmail.com
-            </a>
-            <p className={styles.sectionBody} style={{ margin: 0 }}>
-              Úsalo para reportar errores, sugerir funciones o simplemente
-              contarnos cómo usas la aplicación. Leemos todos los mensajes.
+        </div>
+
+        <div className={styles.cardsGrid}>
+
+          <div className={styles.card}>
+            <h2 className={styles.cardTitle}>🐛 ¿Encontraste un error?</h2>
+            <p className={styles.cardBody}>
+              Si crees que hay un feriado incorrecto o faltante, escríbenos con
+              la fecha, el nombre y la fuente oficial donde lo verificaste.
+              Lo revisamos y corregimos rápidamente.
             </p>
           </div>
-        </section>
 
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>🐛 ¿Encontraste un error en un feriado?</h2>
-          <p className={styles.sectionBody}>
-            Si crees que hay un feriado incorrecto o faltante, escríbenos indicando
-            la fecha, el nombre del feriado y la fuente oficial donde lo verificaste.
-            Lo revisamos y corregimos rápidamente.
-          </p>
-        </section>
+          <div className={styles.card}>
+            <h2 className={styles.cardTitle}>💡 ¿Tienes una sugerencia?</h2>
+            <p className={styles.cardBody}>
+              Todas las ideas son bienvenidas. Este proyecto crece gracias
+              al feedback de sus usuarios. Cuéntanos qué mejorarías.
+            </p>
+          </div>
 
-        <section className={styles.section}>
-          <h2 className={styles.sectionTitle}>💡 ¿Quieres sugerir una nueva función?</h2>
-          <p className={styles.sectionBody}>
-            Todas las sugerencias son bienvenidas. Este proyecto crece gracias
-            al feedback de sus usuarios.
-          </p>
-        </section>
+        </div>
 
       </main>
 
@@ -67,9 +67,7 @@ export function Contacto() {
           <span className={styles.sep}>·</span>
           <Link to="/acerca-de" className={styles.footerLink}>Acerca de</Link>
           <span className={styles.sep}>·</span>
-          <span>Santiago, Chile</span>
-          <span className={styles.sep}>·</span>
-          <span>2026</span>
+          <span>Santiago, Chile · 2026</span>
         </div>
       </footer>
 
