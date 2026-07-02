@@ -65,7 +65,7 @@ export function Contacto() {
           <span className={styles.sep}>·</span>
           <Link to="/acerca-de" className={styles.footerLink}>Acerca de</Link>
           <span className={styles.sep}>·</span>
-          <span>Santiago, Chile · 2026</span>
+          <span>Santiago, Chile · {new Date().getFullYear()}</span>
         </div>
       </footer>
 

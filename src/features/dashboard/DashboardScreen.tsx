@@ -307,7 +307,7 @@ export function DashboardScreen() {
           <span className={styles.footerSep}>·</span>
           <span>Santiago, Chile</span>
           <span className={styles.footerSep}>·</span>
-          <span>2026</span>
+          <span>{new Date().getFullYear()}</span>
           <span className={styles.footerSep}>·</span>
           <Link to="/acerca-de" className={styles.footerLink}>Acerca de</Link>
           <span className={styles.footerSep}>·</span>
