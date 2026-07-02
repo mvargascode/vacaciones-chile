@@ -36,7 +36,10 @@
 }
 
 .flag {
-    line-height: 1;
+    display: block;
+    height: 28px;
+    width: 28px;
+    border-radius: 6px;
     flex-shrink: 0;
 }
 

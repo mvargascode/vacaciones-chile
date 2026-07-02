@@ -38,8 +38,10 @@
 }
 
 .logo {
-    font-size: 3rem;
-    line-height: 1;
+    display: block;
+    height: 64px;
+    width: 64px;
+    border-radius: 14px;
 }
 
 .title {
@@ -129,7 +131,8 @@
     }
 
     .logo {
-        font-size: 2rem;
+        height: 48px;
+        width: 48px;
     }
 
     .screen {

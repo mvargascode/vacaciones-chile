@@ -3,7 +3,6 @@ import { IconSun, IconMoon } from '@tabler/icons-react'
 import { useTheme } from '../../hooks/useTheme'
 import { useUserPreferences } from '../../hooks/useUserPreferences'
 import { Button } from '../../components/ui'
-import { FlagCL } from '../../assets/FlagCL'
 import { RegionSelector } from './RegionSelector'
 import { SectorSelector } from './SectorSelector'
 import { DaysSelector } from './DaysSelector'
@@ -78,9 +77,7 @@ export function OnboardingScreen() {
         {theme === 'dark' ? <IconSun size={18} /> : <IconMoon size={18} />}
       </button>
       <div className={styles.header}>
-        <span className={styles.logo}>
-          <FlagCL size={64} />
-        </span>
+        <img src="/pwa-192x192.png" alt="" aria-hidden="true" className={styles.logo} />
         <h1 className={styles.title}>Vacaciones Chile</h1>
         <p className={styles.subtitle}>Aprovecha los feriados al máximo</p>
       </div>

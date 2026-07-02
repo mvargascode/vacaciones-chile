@@ -1,5 +1,4 @@
 import { IconSun, IconMoon, IconDownload } from '@tabler/icons-react'
-import { FlagCL } from '../../assets/FlagCL'
 import { useTheme } from '../../hooks/useTheme'
 import { useInstallPrompt } from '../../hooks/useInstallPrompt'
 import styles from './Header.module.css'
@@ -25,7 +24,7 @@ export function Header({
       <div className={styles.content}>
         <div className={styles.left}>
           <h1 className={styles.title}>
-            <span className={styles.flag}><FlagCL size={22} /></span>
+            <img src="/pwa-192x192.png" alt="" aria-hidden="true" className={styles.flag} />
             {title}
           </h1>
           {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
