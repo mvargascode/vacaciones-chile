@@ -14,6 +14,7 @@ export const HOLIDAYS_2027: Holiday[] = [
   { id: '2027-06-28', date: '2027-06-28', name: 'San Pedro y San Pablo',                 type: 'nacional',      category: 'religioso', irrenunciable: false },
   { id: '2027-07-16', date: '2027-07-16', name: 'Virgen del Carmen',                     type: 'nacional',      category: 'religioso', irrenunciable: false },
   { id: '2027-08-15', date: '2027-08-15', name: 'Asunción de la Virgen',                 type: 'nacional',      category: 'religioso', irrenunciable: false },
+  { id: '2027-09-17', date: '2027-09-17', name: 'Feriado Adicional Fiestas Patrias',      type: 'nacional',      category: 'civico',    irrenunciable: false },
   { id: '2027-09-18', date: '2027-09-18', name: 'Independencia Nacional',                type: 'irrenunciable', category: 'civico',    irrenunciable: true  },
   { id: '2027-09-19', date: '2027-09-19', name: 'Día de las Glorias del Ejército',       type: 'irrenunciable', category: 'civico',    irrenunciable: true  },
   { id: '2027-10-11', date: '2027-10-11', name: 'Encuentro de Dos Mundos',               type: 'nacional',      category: 'civico',    irrenunciable: false },

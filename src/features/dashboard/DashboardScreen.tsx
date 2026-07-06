@@ -46,10 +46,11 @@ export function DashboardScreen() {
 
   const recommendations = useMemo(() => {
     const today = new Date()
-    const monthStart = new Date(today.getFullYear(), today.getMonth(), 1)
+    today.setHours(0, 0, 0, 0)
+    const todayStr = new Date(today.getFullYear(), today.getMonth(), today.getDate())
       .toISOString()
       .slice(0, 10)
-    return allRecommendations.filter(r => r.startDate >= monthStart)
+    return allRecommendations.filter(r => r.startDate >= todayStr)
   }, [allRecommendations])
 
   const calendarDays = useMemo(

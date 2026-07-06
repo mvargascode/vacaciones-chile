@@ -21,31 +21,35 @@ interface BoostrResponse {
   data: BoostrHoliday[]
 }
 
+// Boostr siempre manda type: "Civil", nunca "Religioso", así que la categoría
+// se determina por el nombre del feriado en vez de por ese campo.
+const RELIGIOUS_HOLIDAYS = [
+  'viernes santo', 'sábado santo', 'san pedro', 'san pablo',
+  'virgen del carmen', 'asunción', 'todos los santos',
+  'iglesias evangélicas', 'inmaculada concepción', 'navidad',
+]
+
+function getCategory(title: string): Holiday['category'] {
+  const titleLower = title.toLowerCase()
+  if (titleLower.includes('trabajo') || titleLower.includes('trabajador')) {
+    return 'laboral'
+  }
+  if (RELIGIOUS_HOLIDAYS.some(r => titleLower.includes(r))) {
+    return 'religioso'
+  }
+  return 'civico'
+}
+
 // Convierte el formato de Boostr al formato interno de la app
 function mapBoostrHoliday(h: BoostrHoliday, index: number): Holiday {
-  const typeStr = h.type.toLowerCase()
   const type: Holiday['type'] = h.inalienable ? 'irrenunciable' : 'nacional'
-
-  let category: Holiday['category']
-  if (typeStr.includes('religioso')) {
-    category = 'religioso'
-  } else if (typeStr.includes('laboral') || typeStr.includes('trabajo')) {
-    category = 'laboral'
-  } else {
-    category = 'civico'
-  }
-
-  // Día del Trabajo es irrenunciable de categoría laboral
-  if (h.inalienable && (h.title.toLowerCase().includes('trabajo') || h.title.toLowerCase().includes('trabajador'))) {
-    category = 'laboral'
-  }
 
   return {
     id: `${h.date}-${index}`,
     date: h.date,
     name: h.title,
     type,
-    category,
+    category: getCategory(h.title),
     irrenunciable: h.inalienable,
   }
 }
