@@ -10,6 +10,12 @@ function formatDate(dateStr: string): string {
   return label.charAt(0).toUpperCase() + label.slice(1)
 }
 
+function formatType(h: Holiday): string {
+  if (h.irrenunciable) return 'Irrenunciable'
+  if (h.type === 'regional') return 'Regional'
+  return 'Nacional'
+}
+
 function HolidayTable({ year, holidays }: { year: number; holidays: Holiday[] }) {
   return (
     <div className={`${styles.card} ${styles.cardFull}`}>
@@ -27,7 +33,7 @@ function HolidayTable({ year, holidays }: { year: number; holidays: Holiday[] })
             <tr key={h.id}>
               <td>{formatDate(h.date)}</td>
               <td>{h.name}{h.regions ? ' *' : ''}</td>
-              <td>{h.irrenunciable ? 'Irrenunciable' : 'Nacional'}</td>
+              <td>{formatType(h)}</td>
             </tr>
           ))}
         </tbody>
