@@ -91,6 +91,8 @@ export function AcercaDe() {
         <div className={styles.footerInner}>
           <Link to="/" className={styles.footerLink}>Inicio</Link>
           <span className={styles.sep}>·</span>
+          <Link to="/feriados-chile" className={styles.footerLink}>Feriados</Link>
+          <span className={styles.sep}>·</span>
           <Link to="/contacto" className={styles.footerLink}>Contacto</Link>
           <span className={styles.sep}>·</span>
           <span>Santiago, Chile · {new Date().getFullYear()}</span>

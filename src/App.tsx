@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { useTheme } from './hooks/useTheme'
 import { useUserPreferences } from './hooks/useUserPreferences'
@@ -5,16 +6,29 @@ import { OnboardingScreen } from './features/onboarding/OnboardingScreen'
 import { DashboardScreen } from './features/dashboard/DashboardScreen'
 import { AcercaDe } from './features/pages/AcercaDe'
 import { Contacto } from './features/pages/Contacto'
+import { FeriadosChile } from './features/pages/FeriadosChile'
 import { IOSInstallBanner } from './components/ui'
 
 function App() {
   useTheme()
   const { isConfigured } = useUserPreferences()
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const script = document.createElement('script')
+      script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1972306655122291'
+      script.async = true
+      script.crossOrigin = 'anonymous'
+      document.head.appendChild(script)
+    }, 2000)
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
     <Routes>
       <Route path="/acerca-de" element={<AcercaDe />} />
       <Route path="/contacto"  element={<Contacto />} />
+      <Route path="/feriados-chile" element={<FeriadosChile />} />
       <Route path="*" element={
         <>
           <a href="#main-content" className="skip-link">Saltar al contenido principal</a>
