@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import { useTheme } from './hooks/useTheme'
 import { useUserPreferences } from './hooks/useUserPreferences'
 import { OnboardingScreen } from './features/onboarding/OnboardingScreen'
@@ -12,6 +12,11 @@ import { IOSInstallBanner } from './components/ui'
 function App() {
   useTheme()
   const { isConfigured } = useUserPreferences()
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
 
   useEffect(() => {
     const timer = setTimeout(() => {
