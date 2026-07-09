@@ -57,6 +57,13 @@
     margin-bottom: var(--space-1);
 }
 
+.heroLogo {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-1);
+}
+
 .heroTitle {
     font-size: var(--font-size-xl);
     font-weight: var(--font-weight-bold);

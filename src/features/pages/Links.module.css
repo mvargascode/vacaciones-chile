@@ -1,0 +1,47 @@
+.linkList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+.linkButton {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    text-decoration: none;
+    text-align: left;
+    transition: border-color 0.15s, background 0.15s, transform 0.15s;
+}
+
+.linkButton:hover {
+    border-color: var(--color-primary);
+    background: var(--color-bg-accent-blue);
+    transform: translateY(-1px);
+}
+
+.linkIcon {
+    font-size: 1.375rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.linkLabel {
+    flex: 1;
+}
+
+.linkExternal {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+}
