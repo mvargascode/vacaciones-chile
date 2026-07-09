@@ -312,6 +312,8 @@ export function DashboardScreen() {
           <span className={styles.footerSep}>·</span>
           <Link to="/acerca-de" className={styles.footerLink}>Acerca de</Link>
           <span className={styles.footerSep}>·</span>
+          <Link to="/como-funciona" className={styles.footerLink}>Cómo funciona</Link>
+          <span className={styles.footerSep}>·</span>
           <Link to="/feriados-chile" className={styles.footerLink}>Feriados</Link>
           <span className={styles.footerSep}>·</span>
           <Link to="/contacto" className={styles.footerLink}>Contacto</Link>

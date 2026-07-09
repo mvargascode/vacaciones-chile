@@ -91,6 +91,8 @@ export function AcercaDe() {
         <div className={styles.footerInner}>
           <Link to="/" className={styles.footerLink}>Inicio</Link>
           <span className={styles.sep}>·</span>
+          <Link to="/como-funciona" className={styles.footerLink}>Cómo funciona</Link>
+          <span className={styles.sep}>·</span>
           <Link to="/feriados-chile" className={styles.footerLink}>Feriados</Link>
           <span className={styles.sep}>·</span>
           <Link to="/contacto" className={styles.footerLink}>Contacto</Link>

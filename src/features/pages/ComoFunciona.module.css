@@ -1,0 +1,59 @@
+/* ── Acentos de color por medalla ─────────────────────────── */
+.tierOro {
+    border-color: var(--color-oro);
+    background: var(--color-oro-bg);
+}
+.tierOroTitle { color: var(--color-oro-text); }
+
+.tierPlata {
+    border-color: var(--color-plata);
+    background: var(--color-plata-bg);
+}
+.tierPlataTitle { color: var(--color-plata-text); }
+
+.tierBronce {
+    border-color: var(--color-bronce);
+    background: var(--color-bronce-bg);
+}
+.tierBronceTitle { color: var(--color-bronce-text); }
+
+.tierGratis {
+    border-color: var(--color-gratis);
+    background: var(--color-gratis-bg);
+}
+.tierGratisTitle { color: var(--color-gratis-text); }
+
+/* ── Sección con título destacado ─────────────────────────── */
+.sectionTitle {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+/* ── CTA final ─────────────────────────────────────────────── */
+.ctaSection {
+    display: flex;
+    justify-content: center;
+    padding: var(--space-4) 0;
+}
+
+.ctaButton {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-8);
+    background: var(--color-primary);
+    color: white;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+    text-decoration: none;
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-md);
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.ctaButton:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lg);
+}

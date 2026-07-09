@@ -7,6 +7,7 @@ import { DashboardScreen } from './features/dashboard/DashboardScreen'
 import { AcercaDe } from './features/pages/AcercaDe'
 import { Contacto } from './features/pages/Contacto'
 import { FeriadosChile } from './features/pages/FeriadosChile'
+import { ComoFunciona } from './features/pages/ComoFunciona'
 import { Links } from './features/pages/Links'
 import { IOSInstallBanner } from './components/ui'
 
@@ -35,6 +36,7 @@ function App() {
       <Route path="/acerca-de" element={<AcercaDe />} />
       <Route path="/contacto"  element={<Contacto />} />
       <Route path="/feriados-chile" element={<FeriadosChile />} />
+      <Route path="/como-funciona" element={<ComoFunciona />} />
       <Route path="/links" element={<Links />} />
       <Route path="*" element={
         <>

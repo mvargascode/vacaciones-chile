@@ -1,26 +1,10 @@
-import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useDocumentMeta } from '../../hooks/useDocumentMeta'
 import styles from './Page.module.css'
 import linkStyles from './Links.module.css'
 
 const PAGE_TITLE = 'Vacaciones Chile — Links'
 const PAGE_DESCRIPTION = 'Todos los enlaces de Vacaciones Chile: planifica tus vacaciones, revisa los feriados de Chile 2026 y 2027, y síguenos en Instagram.'
-
-function useDocumentMeta(title: string, description: string) {
-  useEffect(() => {
-    const previousTitle = document.title
-    const meta = document.querySelector('meta[name="description"]')
-    const previousDescription = meta?.getAttribute('content') ?? ''
-
-    document.title = title
-    meta?.setAttribute('content', description)
-
-    return () => {
-      document.title = previousTitle
-      meta?.setAttribute('content', previousDescription)
-    }
-  }, [title, description])
-}
 
 export function Links() {
   useDocumentMeta(PAGE_TITLE, PAGE_DESCRIPTION)
@@ -42,7 +26,7 @@ export function Links() {
             <span className={linkStyles.linkLabel}>Planificar mis vacaciones</span>
           </Link>
 
-          <Link to="/acerca-de" className={linkStyles.linkButton}>
+          <Link to="/como-funciona" className={linkStyles.linkButton}>
             <span className={linkStyles.linkIcon}>🥇</span>
             <span className={linkStyles.linkLabel}>¿Qué son Oro, Plata y Bronce?</span>
           </Link>
@@ -81,6 +65,8 @@ export function Links() {
           <Link to="/" className={styles.footerLink}>Inicio</Link>
           <span className={styles.sep}>·</span>
           <Link to="/acerca-de" className={styles.footerLink}>Acerca de</Link>
+          <span className={styles.sep}>·</span>
+          <Link to="/como-funciona" className={styles.footerLink}>Cómo funciona</Link>
           <span className={styles.sep}>·</span>
           <Link to="/feriados-chile" className={styles.footerLink}>Feriados</Link>
           <span className={styles.sep}>·</span>
