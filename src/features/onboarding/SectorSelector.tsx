@@ -27,7 +27,7 @@ export function SectorSelector({ value, onChange }: SectorSelectorProps) {
               Empresa, comercio, industria
             </span>
             <span className={styles.optionRule}>
-              Vacaciones: lunes a sábado sin feriados
+              Vacaciones: lunes a viernes · el sábado no descuenta
             </span>
           </div>
           {value === 'privado' && <span className={styles.check}>✓</span>}
@@ -45,7 +45,7 @@ export function SectorSelector({ value, onChange }: SectorSelectorProps) {
               Ministerios, municipios, servicios del Estado
             </span>
             <span className={styles.optionRule}>
-              Vacaciones: lunes a viernes sin feriados
+              Vacaciones: lunes a viernes · el sábado no descuenta
             </span>
           </div>
           {value === 'publico' && <span className={styles.check}>✓</span>}
