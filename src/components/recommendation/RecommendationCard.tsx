@@ -26,7 +26,7 @@ export function RecommendationCard({ recommendation: r }: RecommendationCardProp
     `📅 ${r.totalDaysOff} libre${r.totalDaysOff !== 1 ? 's' : ''}`,
   ]
   if (r.vacationDaysRequired > 0) {
-    parts.push(`🧳 ${r.vacationDaysRequired} vacación${r.vacationDaysRequired !== 1 ? 'es' : ''}`)
+    parts.push(`🧳 ${r.vacationDaysRequired} día${r.vacationDaysRequired !== 1 ? 's' : ''} de vacaciones`)
   }
   if (r.holidays.length > 0) {
     parts.push(r.holidays.map(h => h.name).join(' + '))
